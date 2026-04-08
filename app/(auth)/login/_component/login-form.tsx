@@ -15,9 +15,14 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import Link from "next/link";
-
+import { useLogin } from "@/hooks/queries/useAuthQuery"
+import { useState } from "react";
+import { useRouter } from "next/navigation"
+import { Spinner } from "@/components/ui/spinner";
+import { toast } from "sonner";
 
 export function LoginForm() {
+  const router = useRouter()
 	const LoginGoogleHandle = () => {
 		window.location.href = "https://ketnoigiasu.bvdk333.work/api/auth/google"
 	}
@@ -25,6 +30,30 @@ export function LoginForm() {
 	const LoginFacebookHandle = () => {
 		window.location.href = "https://ketnoigiasu.bvdk333.work/api/auth/facebook"
 	}
+
+  const { mutate: login, isPending } = useLogin()
+
+  const [form, setForm] = useState({
+     email: "",
+     password: "",
+  })
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+  }
+  
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault()
+    login(form, {
+      onSuccess: () => {
+        toast.success("Login successful!")
+        router.push("/dashboard")
+      },
+      onError: () => toast.error("Email or password is incorrect"),
+    })
+  }
+
 	return (
     <main className="relative lg:grid lg:grid-cols-2 md:h-screen md:overflow-hidden">
       <div className="hidden relative lg:flex flex-col bg-secondary dark:bg-secondary/20 p-10 border-r h-full">
@@ -72,35 +101,44 @@ export function LoginForm() {
                 Login to tutor management
               </p>
             </div>
-            <Field>
-              <FieldLabel htmlFor="email">Email</FieldLabel>
-              <Input
-                id="email"
-                type="email"
-                placeholder="m@example.com"
-                required
-              />
-            </Field>
-            <Field>
-              <div className="flex items-center">
-                <FieldLabel htmlFor="password">Password</FieldLabel>
-                <a
-                  href="#"
-                  className="ml-auto text-sm hover:underline underline-offset-2"
-                >
-                  Forgot your password?
-                </a>
-              </div>
-              <Input
-                id="password"
-                type="password"
-                required
-                placeholder="******"
-              />
-            </Field>
-            <Field>
-              <Button type="submit">Login</Button>
-            </Field>
+            <form onSubmit={handleLogin} className="space-y-4">
+              <Field>
+                <FieldLabel htmlFor="email">Email</FieldLabel>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="m@example.com"
+                  required
+                  name="email"
+                  onChange={handleChange}
+                />
+              </Field>
+              <Field>
+                <div className="flex items-center">
+                  <FieldLabel htmlFor="password">Password</FieldLabel>
+                  <a
+                    href="#"
+                    className="ml-auto text-sm hover:underline underline-offset-2"
+                  >
+                    Forgot your password?
+                  </a>
+                </div>
+                <Input
+                  id="password"
+                  type="password"
+                  required
+                  placeholder="******"
+                  name="password"
+                  onChange={handleChange}
+                />
+              </Field>
+              <Field>
+                <Button type="submit" disabled={isPending}>
+                  {isPending ? <Spinner /> : "Login"}
+                </Button>
+              </Field>
+            </form>
+
             <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
               Or continue with
             </FieldSeparator>
@@ -123,10 +161,7 @@ export function LoginForm() {
                 type="button"
                 onClick={LoginFacebookHandle}
               >
-                <svg
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path
                     d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z"
                     fill="currentColor"

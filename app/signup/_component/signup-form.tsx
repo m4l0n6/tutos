@@ -5,16 +5,156 @@ import {
   FieldDescription,
   FieldGroup,
   FieldLabel,
-  FieldSeparator,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import { useRegister, useVerifyOTP } from "@/hooks/queries/useAuthQuery"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
+import { Spinner } from "@/components/ui/spinner"
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
+} from "@/components/ui/input-otp"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import { toast } from "sonner"
 
 export function SignupForm({
   className,
   ...props
 }: React.ComponentProps<"form">) {
+   const router = useRouter()
+   const { mutate: register, isPending, isError, error } = useRegister()
+
+   const [confirmPassword, setConfirmPassword] = useState("")
+   const [isOTPSent, setIsOTPSent] = useState(false)
+
+   const [otpValue, setOtpValue] = useState("")
+   const { mutate: verifyOTP, isPending: isVerifying } = useVerifyOTP()
+
+   const [form, setForm] = useState({
+      email: "",
+      password: "",
+      fullName: "",
+      phone: "",
+   })
+
+   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+   }
+
+   const handleVerifyOTP = () => {
+     if (otpValue.length !== 6) {
+       toast.error("Please enter a valid OTP")
+       return
+     }
+     verifyOTP(
+       { email: form.email, otp: otpValue },
+       {
+         onSuccess: () => {
+          router.push("/login")
+          toast.success("Registration successful! You can now log in.")
+        },
+         onError: () => toast.error("Invalid OTP, please try again"),
+       }
+     )
+   }
+
+   const handleSubmit = (e: React.FormEvent) => {
+     e.preventDefault()
+     if (form.password !== confirmPassword) {
+        toast.error("Passwords do not match")
+        return
+     }
+     register(form, {
+       onSuccess: () => {
+          setIsOTPSent(true)
+      },
+       onError: (err) => console.error(err),
+     })
+   }
+
+   if (isOTPSent) {
+     return (
+       <Card className="mx-auto max-w-md">
+         <CardHeader>
+           <CardTitle>Verify your login</CardTitle>
+           <CardDescription>
+             Enter the verification code we sent to your email address:{" "}
+             <span className="font-medium">{form.email}</span>{" "}
+             {/* ← hiện email thực */}
+           </CardDescription>
+         </CardHeader>
+         <CardContent>
+           <Field>
+             <div className="flex justify-between items-center">
+               <FieldLabel htmlFor="otp-verification">
+                 Verification code
+               </FieldLabel>
+             </div>
+             <InputOTP
+               maxLength={6}
+               id="otp-verification"
+               required
+               value={otpValue} // ← thêm
+               onChange={setOtpValue} // ← thêm
+             >
+               <InputOTPGroup className="*:data-[slot=input-otp-slot]:w-11 *:data-[slot=input-otp-slot]:h-12 *:data-[slot=input-otp-slot]:text-xl">
+                 <InputOTPSlot index={0} />
+                 <InputOTPSlot index={1} />
+                 <InputOTPSlot index={2} />
+               </InputOTPGroup>
+               <InputOTPSeparator className="mx-2" />
+               <InputOTPGroup className="*:data-[slot=input-otp-slot]:w-11 *:data-[slot=input-otp-slot]:h-12 *:data-[slot=input-otp-slot]:text-xl">
+                 <InputOTPSlot index={3} />
+                 <InputOTPSlot index={4} />
+                 <InputOTPSlot index={5} />
+               </InputOTPGroup>
+             </InputOTP>
+             <FieldDescription>
+               <a href="#">I no longer have access to this email address.</a>
+             </FieldDescription>
+           </Field>
+         </CardContent>
+         <CardFooter>
+           <Field>
+             <Button
+               type="button"
+               className="w-full"
+               disabled={isVerifying || otpValue.length !== 6} // ← disable nếu chưa đủ 6 số
+               onClick={handleVerifyOTP} // ← thêm
+             >
+               {isVerifying ? <Spinner /> : "Verify"} {/* ← thêm loading */}
+             </Button>
+             <div className="text-muted-foreground text-sm">
+               Having trouble signing in?{" "}
+               <a
+                 href="#"
+                 className="hover:text-primary underline underline-offset-4 transition-colors"
+               >
+                 Contact support
+               </a>
+             </div>
+           </Field>
+         </CardFooter>
+       </Card>
+     )
+   }
+
   return (
-    <form className={cn("flex flex-col gap-6", className)} {...props}>
+    <form
+      className={cn("flex flex-col gap-6", className)}
+      {...props}
+      onSubmit={handleSubmit}
+    >
       <FieldGroup>
         <div className="flex flex-col items-center gap-1 text-center">
           <h1 className="font-bold text-2xl">Create your account</h1>
@@ -22,68 +162,87 @@ export function SignupForm({
             Fill in the form below to create your account
           </p>
         </div>
+
         <Field>
           <FieldLabel htmlFor="name">Full Name</FieldLabel>
           <Input
             id="name"
+            name="fullName"
             type="text"
             placeholder="John Doe"
             required
             className="bg-background"
+            onChange={handleChange}
           />
         </Field>
+
         <Field>
           <FieldLabel htmlFor="email">Email</FieldLabel>
           <Input
             id="email"
+            name="email"
             type="email"
             placeholder="m@example.com"
             required
             className="bg-background"
+            onChange={handleChange}
           />
           <FieldDescription>
             We&apos;ll use this to contact you. We will not share your email
             with anyone else.
           </FieldDescription>
         </Field>
+
         <Field>
           <FieldLabel htmlFor="number">Phone Number</FieldLabel>
           <Input
             id="number"
+            name="phone"
             type="tel"
             placeholder="123-456-7890"
             required
             className="bg-background"
+            onChange={handleChange}
           />
           <FieldDescription>
             Must be at least 8 characters long.
           </FieldDescription>
         </Field>
+
         <Field>
           <FieldLabel htmlFor="password">Password</FieldLabel>
           <Input
             id="password"
+            name="password"
             type="password"
             required
             className="bg-background"
+            onChange={handleChange}
           />
           <FieldDescription>
             Must be at least 8 characters long.
           </FieldDescription>
         </Field>
+
         <Field>
           <FieldLabel htmlFor="confirm-password">Confirm Password</FieldLabel>
           <Input
             id="confirm-password"
+            name="confirmPassword"
             type="password"
             required
             className="bg-background"
+            onChange={(e) => setConfirmPassword(e.target.value)}
           />
           <FieldDescription>Please confirm your password.</FieldDescription>
         </Field>
+
         <Field>
-          <Button type="submit">Create Account</Button>
+          <Button type="submit" className="w-full" disabled={isPending}>
+            {isPending ? <Spinner /> : "Create Account"}
+          </Button>
         </Field>
+        {isError && <p>Lỗi: {error?.message}</p>}
         {/* <FieldSeparator>Or continue with</FieldSeparator> */}
         <Field>
           {/* <Button variant="outline" type="button">
@@ -103,3 +262,5 @@ export function SignupForm({
     </form>
   )
 }
+
+

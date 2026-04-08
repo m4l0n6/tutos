@@ -23,6 +23,7 @@ import { useAuth } from "@/context/AuthContext"
 
 export function NavUser() {
     const { user, logout } = useAuth()
+    console.log("User in NavUser:", user) // Debugging line
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

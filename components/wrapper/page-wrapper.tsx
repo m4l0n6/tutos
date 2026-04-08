@@ -1,20 +1,25 @@
-// components/wrapper/page-wrapper.tsx
 "use client"
 import { Header } from "./header"
 import { useAuth } from "@/context/AuthContext"
-import DashboardPage from "../dashboard"
 import { Loading } from "../loading"
+import { useRouter } from "next/navigation" // ← sửa
+import { useEffect } from "react" // ← thêm
 
 export default function PageWrapper({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const router = useRouter()
   const { user, loading } = useAuth()
 
-  if (loading) return <Loading />
+  useEffect(() => {
+    if (!loading && user) {
+      router.push("/dashboard")
+    }
+  }, [user, loading])
 
-  if (user) return <DashboardPage />
+  if (loading) return <Loading />
 
   return (
     <>

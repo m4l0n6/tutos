@@ -10,7 +10,8 @@ export function AppShell() {
       <SidebarInset className="p-4 md:p-6">
         <AppNavbar />
         <div className="flex flex-col flex-1 gap-4 overflow-y-auto">
-          <DashboardSkeleton />
+          {/* <DashboardSkeleton /> */}
+          ok
         </div>
       </SidebarInset>
     </SidebarProvider>
