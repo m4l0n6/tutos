@@ -1,7 +1,7 @@
-// app/auth-success/AuthSuccess.tsx
 "use client"
 import { useEffect } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
+import { Loading } from "@/components/loading"
 
 export default function AuthSuccess() {
   const router = useRouter()
@@ -19,5 +19,5 @@ export default function AuthSuccess() {
     router.replace("/")
   }, [router, searchParams])
 
-  return <p>Đang xử lý đăng nhập...</p>
+  return <Loading text="Đang xử lý đăng nhập..." />
 }

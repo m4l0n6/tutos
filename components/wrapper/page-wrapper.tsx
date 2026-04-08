@@ -3,6 +3,7 @@
 import { Header } from "./header"
 import { useAuth } from "@/context/AuthContext"
 import DashboardPage from "../dashboard"
+import { Loading } from "../loading"
 
 export default function PageWrapper({
   children,
@@ -11,7 +12,7 @@ export default function PageWrapper({
 }) {
   const { user, loading } = useAuth()
 
-  if (loading) return <p>Đang tải...</p>
+  if (loading) return <Loading />
 
   if (user) return <DashboardPage />
 

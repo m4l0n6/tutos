@@ -120,9 +120,9 @@ export const ModeToggle = ({
         showLabel && "gap-2",
         className
       )}
-      aria-label={`Switch to ${resolvedTheme === "light" ? "dark" : "light"} theme`} // ← đổi theme → resolvedTheme
+      aria-label={`Switch to ${resolvedTheme === "light" ? "dark" : "light"} theme`}
     >
-      {resolvedTheme === "light" ? ( // ← đổi theme → resolvedTheme
+      {resolvedTheme === "light" ? (
         <Sun className="w-[1.2rem] h-[1.2rem]" />
       ) : (
         <Moon className="w-[1.2rem] h-[1.2rem]" />

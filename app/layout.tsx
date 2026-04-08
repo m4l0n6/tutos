@@ -4,6 +4,7 @@ import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { cn } from "@/lib/utils";
 import { AuthProvider } from "@/context/AuthContext"
+import { TooltipProvider } from "@/components/ui/tooltip"
 
 const dmSans = DM_Sans({subsets:['latin'],variable:'--font-sans'})
 
@@ -30,7 +31,9 @@ export default function RootLayout({
     >
       <body>
         <ThemeProvider>
-          <AuthProvider>{children}</AuthProvider>
+          <TooltipProvider>
+            <AuthProvider>{children}</AuthProvider>
+          </TooltipProvider>
         </ThemeProvider>
       </body>
     </html>
