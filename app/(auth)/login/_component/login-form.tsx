@@ -55,8 +55,8 @@ export function LoginForm() {
   }
 
 	return (
-    <main className="relative lg:grid lg:grid-cols-2 md:h-screen md:overflow-hidden">
-      <div className="hidden relative lg:flex flex-col bg-secondary dark:bg-secondary/20 p-10 border-r h-full">
+    <main className="relative lg:grid lg:grid-cols-2 lg:h-screen lg:overflow-hidden">
+      <div className="hidden relative lg:flex lg:flex-col bg-secondary dark:bg-secondary/20 p-10 border-r h-full">
         <div className="absolute inset-0 bg-linear-to-b from-transparent via-transparent to-background" />
         <Logo />
 
@@ -76,7 +76,7 @@ export function LoginForm() {
           <FloatingPaths position={-1} />
         </div>
       </div>
-      <div className="relative flex flex-col justify-center px-8 min-h-screen">
+      <div className="relative flex flex-col justify-center px-4 sm:px-8 py-8 sm:py-12 min-h-screen lg:min-h-screen">
         {/* Top Shades */}
         <div
           aria-hidden
@@ -86,18 +86,18 @@ export function LoginForm() {
           <div className="top-0 right-0 absolute bg-[radial-gradient(50%_50%_at_50%_50%,--theme(--color-foreground/.04)_0,--theme(--color-foreground/.01)_80%,transparent_100%)] rounded-full w-60 h-320 [translate:5%_-50%]" />
           <div className="top-0 right-0 absolute bg-[radial-gradient(50%_50%_at_50%_50%,--theme(--color-foreground/.04)_0,--theme(--color-foreground/.01)_80%,transparent_100%)] rounded-full w-60 h-320 -translate-y-87.5" />
         </div>
-        <Button asChild className="top-7 left-5 absolute" variant="ghost">
+        <Button asChild className="top-4 sm:top-7 left-4 sm:left-5 absolute" variant="ghost" size="sm">
           <Link href="/">
-            <ChevronLeftIcon data-icon="inline-start" />
-            Home
+            <ChevronLeftIcon className="size-4" data-icon="inline-start" />
+            <span className="hidden sm:inline">Home</span>
           </Link>
         </Button>
 
-        <div className="space-y-4 mx-auto sm:w-sm">
+        <div className="space-y-4 mx-auto w-full sm:w-sm max-w-sm">
           <FieldGroup>
             <div className="flex flex-col items-center gap-2 text-center">
-              <h1 className="font-bold text-2xl">Welcome back</h1>
-              <p className="text-muted-foreground text-balance">
+              <h1 className="font-bold text-xl sm:text-2xl">Welcome back</h1>
+              <p className="text-muted-foreground text-sm sm:text-base text-balance">
                 Login to tutor management
               </p>
             </div>
@@ -114,7 +114,7 @@ export function LoginForm() {
                 />
               </Field>
               <Field>
-                <div className="flex items-center">
+                <div className="flex items-center gap-2">
                   <FieldLabel htmlFor="password">Password</FieldLabel>
                   <a
                     href="#"
@@ -133,7 +133,7 @@ export function LoginForm() {
                 />
               </Field>
               <Field>
-                <Button type="submit" disabled={isPending}>
+                <Button type="submit" disabled={isPending} className="w-full">
                   {isPending ? <Spinner /> : "Login"}
                 </Button>
               </Field>
@@ -142,26 +142,28 @@ export function LoginForm() {
             <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
               Or continue with
             </FieldSeparator>
-            <Field className="gap-4 grid grid-cols-2">
+            <Field className="gap-3 sm:gap-4 grid grid-cols-2">
               <Button
                 variant="outline"
                 type="button"
                 onClick={LoginGoogleHandle}
+                size="sm"
               >
-                <GoogleIcon />
+                <GoogleIcon  />
                 <span className="sr-only">Login with Google</span>
               </Button>
               <Button
                 variant="outline"
                 type="button"
                 onClick={LoginFacebookHandle}
+                size="sm"
               >
                 <FacebookIcon />
                 <span className="sr-only">Login with Facebook</span>
               </Button>
             </Field>
-            <FieldDescription className="text-center">
-              Don&apos;t have an account? <a href="/signup">Sign up</a>
+            <FieldDescription className="text-sm text-center">
+              Don&apos;t have an account? <a href="/signup" className="hover:underline">Sign up</a>
             </FieldDescription>
           </FieldGroup>
         </div>
