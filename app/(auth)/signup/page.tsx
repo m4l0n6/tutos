@@ -1,6 +1,6 @@
 "use client"
 
-import { SignupForm } from "@/app/signup/_component/signup-form"
+import { SignupForm } from "./_component/signup-form"
 import { Logo } from "@/components/logo"
 import Link from "next/link"
 

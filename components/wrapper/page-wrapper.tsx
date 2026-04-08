@@ -1,5 +1,6 @@
 "use client"
 import { Header } from "./header"
+import { Footer } from "./footer"
 import { useAuth } from "@/context/AuthContext"
 import { Loading } from "../loading"
 import { useRouter } from "next/navigation" // ← sửa
@@ -28,6 +29,7 @@ export default function PageWrapper({
         <div className="z-[-99] absolute inset-0 flex justify-center items-center pointer-events-none mask-[radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
         {children}
       </main>
+      <Footer />
     </>
   )
 }

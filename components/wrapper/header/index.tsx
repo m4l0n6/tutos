@@ -1,34 +1,16 @@
-"use client";
+"use client"
 
-import { cn } from "@/lib/utils";
-import {Logo} from "@/components/logo";
-import { useScroll } from "@/hooks/use-scroll";
-import { Button } from "@/components/ui/button";
-import { DesktopNav } from "./desktop-nav";
-import { ModeToggle } from "@/components/mode-toggle";
-import Link from 'next/link';
-
-export const navLinks = [
-  {
-    label: "Home",
-    href: "/",
-  },
-  // {
-  //   label: "Features",
-  //   href: "#",
-  // },
-  // {
-  //   label: "Pricing",
-  //   href: "#",
-  // },
-  {
-    label: "About",
-    href: "#",
-  },
-];
+import { cn } from "@/lib/utils"
+import { Logo } from "@/components/logo"
+import { useScroll } from "@/hooks/use-scroll"
+import { Button } from "@/components/ui/button"
+import { DesktopNav } from "./desktop-nav"
+import { MobileNav } from "./mobile-nav"
+import { ModeToggle } from "@/components/mode-toggle"
+import Link from "next/link"
 
 export function Header() {
-  const scrolled = useScroll(10);
+  const scrolled = useScroll(10)
 
   return (
     <header
@@ -39,25 +21,25 @@ export function Header() {
     >
       <nav className="flex justify-between items-center mx-auto px-4 w-full max-w-5xl h-14">
         <div className="flex items-center gap-5">
-          <Link href="/">
+          <a
+            className="hover:bg-muted dark:hover:bg-muted/50 px-3 py-2.5 rounded-lg"
+            href="#"
+          >
             <Logo />
-          </Link>
-            
+          </a>
           <DesktopNav />
         </div>
         <div className="hidden md:flex items-center gap-2">
           <ModeToggle />
           <Link href="/login">
-            <Button variant="outline" size="sm">
-              Login
-            </Button>
+            <Button variant="outline">Sign In</Button>
           </Link>
-          <Link href="/dashboard">
-            <Button>Get Started</Button>
+          <Link href="/signup">
+            <Button>Register</Button>
           </Link>
         </div>
-        {/* <MobileNav /> */}
+        <MobileNav />
       </nav>
     </header>
-  );
+  )
 }

@@ -119,11 +119,26 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
-    }
+  }
+  
+  /* Scrollbar styles */
+  *::-webkit-scrollbar {
+    @apply w-1 h-2;
+  }
+  
+  *::-webkit-scrollbar-track {
+    @apply rounded-full bg-gray-100 dark:bg-neutral-700;
+  }
+  
+  *::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-gray-400 dark:bg-neutral-500;
+  }
+  
   body {
     @apply bg-background text-foreground;
-    }
+  }
+  
   html {
     @apply font-sans;
-    }
+  }
 }
