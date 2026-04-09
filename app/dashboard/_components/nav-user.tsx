@@ -21,9 +21,10 @@ import {
 } from "lucide-react"
 import { useAuth } from "@/context/AuthContext"
 
+
 export function NavUser() {
-    const { user, logout } = useAuth()
-    console.log("User in NavUser:", user) // Debugging line
+    const { user,logout } = useAuth()
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

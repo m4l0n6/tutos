@@ -1,12 +1,15 @@
 "use client"
 import { useEffect } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
+import { useQueryClient } from "@tanstack/react-query"
 import { saveToken } from "@/lib/auth"
 import { Spinner } from "@/components/ui/spinner"
+import { userKeys } from "@/hooks/queries/useUserQuery"
 
 export default function AuthSuccess() {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const queryClient = useQueryClient()
 
   useEffect(() => {
     const token = searchParams.get("token")
@@ -37,13 +40,18 @@ export default function AuthSuccess() {
       return
     }
 
+    console.log("[AuthSuccess] Invalidating user queries...")
+    
+    // Invalidate user queries to trigger refetch with new token
+    queryClient.invalidateQueries({ queryKey: userKeys.me() })
+
     // Wait for token to be saved before navigating
     // Use setTimeout to ensure localStorage is updated
     setTimeout(() => {
       console.log("[AuthSuccess] Redirecting to dashboard")
       router.replace("/dashboard")
     }, 300)
-  }, [router, searchParams])
+  }, [router, searchParams, queryClient])
 
   return (
     <div className="flex flex-col justify-center items-center gap-4 w-full h-screen">
