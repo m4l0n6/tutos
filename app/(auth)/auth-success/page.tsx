@@ -1,10 +1,10 @@
 import { Suspense } from "react"
-import AuthDirection from "./AuthDirection"
+import AuthSuccess from "./AuthSuccess"
 
-export default function AuthDirectionPage() {
+export default function AuthSuccessPage() {
   return (
     <Suspense fallback={<p>Đang xử lý đăng nhập...</p>}>
-      <AuthDirection />
+      <AuthSuccess />
     </Suspense>
   )
 }
