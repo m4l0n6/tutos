@@ -13,7 +13,7 @@ export const getToken = () => {
     // Then check cookies
     const tokenFromCookie = document.cookie
       .split("; ")
-      .find((row) => row.startsWith("token="))
+      .find((row) => row.startsWith("access_token="))
       ?.split("=")[1]
     
     if (tokenFromCookie) {
@@ -27,7 +27,7 @@ export const getToken = () => {
     console.error("[Auth] Error getting token:", error)
     return null
   }
-}
+}}
 
 export const saveToken = (token: string) => {
   try {
