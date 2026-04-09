@@ -27,7 +27,7 @@ export const getToken = () => {
     console.error("[Auth] Error getting token:", error)
     return null
   }
-}}
+}
 
 export const saveToken = (token: string) => {
   try {
