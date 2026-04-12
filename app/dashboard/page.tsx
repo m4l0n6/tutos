@@ -1,20 +1,10 @@
-"use client"
-import { useAuth } from "@/context/AuthContext"
-import { AppShell } from "./_components/app-shell"
-import { Spinner } from "@/components/ui/spinner"
+import { AppShell } from "./_components/wrapper/sidebar/app-shell"
+import { DashboardAuthWrapper } from "./_components/wrapper/dashboard-auth-wrapper"
 
-const DashboardPage = () => {
-   const { loading } = useAuth()
-
-    if (loading) {
-    return (
-      <div className="flex flex-col justify-center items-center gap-4 w-full h-screen">
-        <Spinner className="w-12 h-12" />
-        <p className="text-lg">Đang tải thông tin người dùng...</p>
-      </div>
-    )
-    }
-  return <AppShell />
+export default function DashboardPage() {
+  return (
+    <DashboardAuthWrapper>
+      <AppShell />
+    </DashboardAuthWrapper>
+  )
 }
-
-export default DashboardPage

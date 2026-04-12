@@ -1,5 +1,6 @@
 "use client"
 import { Geist, Geist_Mono, DM_Sans } from "next/font/google"
+import { NuqsAdapter } from "nuqs/adapters/next/app"
 
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
@@ -35,10 +36,12 @@ function Providers({ children }: { children: React.ReactNode }) {
   )
 
   return (
-    <QueryClientProvider client={queryClient}>
-      {children}
-      <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>
+    <NuqsAdapter>
+      <QueryClientProvider client={queryClient}>
+        {children}
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
+    </NuqsAdapter>
   )
 }
 
