@@ -1,10 +1,85 @@
-import { AppShell } from "./_components/wrapper/sidebar/app-shell"
-import { DashboardAuthWrapper } from "./_components/wrapper/dashboard-auth-wrapper"
+import {
+  ArrowDown,
+  ArrowUp,
+  DollarSign,
+  MoreHorizontal,
+  ShoppingCart,
+} from "lucide-react"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import {
+  Stat,
+  StatIndicator,
+  StatLabel,
+  StatTrend,
+  StatValue,
+} from "@/components/ui/stat"
+import { DashboardTable } from "./_components/classes-table"
 
 export default function DashboardPage() {
   return (
-    <DashboardAuthWrapper>
-      <AppShell />
-    </DashboardAuthWrapper>
+    <div className="flex flex-col gap-6">
+      <div className="gap-4 grid sm:grid-cols-2">
+        <Stat>
+          <StatLabel>Total Revenue</StatLabel>
+          <StatIndicator variant="icon" color="success">
+            <DollarSign />
+          </StatIndicator>
+          <StatValue>$45,231</StatValue>
+          <StatTrend trend="up">
+            <ArrowUp />
+            +20.1% from last month
+          </StatTrend>
+        </Stat>
+
+        <Stat>
+          <StatLabel>Active Users</StatLabel>
+          <StatIndicator variant="badge" color="info">
+            +24
+          </StatIndicator>
+          <StatValue>2,350</StatValue>
+          <StatTrend trend="up">
+            <ArrowUp />
+            +180 from last week
+          </StatTrend>
+        </Stat>
+
+        <Stat>
+          <StatLabel>Total Orders</StatLabel>
+          <StatIndicator variant="icon" color="warning">
+            <ShoppingCart />
+          </StatIndicator>
+          <StatValue>1,234</StatValue>
+          <StatTrend trend="down">
+            <ArrowDown />
+            -4.3% from last month
+          </StatTrend>
+        </Stat>
+
+        <Stat>
+          <StatLabel>Conversion Rate</StatLabel>
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <StatIndicator variant="action">
+                <MoreHorizontal />
+              </StatIndicator>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem>View details</DropdownMenuItem>
+              <DropdownMenuItem>Export data</DropdownMenuItem>
+              <DropdownMenuItem>Share</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <StatValue>3.2%</StatValue>
+          <StatTrend trend="neutral">No change from last week</StatTrend>
+        </Stat>
+      </div>
+
+      <DashboardTable />
+    </div>
   )
 }

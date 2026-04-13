@@ -68,7 +68,7 @@ const initialData: Project[] = [
   },
 ]
 
-export function ClassesTable() {
+export function DashboardTable() {
   const [data, setData] = React.useState<Project[]>(initialData)
   const [title] = useQueryState("title", parseAsString.withDefault(""))
   const [status] = useQueryState(

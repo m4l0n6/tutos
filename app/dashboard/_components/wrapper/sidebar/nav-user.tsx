@@ -65,10 +65,10 @@ export function NavUser() {
             <BellIcon />
             Notifications
           </DropdownMenuItem>
-          <DropdownMenuItem>
+          {/* <DropdownMenuItem>
             <CommandIcon />
             Keyboard shortcuts
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>

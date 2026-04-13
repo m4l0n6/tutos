@@ -3,9 +3,8 @@ import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 import { AppNavbar } from "./app-navbar"
 import { AppSidebar } from "./app-sidebar"
 import { DashboardSkeleton } from "../../dashboard-skeleton"
-import { ClassesTable } from "../../classes-table"
 
-export async function AppShell() {
+export async function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -13,9 +12,7 @@ export async function AppShell() {
         <AppNavbar />
         <div className="flex flex-col flex-1 gap-4 overflow-y-auto">
           {/* <DashboardSkeleton /> */}
-          <Suspense fallback={<DashboardSkeleton />}>
-            <ClassesTable />
-          </Suspense>
+          <Suspense fallback={<DashboardSkeleton />}>{children}</Suspense>
         </div>
       </SidebarInset>
     </SidebarProvider>
