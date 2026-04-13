@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
 import { api } from "@/lib/axios"
 import { getToken } from "@/lib/auth"
-import { useEffect, useState } from "react"
+import React, {  useState } from "react"
 
 export const userKeys = {
   all: ["users"] as const,
@@ -12,7 +12,7 @@ export function useMe() {
   const [token, setToken] = useState<string | null>(null)
   const [isReady, setIsReady] = useState(false)
 
-  useEffect(() => {
+  React.useEffect(() => {
     // Get initial token
     const initialToken = getToken()
     setToken(initialToken)

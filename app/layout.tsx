@@ -11,6 +11,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import { useState } from "react";
 import { Toaster } from "@/components/ui/sonner"
+import { queryClient } from "@/lib/query-client"
 
 const dmSans = DM_Sans({subsets:['latin'],variable:'--font-sans'})
 
@@ -20,21 +21,6 @@ const fontMono = Geist_Mono({
 })
 
 function Providers({ children }: { children: React.ReactNode }) {
-  const [queryClient] = useState(
-    () =>
-      new QueryClient({
-        defaultOptions: {
-          queries: {
-            staleTime: 1000 * 60 * 5,
-            gcTime: 1000 * 60 * 10,
-            retry: 1,
-            refetchOnWindowFocus: false,
-            refetchOnReconnect: "always"
-          },
-        },
-      })
-  )
-
   return (
     <NuqsAdapter>
       <QueryClientProvider client={queryClient}>

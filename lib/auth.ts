@@ -1,3 +1,6 @@
+import { queryClient } from "./query-client"
+import { toast, Toaster } from "sonner"
+
 export const getToken = () => {
   // Only run on client side
   if (typeof window === "undefined") return null
@@ -37,7 +40,7 @@ export const saveToken = (token: string) => {
     // Save to cookie (7 days expiry)
     document.cookie = `access_token=${token}; path=/; max-age=604800`
     
-    console.log("[Auth] Token saved successfully")
+    toast.success("Login successful!")
     return true
   } catch (error) {
     console.error("[Auth] Error saving token:", error)
@@ -47,15 +50,12 @@ export const saveToken = (token: string) => {
 
 export const logout = () => {
   try {
-    // Remove from localStorage
+    queryClient.clear()
     localStorage.removeItem("access_token")
-    
-    // Remove from cookies
     document.cookie = "access_token=; path=/; max-age=0"
     
-    console.log("[Auth] Logged out successfully")
+    toast.success("Logged out successfully!")
     
-    // Redirect to login
     window.location.href = "/login"
   } catch (error) {
     console.error("[Auth] Error during logout:", error)
