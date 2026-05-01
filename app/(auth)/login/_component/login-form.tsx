@@ -11,11 +11,13 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { useLogin } from "@/hooks/queries/useAuthQuery"
-import { useState } from "react";
 import { useRouter } from "next/navigation"
 import { Spinner } from "@/components/ui/spinner";
 import { toast } from "sonner";
 import { FacebookIcon, GoogleIcon } from "@/components/icons"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { loginSchema, LoginFormValues } from "@/lib/validations/auth"
 
 export function LoginForm() {
   const router = useRouter()
@@ -28,20 +30,17 @@ export function LoginForm() {
 	}
 
   const { mutate: login, isPending } = useLogin()
-
-  const [form, setForm] = useState({
-     email: "",
-     password: "",
-  })
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }))
-  }
   
-
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault()
-    login(form, {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
+  })
+  
+  const onSubmit = (data: LoginFormValues) => {
+    login(data, {
       onSuccess: () => {
         toast.success("Login successful!")
         router.push("/dashboard")
@@ -52,7 +51,7 @@ export function LoginForm() {
 
 	return (
     <FieldGroup>
-      <form onSubmit={handleLogin} className="space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <Field>
           <FieldLabel htmlFor="email">Email</FieldLabel>
           <Input
@@ -60,9 +59,11 @@ export function LoginForm() {
             type="email"
             placeholder="m@example.com"
             required
-            name="email"
-            onChange={handleChange}
+            {...register("email")}
           />
+          {errors.email && (
+            <p className="text-destructive text-sm">{errors.email.message}</p>
+          )}
         </Field>
         <Field>
           <div className="flex items-center gap-2">
@@ -79,9 +80,13 @@ export function LoginForm() {
             type="password"
             required
             placeholder="******"
-            name="password"
-            onChange={handleChange}
+            {...register("password")}
           />
+          {errors.password && (
+            <p className="text-destructive text-sm">
+              {errors.password.message}
+            </p>
+          )}
         </Field>
         <Field>
           <Button type="submit" disabled={isPending} className="w-full">

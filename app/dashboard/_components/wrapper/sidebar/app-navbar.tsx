@@ -1,18 +1,42 @@
 "use client"
+import { useEffect, useState } from "react"
+import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbList,
   BreadcrumbPage,
+  BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { CustomSidebarTrigger } from "./custom-sidebar-trigger"
 import { NavUser } from "./nav-user"
 import { BellIcon } from "lucide-react"
+import Link from "next/link"
+
+function checkBreadcrumb(pathname: string): string[] {
+  const segments = pathname
+    .split("/")
+    .filter((segment) => segment && segment !== "dashboard")
+
+  if (segments.length === 0) {
+    return ["Dashboard"]
+  }
+
+  return ["Dashboard", ...segments.map((seg) => seg.charAt(0).toUpperCase() + seg.slice(1))]
+}
 
 export function AppNavbar() {
+  const pathname = usePathname()
+  const [breadcrumbs, setBreadcrumbs] = useState<string[]>(["Dashboard"])
+
+  useEffect(() => {
+    const newBreadcrumbs = checkBreadcrumb(pathname)
+    setBreadcrumbs(newBreadcrumbs)
+  }, [pathname])
+
   return (
     <header
       className={cn(
@@ -27,9 +51,23 @@ export function AppNavbar() {
         />
         <Breadcrumb>
           <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbPage>Dashboard</BreadcrumbPage>
-            </BreadcrumbItem>
+            {breadcrumbs.map((breadcrumb, index) => (
+              <BreadcrumbItem key={index}>
+                {index > 0 && <BreadcrumbSeparator />}
+                <Link
+                  href={
+                    index === 0
+                      ? "/dashboard"
+                      : `/dashboard/${breadcrumbs
+                          .slice(1, index + 1)
+                          .map((b) => b.toLowerCase())
+                          .join("/")}`
+                  }
+                >
+                  <BreadcrumbPage>{breadcrumb}</BreadcrumbPage>
+                </Link>
+              </BreadcrumbItem>
+            ))}
           </BreadcrumbList>
         </Breadcrumb>
       </div>

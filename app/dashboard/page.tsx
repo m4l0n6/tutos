@@ -18,7 +18,7 @@ import {
   StatTrend,
   StatValue,
 } from "@/components/ui/stat"
-import { DashboardTable } from "./_components/classes-table"
+import { DashboardTable } from "./_components/dashboard-table"
 
 export default function DashboardPage() {
   return (
