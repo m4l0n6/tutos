@@ -1,21 +1,28 @@
 "use client"
-import { Geist, Geist_Mono, DM_Sans } from "next/font/google"
+import { Afacad, Adamina, Fira_Code } from "next/font/google"
 import { NuqsAdapter } from "nuqs/adapters/next/app"
 
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
-import { cn } from "@/lib/utils";
 import { AuthProvider } from "@/context/AuthContext"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
-import { useState } from "react";
 import { Toaster } from "@/components/ui/sonner"
 import { queryClient } from "@/lib/query-client"
 
-const dmSans = DM_Sans({subsets:['latin'],variable:'--font-sans'})
+const fontSans = Afacad({
+  subsets: ["latin"],
+  variable: "--font-sans",
+})
 
-const fontMono = Geist_Mono({
+const fontSerif = Adamina({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-serif",
+})
+
+const fontMono = Fira_Code({
   subsets: ["latin"],
   variable: "--font-mono",
 })
@@ -40,12 +47,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={cn(
-        "antialiased",
-        fontMono.variable,
-        "font-sans",
-        dmSans.variable
-      )}
+      className={`${fontSans.variable} ${fontSerif.variable} ${fontMono.variable} antialiased`}
     >
       <body>
         <Providers>
