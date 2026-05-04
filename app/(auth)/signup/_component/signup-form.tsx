@@ -6,20 +6,16 @@ import {
   FieldDescription,
   FieldGroup,
   FieldLabel,
+  FieldSet,
+  FieldLegend,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { useRegister } from "@/hooks/queries/useAuthQuery"
 import { useState } from "react"
 import { Spinner } from "@/components/ui/spinner"
 import { toast } from "sonner"
-import { useForm } from "react-hook-form"
+import { Controller, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { registerSchema, RegisterFormValues } from "@/lib/validations/auth"
 import { OTPForm } from "./otp-form"
@@ -35,9 +31,8 @@ export function SignupForm({
 
   const {
     register: field,
+    control,
     handleSubmit,
-    setValue,
-    watch,
     formState: { errors },
   } = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
@@ -46,6 +41,7 @@ export function SignupForm({
 
   const onSubmit = (data: RegisterFormValues) => {
     const { confirmPassword, ...payload } = data
+    void confirmPassword
     register(payload, {
       onSuccess: () => {
         setEmail(data.email)
@@ -65,8 +61,8 @@ export function SignupForm({
     >
       <FieldGroup>
         <div className="flex flex-col items-center gap-1 text-center">
-          <h1 className="font-bold text-2xl">Create your account</h1>
-          <p className="text-muted-foreground text-sm text-balance">
+          <h1 className="text-2xl font-bold">Create your account</h1>
+          <p className="text-sm text-balance text-muted-foreground">
             Fill in the form below to create your account
           </p>
         </div>
@@ -81,7 +77,7 @@ export function SignupForm({
             {...field("fullName")}
           />
           {errors.fullName && (
-            <p className="text-destructive text-sm">
+            <p className="text-sm text-destructive">
               {errors.fullName.message}
             </p>
           )}
@@ -97,7 +93,7 @@ export function SignupForm({
             {...field("email")}
           />
           {errors.email && (
-            <p className="text-destructive text-sm">{errors.email.message}</p>
+            <p className="text-sm text-destructive">{errors.email.message}</p>
           )}
         </Field>
 
@@ -111,32 +107,42 @@ export function SignupForm({
             {...field("phone")}
           />
           {errors.phone && (
-            <p className="text-destructive text-sm">{errors.phone.message}</p>
+            <p className="text-sm text-destructive">{errors.phone.message}</p>
           )}
         </Field>
 
-        <Field>
-          <FieldLabel htmlFor="role">Role</FieldLabel>
-          <Select
-            value={watch("role")}
-            onValueChange={(value) =>
-              setValue("role", value as "PARENT" | "TUTOR", {
-                shouldValidate: true,
-              })
-            }
-          >
-            <SelectTrigger id="role" className="bg-background">
-              <SelectValue placeholder="Select a role" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="PARENT">Parent</SelectItem>
-              <SelectItem value="TUTOR">Tutor</SelectItem>
-            </SelectContent>
-          </Select>
+        <FieldSet>
+          <FieldLegend>Role</FieldLegend>
+          <Controller
+            control={control}
+            name="role"
+            render={({ field: roleField }) => (
+              <RadioGroup
+                value={roleField.value}
+                onValueChange={roleField.onChange}
+                className="grid grid-cols-1 gap-3 sm:grid-cols-2"
+              >
+                <FieldLabel
+                  htmlFor="role-parent"
+                  className="flex items-center gap-3"
+                >
+                  <RadioGroupItem value="PARENT" id="role-parent" />
+                  <span>Parent</span>
+                </FieldLabel>
+                <FieldLabel
+                  htmlFor="role-tutor"
+                  className="flex items-center gap-3"
+                >
+                  <RadioGroupItem value="TUTOR" id="role-tutor" />
+                  <span>Tutor</span>
+                </FieldLabel>
+              </RadioGroup>
+            )}
+          />
           {errors.role && (
-            <p className="text-destructive text-sm">{errors.role.message}</p>
+            <p className="text-sm text-destructive">{errors.role.message}</p>
           )}
-        </Field>
+        </FieldSet>
 
         <Field>
           <FieldLabel htmlFor="password">Password</FieldLabel>
@@ -144,10 +150,11 @@ export function SignupForm({
             id="password"
             type="password"
             className="bg-background"
+            placeholder="e.g: password123"
             {...field("password")}
           />
           {errors.password && (
-            <p className="text-destructive text-sm">
+            <p className="text-sm text-destructive">
               {errors.password.message}
             </p>
           )}
@@ -162,10 +169,11 @@ export function SignupForm({
             id="confirmPassword"
             type="password"
             className="bg-background"
+            placeholder="e.g: password123"
             {...field("confirmPassword")}
           />
           {errors.confirmPassword && (
-            <p className="text-destructive text-sm">
+            <p className="text-sm text-destructive">
               {errors.confirmPassword.message}
             </p>
           )}

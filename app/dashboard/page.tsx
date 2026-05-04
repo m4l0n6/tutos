@@ -4,6 +4,7 @@ import {
   DollarSign,
   MoreHorizontal,
   ShoppingCart,
+  User,
 } from "lucide-react"
 import {
   DropdownMenu,
@@ -23,7 +24,7 @@ import { DashboardTable } from "./_components/dashboard-table"
 export default function DashboardPage() {
   return (
     <div className="flex flex-col gap-6">
-      <div className="gap-4 grid sm:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-2">
         <Stat>
           <StatLabel>Total Revenue</StatLabel>
           <StatIndicator variant="icon" color="success">
@@ -39,7 +40,7 @@ export default function DashboardPage() {
         <Stat>
           <StatLabel>Active Users</StatLabel>
           <StatIndicator variant="badge" color="info">
-            +24
+            <User />
           </StatIndicator>
           <StatValue>2,350</StatValue>
           <StatTrend trend="up">
@@ -63,7 +64,7 @@ export default function DashboardPage() {
         <Stat>
           <StatLabel>Conversion Rate</StatLabel>
           <DropdownMenu>
-            <DropdownMenuTrigger>
+            <DropdownMenuTrigger className="">
               <StatIndicator variant="action">
                 <MoreHorizontal />
               </StatIndicator>
