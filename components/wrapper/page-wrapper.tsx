@@ -15,8 +15,8 @@ export default function PageWrapper({
   const { user, loading } = useAuth()
 
   useEffect(() => {
-    if (!loading && user) {
-      router.push("/dashboard")
+    if (!loading && !user) {
+      router.push("/login")
     }
   }, [user, loading])
 

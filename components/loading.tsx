@@ -7,9 +7,9 @@ interface BoxLoaderProps {
 export const Loading = ({ text }: BoxLoaderProps) => {
     return (
       <div className="flex justify-center items-center w-full overflow-hidden">
-        <div className="h-screen">
+        <div className="flex items-center h-screen">
             <Spinner className="w-12 h-12" />
-            <div className="ml-4 text-lg">{text || "Loading..."}</div>
+            <div className="ml-4 text-lg">{text || "Loading"}</div>
         </div>
       </div>
     )
