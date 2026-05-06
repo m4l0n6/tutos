@@ -1,27 +1,12 @@
 "use client"
 import { Header } from "./header"
 import { Footer } from "./footer"
-import { useAuth } from "@/context/AuthContext"
-import { Loading } from "../loading"
-import { useRouter } from "next/navigation" // ← sửa
-import { useEffect } from "react" // ← thêm
 
 export default function PageWrapper({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const router = useRouter()
-  const { user, loading } = useAuth()
-
-  useEffect(() => {
-    if (!loading && !user) {
-      router.push("/login")
-    }
-  }, [user, loading])
-
-  if (loading) return <Loading />
-
   return (
     <>
       <Header />

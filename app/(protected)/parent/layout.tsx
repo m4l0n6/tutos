@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation"
 import { useEffect } from "react"
 import { Loading } from "@/components/loading"
 import { Footer } from "@/components/wrapper/footer"
-import { Header } from "./_component/header"
+import { Header } from "./_component/wrapper/header"
 
 export default function ParentLayout({
   children,

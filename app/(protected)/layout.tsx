@@ -3,9 +3,8 @@ import { useAuth } from "@/context/AuthContext"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
 import { Loading } from "@/components/loading"
-import { AppShell } from "./_components/wrapper/sidebar/app-shell"
 
-export default function TutorLayout({
+export default function ProtectedLayout({
   children,
 }: {
   children: React.ReactNode
@@ -14,13 +13,13 @@ export default function TutorLayout({
   const router = useRouter()
 
   useEffect(() => {
-    if (!loading && user && user.role !== "TUTOR") {
-      router.replace("/forbidden")
+    if (!loading && !user) {
+      router.replace("/login")
     }
   }, [user, loading])
 
   if (loading) return <Loading />
-  if (!user || user.role !== "TUTOR") return null
+  if (!user) return null
 
-  return <AppShell>{children}</AppShell>
+  return <>{children}</>
 }

@@ -1,5 +1,5 @@
 import { queryClient } from "./query-client"
-import { toast, Toaster } from "sonner"
+import { toast} from "sonner"
 
 export const getToken = () => {
   // Only run on client side

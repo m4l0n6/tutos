@@ -8,7 +8,7 @@ import Link from "next/link";
 const navItems = [
   {
     label: "Dashboard",
-    href: "/dashboard",
+    href: "/",
   },
   {
     label: "My Classes",

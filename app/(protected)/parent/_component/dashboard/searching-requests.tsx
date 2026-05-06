@@ -1,7 +1,9 @@
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ChevronRight } from 'lucide-react';
-import Image from 'next/image';
+import { Card } from '@/components/ui/card';
+import { Avatar, AvatarImage } from '@/components/ui/avatar';
+import { AvatarGroup } from '@/components/ui/avatar-group';
+import { ChevronRight, BookOpen } from 'lucide-react';
 
 interface SearchingRequest {
   id: string;
@@ -27,17 +29,12 @@ export function SearchingRequests({ requests }: SearchingRequestsProps) {
       </div>
       <div className="space-y-4">
         {requests.map((request) => (
-          <div
-            key={request.id}
-            className="flex flex-wrap md:flex-nowrap justify-between items-center gap-4 p-5 rounded-xl glass-card"
-          >
-            <div className="flex flex-1 items-center gap-4">
+          <Card key={request.id} className="flex md:flex-row flex-col justify-between md:items-center gap-4">
+            <div className="flex flex-1 items-center gap-4 min-w-0">
               <div className="flex justify-center items-center bg-surface-container rounded-lg w-12 h-12 shrink-0">
-                <span className="text-primary material-symbols-outlined">
-                  calculate
-                </span>
+                <BookOpen className="w-6 h-6 text-primary" />
               </div>
-              <div className="min-w-0">
+              <div className="flex-1 min-w-0">
                 <h3 className="font-h3 text-on-surface truncate">{request.subject}</h3>
                 <p className="text-label-sm text-on-surface-variant truncate">
                   Học sinh: {request.student} • {request.frequency}
@@ -45,30 +42,26 @@ export function SearchingRequests({ requests }: SearchingRequestsProps) {
               </div>
             </div>
 
-            <div className="flex flex-wrap md:flex-nowrap justify-between md:justify-end items-center gap-6 w-full md:w-auto">
-              <div className="flex items-center -space-x-2">
+            <div className="flex justify-end items-center gap-3 md:gap-4 shrink-0">
+              <AvatarGroup size={32} max={3} renderOverflow={(count) => (
+                <div className="flex justify-center items-center bg-primary-container rounded-full w-8 h-8 font-bold text-[10px] text-white">
+                  +{count}
+                </div>
+              )}>
                 {request.tutorAvatars.map((avatar, idx) => (
-                  <img
-                    key={idx}
-                    className="border-2 border-white rounded-full w-8 h-8 object-cover"
-                    src={avatar}
-                    alt="tutor"
-                  />
+                  <Avatar key={idx}>
+                    <AvatarImage src={avatar} alt="tutor" />
+                  </Avatar>
                 ))}
-                {request.additionalTutors > 0 && (
-                  <div className="flex justify-center items-center bg-primary-container border-2 border-white rounded-full w-8 h-8 font-bold text-[10px] text-white">
-                    +{request.additionalTutors}
-                  </div>
-                )}
-              </div>
-              <Badge className="bg-primary-container/10 px-3 py-1 rounded-full text-primary">
+              </AvatarGroup>
+              <Badge className="bg-primary-container/10 px-3 py-1 rounded-full text-primary whitespace-nowrap">
                 Đang tìm
               </Badge>
               <button className="p-2 text-outline hover:text-primary transition-colors shrink-0" title="Chi tiết">
                 <ChevronRight className="w-5 h-5" />
               </button>
             </div>
-          </div>
+          </Card>
         ))}
       </div>
     </section>

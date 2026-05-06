@@ -1,10 +1,12 @@
+export type UserRole = "PARENT" | "TUTOR" | "ADMIN"
+
 export type MUser = {
   id: string
   email: string
   fullName: string
   phone: string
   isActive: boolean
-  role: "PARENT" | "TUTOR" | "ADMIN"
+  role: UserRole
   avatarUrl: string
   createdAt: string
 }
