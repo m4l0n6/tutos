@@ -41,9 +41,13 @@ export function LoginForm() {
   
   const onSubmit = (data: LoginFormValues) => {
     login(data, {
-      onSuccess: () => {
+      onSuccess: (response) => {
         toast.success("Login successful!")
-        router.push("/dashboard")
+        const role = response.data?.user?.role
+
+        if (role === "ADMIN") router.push("/admin")
+        else if (role === "TUTOR") router.push("/tutor")
+        else router.push("/parent")
       },
       onError: () => toast.error("Email or password is incorrect"),
     })
