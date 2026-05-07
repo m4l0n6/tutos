@@ -28,10 +28,17 @@ export function NavUser() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Avatar className="size-8">
-          <AvatarImage src={user?.avatarUrl} />
-          <AvatarFallback>{user?.fullName?.charAt(0)}</AvatarFallback>
-        </Avatar>
+        <div className="flex items-center gap-2 cursor-pointer">
+          <Avatar className="size-8">
+            <AvatarImage src={user?.avatarUrl} />
+            <AvatarFallback>{user?.fullName?.charAt(0)}</AvatarFallback>
+          </Avatar>
+          <div>
+            <span className="">
+              {user?.fullName}
+            </span>
+          </div>
+        </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-60">
         <DropdownMenuItem className="flex justify-start items-center gap-2">
@@ -41,7 +48,9 @@ export function NavUser() {
               <AvatarFallback>{user?.fullName?.charAt(0)}</AvatarFallback>
             </Avatar>
             <div>
-              <span className="font-medium text-foreground">{user?.fullName}</span>{" "}
+              <span className="font-medium text-foreground">
+                {user?.fullName}
+              </span>{" "}
               <br />
               <div className="max-w-full overflow-ellipsis overflow-hidden text-muted-foreground text-xs whitespace-nowrap">
                 {user?.email}

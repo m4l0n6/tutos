@@ -11,7 +11,12 @@ export type DayOfWeekType =
 
 export type ClassStatusRequest = "PENDING" | "OPEN" | "CLOSED" | "CANCELLED"
 
-export type ClassStatus = "RECRUITING" | "TRIAL" | "ACTIVE" | "COMPLETED" | "CANCELLED"
+export type ClassStatus =
+  | "RECRUITING"
+  | "TRIAL"
+  | "ACTIVE"
+  | "COMPLETED"
+  | "CANCELLED"
 
 export type MClassRequest = {
   id: string
