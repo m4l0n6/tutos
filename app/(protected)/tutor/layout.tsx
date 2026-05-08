@@ -3,7 +3,8 @@ import { useAuth } from "@/context/AuthContext"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
 import { Loading } from "@/components/loading"
-import { AppShell } from "./_components/wrapper/sidebar/app-shell"
+import { Footer } from "@/components/wrapper/footer"
+import { Header } from "./_components/wrapper/header"
 
 export default function TutorLayout({
   children,
@@ -22,5 +23,13 @@ export default function TutorLayout({
   if (loading) return <Loading />
   if (!user || user.role !== "TUTOR") return null
 
-  return <AppShell>{children}</AppShell>
+  return (
+    <>
+      <Header />
+      <main className="flex min-w-full flex-col items-center justify-between bg-background">
+        {children}
+      </main>
+      <Footer />
+    </>
+  )
 }

@@ -1,72 +1,92 @@
 "use client"
 
+import { GraduationCap, Clock, Wallet } from "lucide-react"
+import { Stat, StatIndicator, StatLabel, StatValue } from "@/components/ui/stat"
 import { useAuth } from "@/context/AuthContext"
-import { Stat, StatLabel, StatValue, StatIndicator, StatTrend } from "@/components/ui/stat"
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu"
-import { DollarSign, User, ShoppingCart, ArrowUp, ArrowDown, MoreHorizontal } from "lucide-react"
-import { DashboardTable } from "./_components/dashboard-table"
+import { ClassList } from "./_components/ClassList/class-list"
+import { useGetClass } from "@/hooks/queries/useClassQuery"
 
 const TutorPage = () => {
-  const { logout } = useAuth()
+  const currentDate = new Date()
+  const dayOfWeek = currentDate.toLocaleDateString("vi-VN", { weekday: "long" })
+  const dateString = currentDate.toLocaleDateString("vi-VN", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  })
+  const { user } = useAuth()
+  const {
+    data: classList = [],
+    isLoading: isClassLoading,
+    isError: isClassError,
+  } = useGetClass()
+
   return (
-    <div className="flex flex-col gap-6">
-      <div className="gap-4 grid sm:grid-cols-2">
-        <Stat>
-          <StatLabel>Total Revenue</StatLabel>
-          <StatIndicator variant="icon" color="success">
-            <DollarSign />
-          </StatIndicator>
-          <StatValue>$45,231</StatValue>
-          <StatTrend trend="up">
-            <ArrowUp />
-            +20.1% from last month
-          </StatTrend>
-        </Stat>
+    <div className="flex min-h-screen flex-col bg-background">
+      <main className="max-w-10xl mx-auto w-full flex-1 space-y-8 px-8 py-8">
+        {/* Header Section */}
+        <header className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
+          <div>
+            <h1 className="text-2xl font-bold text-primary">
+              Xin chào, {user?.fullName}
+            </h1>
+            <p className="text-body-lg text-on-surface-variant">
+              Hôm nay là {dayOfWeek}, ngày {dateString}. Chúc bạn có một ngày
+              làm việc hiệu quả!
+            </p>
+          </div>
+        </header>
 
-        <Stat>
-          <StatLabel>Active Users</StatLabel>
-          <StatIndicator variant="badge" color="info">
-            <User />
-          </StatIndicator>
-          <StatValue>2,350</StatValue>
-          <StatTrend trend="up">
-            <ArrowUp />
-            +180 from last week
-          </StatTrend>
-        </Stat>
+        {/* Statistics Bento Grid */}
+        <section className="grid grid-cols-1 gap-6 md:grid-cols-3">
+          <Stat>
+            <StatIndicator variant="icon" color="success">
+              <GraduationCap className="size-4" />
+            </StatIndicator>
+            <StatLabel>Lớp đang dạy</StatLabel>
+            <StatValue>03</StatValue>
+          </Stat>
 
-        <Stat>
-          <StatLabel>Total Orders</StatLabel>
-          <StatIndicator variant="icon" color="warning">
-            <ShoppingCart />
-          </StatIndicator>
-          <StatValue>1,234</StatValue>
-          <StatTrend trend="down">
-            <ArrowDown />
-            -4.3% from last month
-          </StatTrend>
-        </Stat>
+          <Stat>
+            <StatIndicator variant="icon" color="warning">
+              <Clock className="size-4" />
+            </StatIndicator>
+            <StatLabel>Yêu cầu chờ duyệt</StatLabel>
+            <StatValue>02</StatValue>
+          </Stat>
 
-        <Stat>
-          <StatLabel>Conversion Rate</StatLabel>
-          <DropdownMenu>
-            <DropdownMenuTrigger className="">
-              <StatIndicator variant="action">
-                <MoreHorizontal />
-              </StatIndicator>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem>View details</DropdownMenuItem>
-              <DropdownMenuItem>Export data</DropdownMenuItem>
-              <DropdownMenuItem>Share</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <StatValue>3.2%</StatValue>
-          <StatTrend trend="neutral">No change from last week</StatTrend>
-        </Stat>
-      </div>
+          <Stat>
+            <StatIndicator variant="icon" color="info">
+              <Wallet className="size-4" />
+            </StatIndicator>
+            <StatLabel>Tổng tiền nhận tháng này dự kiến</StatLabel>
+            <StatValue>4.200k VNĐ</StatValue>
+          </Stat>
+        </section>
 
-      <DashboardTable />
+        {/* Main Dashboard Layout */}
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
+          <div className="space-y-8 lg:col-span-8">
+            {isClassLoading && (
+              <p className="text-sm text-muted-foreground">
+                Đang tải lớp học...
+              </p>
+            )}
+
+            {isClassError && (
+              <p className="text-sm text-destructive">
+                Không thể tải danh sách lớp. Vui lòng thử lại.
+              </p>
+            )}
+
+            {!isClassLoading && !isClassError && (
+              <ClassList title="Lớp học mới nhất" data={classList} />
+            )}
+          </div>
+
+          <aside className="space-y-8 lg:col-span-4"></aside>
+        </div>
+      </main>
     </div>
   )
 }
