@@ -11,6 +11,9 @@ import { WeeklySchedule } from './_component/dashboard/weekly-schedule';
 import { PromotionalBanner } from './_component/dashboard/promotional-banner';
 import { CreateRequestModal } from './_component/dashboard/create-request-modal';
 import { useAuth } from '@/context/AuthContext';
+import {
+  useGetTimeSlots,
+} from "@/hooks/queries/useMasterDataQuery"
 
 const mockSearchingRequests = [
   {
@@ -80,14 +83,15 @@ const ParentDashboardPage = () => {
     day: 'numeric',
   });
   const { user } = useAuth();
+  const { data: timeSlots } = useGetTimeSlots()
 
   return (
     <div className="flex flex-col bg-background min-h-screen">
       {/* Modal */}
-      <CreateRequestModal open={modalOpen} onOpenChange={setModalOpen} />
+      <CreateRequestModal open={modalOpen} onOpenChange={setModalOpen}/>
       <main className="flex-1 space-y-8 mx-auto px-8 py-8 w-full max-w-7xl">
         {/* Header Section */}
-        <header className="flex md:flex-row flex-col justify-between md:items-end gap-4">
+        <div className="flex md:flex-row flex-col justify-between md:items-end gap-4">
           <div>
             <h1 className="font-bold text-primary text-2xl">Xin chào, {user?.fullName}</h1>
             <p className="text-body-lg text-on-surface-variant">
@@ -101,7 +105,7 @@ const ParentDashboardPage = () => {
             <Plus className="w-5 h-5" />
             Tạo yêu cầu mới
           </Button>
-        </header>
+        </div>
 
         {/* Statistics Bento Grid */}
         <section className="gap-6 grid grid-cols-1 md:grid-cols-3">
