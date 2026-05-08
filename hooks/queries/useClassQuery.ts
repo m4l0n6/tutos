@@ -1,13 +1,13 @@
 import { useQuery, useMutation } from "@tanstack/react-query"
 import { api } from "@/lib/axios"
-import type { TClassResquestParam } from "@/types/classes"
+import type { MClass, TClassResquestParam } from "@/types/classes"
 
 export const classKeys = {
   all: ["classes"] as const,
 }
 
 export function useGetClass() {
-  return useQuery({
+  return useQuery<MClass[]>({
     queryKey: classKeys.all,
     queryFn: () => api.get("/classes").then((res) => res.data.data),
     staleTime: 1000 * 60 * 5,

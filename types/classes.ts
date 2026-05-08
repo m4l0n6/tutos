@@ -41,8 +41,9 @@ export type MClass = {
   id: string
   requestId: string
   name: string
-  subject: string
-  level: string
+  subject: MSubject
+  level: MLevel
+  category: MCategory
   daysOfWeek: DayOfWeekType[]
   startTime: string
   endTime: string
@@ -51,17 +52,32 @@ export type MClass = {
   adminNote: string | null
   acceptanceFee: number
   status: ClassStatus
-  selectedTutorId: string
-  createdAt: string
-  updatedAt: string
-  request: MClassRequest
+  selectedTutorId: string | null
+  parentName: string
   isTrialConfirmedByParent: boolean
   isTrialConfirmedByTutor: boolean
+  createdAt: string
+  updatedAt: string
+}
+
+export type MCategory = {
+  id: string
+  name: string
+}
+
+export type MSubject = {
+  id: string
+  name: string
+}
+
+export type MLevel = {
+  id: string
+  name: string
 }
 
 export type TClassResquestParam = {
-  subject: string
-  level: string
+  subject: MSubject
+  level: MLevel
   description: string
   daysOfWeek: DayOfWeekType[]
   startTime: string

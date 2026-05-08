@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation"
 import { useEffect } from "react"
 import { Loading } from "@/components/loading"
 import { Footer } from "@/components/wrapper/footer"
-import { Header } from "../parent/_component/wrapper/header"
+import { Header } from "./_components/wrapper/header"
 
 export default function TutorLayout({
   children,

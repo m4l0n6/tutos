@@ -1,9 +1,10 @@
 import { useState } from "react"
 import { ClassCard } from "./class-card"
+import { MClass } from "@/types/classes"
 
 interface ClassListProps {
   title: string
-  data: Array<any>
+  data: Array<MClass>
 }
 
 export const ClassList = ({ title, data }: ClassListProps) => {
