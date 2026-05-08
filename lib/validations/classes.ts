@@ -19,8 +19,8 @@ export const classRequestSchema = z
       .regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Giờ không hợp lệ"),
     timeNote: z.string().optional().default(""),
     location: z.string().min(1, "Vui lòng nhập khu vực"),
-    minBudget: z.coerce.number().min(0, "Giá không hợp lệ"),
-    maxBudget: z.coerce.number().min(0, "Giá không hợp lệ"),
+    minBudget: z.number().min(0, "Giá không hợp lệ"),
+    maxBudget: z.number().min(0, "Giá không hợp lệ"),
   })
   .refine((data) => data.endTime > data.startTime, {
     message: "Giờ kết thúc phải sau giờ bắt đầu",
