@@ -4,7 +4,9 @@ import { GraduationCap, Clock, Wallet } from "lucide-react"
 import { Stat, StatIndicator, StatLabel, StatValue } from "@/components/ui/stat"
 import { useAuth } from "@/context/AuthContext"
 import { ClassList } from "./_components/ClassList/class-list"
+import { ClassApplicationsList } from "./_components/ClassList/class-applications-list"
 import { useGetClass } from "@/hooks/queries/useClassQuery"
+import { useGetClassApplication } from "@/hooks/queries/useClassApplicationQuery"
 
 const TutorPage = () => {
   const currentDate = new Date()
@@ -19,7 +21,19 @@ const TutorPage = () => {
     data: classList = [],
     isLoading: isClassLoading,
     isError: isClassError,
+    refetch: refetchClasses,
   } = useGetClass()
+
+  const {
+    data: classApplications = [],
+    isLoading: isAppLoading,
+    isError: isAppError,
+    refetch: refetchApplications,
+  } = useGetClassApplication()
+
+  const appliedClassIds = (classApplications || [])
+    .map((a: any) => a.classId ?? a.class?.id)
+    .filter(Boolean)
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
@@ -38,7 +52,7 @@ const TutorPage = () => {
         </header>
 
         {/* Statistics Bento Grid */}
-        <section className="grid grid-cols-1 gap-6 md:grid-cols-3">
+        <section className="grid grid-cols-1 gap-6 md:grid-cols-4">
           <Stat>
             <StatIndicator variant="icon" color="success">
               <GraduationCap className="size-4" />
@@ -62,26 +76,36 @@ const TutorPage = () => {
             <StatLabel>Tổng tiền nhận tháng này dự kiến</StatLabel>
             <StatValue>4.200k VNĐ</StatValue>
           </Stat>
+          <Stat>
+            <StatIndicator variant="icon" color="info">
+              <Wallet className="size-4" />
+            </StatIndicator>
+            <StatLabel>Tổng tiền nhận tháng này dự kiến</StatLabel>
+            <StatValue>4.200k VNĐ</StatValue>
+          </Stat>
         </section>
 
         {/* Main Dashboard Layout */}
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
           <div className="space-y-8 lg:col-span-8">
-            {isClassLoading && (
-              <p className="text-sm text-muted-foreground">
-                Đang tải lớp học...
-              </p>
-            )}
+            {/* Applications Section */}
+            <ClassApplicationsList
+              title="Ứng tuyển của bạn"
+              data={classApplications}
+              onRefresh={refetchApplications}
+              isLoading={isAppLoading}
+              isError={isAppError}
+            />
 
-            {isClassError && (
-              <p className="text-sm text-destructive">
-                Không thể tải danh sách lớp. Vui lòng thử lại.
-              </p>
-            )}
-
-            {!isClassLoading && !isClassError && (
-              <ClassList title="Lớp học mới nhất" data={classList} />
-            )}
+            {/* Classes Section */}
+            <ClassList
+              title="Lớp học mới nhất"
+              data={classList}
+              appliedClassIds={appliedClassIds}
+              onRefresh={refetchClasses}
+              isLoading={isClassLoading}
+              isError={isClassError}
+            />
           </div>
 
           <aside className="space-y-8 lg:col-span-4"></aside>

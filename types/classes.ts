@@ -87,3 +87,15 @@ export type TClassResquestParam = {
   minBudget: number
   maxBudget: number
 }
+
+export type ClassApplication = {
+  id: string
+  classId: string
+  tutorProfileId?: string
+  coverLetter?: string
+  proposedRate?: number
+  status: string
+  appliedAt?: string
+  updatedAt?: string
+  class: MClass
+}

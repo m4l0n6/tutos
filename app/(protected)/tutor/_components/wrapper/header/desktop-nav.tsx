@@ -2,8 +2,8 @@ import {
   NavigationMenu,
   NavigationMenuLink,
   NavigationMenuList,
-} from "@/components/ui/navigation-menu";
-import Link from "next/link";
+} from "@/components/ui/navigation-menu"
+import Link from "next/link"
 
 const navItems = [
   {
@@ -28,10 +28,13 @@ export function DesktopNav() {
       <NavigationMenuList className="gap-6">
         {navItems.map((item) => (
           <NavigationMenuLink asChild className="px-4" key={item.href}>
-            <Link href={'/parent' + item.href} className="hover:bg-accent p-2 rounded-md">
+            <Link
+              href={"/tutor" + item.href}
+              className="rounded-md p-2 hover:bg-accent"
+            >
               {item.label}
               {item.count && item.count > 0 && (
-                <span className="flex justify-center items-center bg-primary ml-2 rounded-full w-5 h-5 text-white text-xs">
+                <span className="ml-2 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs text-white">
                   {item.count}
                 </span>
               )}
