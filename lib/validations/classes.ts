@@ -3,8 +3,9 @@ import { DayOfWeek } from "@/lib/contant"
 
 export const classRequestSchema = z
   .object({
-    subject: z.string().min(1, "Vui lòng nhập môn học"),
-    level: z.string().min(1, "Vui lòng chọn lớp"),
+    categoryId: z.string().min(1, "Vui lòng chọn danh mục"),
+    subjectId: z.string().min(1, "Vui lòng chọn môn học"),
+    levelId: z.string().min(1, "Vui lòng chọn trình độ"),
     description: z
       .string()
       .min(10, "Vui lòng mô tả chi tiết (tối thiểu 10 ký tự)"),
