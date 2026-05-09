@@ -1,28 +1,63 @@
-import { useQuery, useMutation } from "@tanstack/react-query"
+import { useQuery } from "@tanstack/react-query"
 import { api } from "@/lib/axios"
 import type {
-  ISubject,
   IDayOfWeek,
-  ILevel,
-  ITimeSlots,
 } from "@/types/master-data"
 
+import type { ISubject } from "@/types/subject"
+import type { ICategory } from "@/types/category"
+import type { ILevel } from "@/types/level"
+
 export const classKeys = {
-    subject: ["subject"] as const,
+    categories: ["categories"] as const,
+    subject: (categoryId?: string) => [
+      "subject",
+      ...(categoryId ? [categoryId] : []),
+    ] as const,
+    level: (categoryId?: string) => [
+      "level",
+      ...(categoryId ? [categoryId] : []),
+    ] as const,
     dayOfWeek: ["dayOfWeek"] as const,
-    level: ["level"] as const,
-    timeSlots: ["timeSlots"] as const,
 }
 
-export function useGetSubjects() {
+export function useGetCategories() {
     return useQuery({
-      queryKey: classKeys.subject,
+      queryKey: classKeys.categories,
       queryFn: () =>
         api
-          .get("/master-data/subjects")
-          .then((res) => res.data.data as ISubject[]),
+          .get("/master-data/categories")
+          .then((res) => res.data.data as ICategory[]),
       staleTime: 1000 * 60 * 60,
     })
+}
+
+export function useGetSubjects(categoryId?: string) {
+    return useQuery({
+      queryKey: classKeys.subject(categoryId),
+      queryFn: () => {
+        const params = categoryId ? { categoryId } : {}
+        return api
+          .get("/master-data/subjects", { params })
+          .then((res) => res.data.data as ISubject[])
+      },
+      staleTime: 1000 * 60 * 60,
+      enabled: !!categoryId,
+    })
+}
+
+export function useGetLevels(categoryId?: string) {
+  return useQuery({
+    queryKey: classKeys.level(categoryId),
+    queryFn: () => {
+      const params = categoryId ? { categoryId } : {}
+      return api
+        .get("/master-data/levels", { params })
+        .then((res) => res.data.data as ILevel[])
+    },
+    staleTime: 1000 * 60 * 60,
+    enabled: !!categoryId,
+  })
 }
 
 export function useGetDaysOfWeek() {
@@ -36,24 +71,4 @@ export function useGetDaysOfWeek() {
     })
 }
 
-export function useGetLevels() {
-    return useQuery({
-      queryKey: classKeys.level,
-      queryFn: () =>
-        api
-          .get("/master-data/levels")
-          .then((res) => res.data.data as ILevel[]),
-      staleTime: 1000 * 60 * 60,
-    })
-}
 
-export function useGetTimeSlots() {
-    return useQuery({
-      queryKey: classKeys.timeSlots,
-      queryFn: () =>
-        api
-          .get("/master-data/timeslots")
-          .then((res) => res.data.data as ITimeSlots[]),
-      staleTime: 1000 * 60 * 60,
-    })
-}

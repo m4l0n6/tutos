@@ -10,6 +10,7 @@ import {
   ClassRequestFormValues,
 } from "@/lib/validations/classes"
 import { DayOfWeek, DayOfWeekLabel } from "@/lib/contant"
+import type { TClassResquestParam } from "@/types/classes"
 import {
   Dialog,
   DialogContent,
@@ -42,6 +43,11 @@ import { Textarea } from "@/components/ui/textarea"
 import { toast } from "sonner"
 import { useCreateClassRequest } from "@/hooks/queries/useClassQuery"
 import {
+  useGetCategories,
+  useGetSubjects,
+  useGetLevels,
+} from "@/hooks/queries/useMasterDataQuery"
+import {
   Stepper,
   StepperContent,
   StepperDescription,
@@ -65,8 +71,8 @@ const STEPS = [
   {
     value: "class-info",
     title: "Thông tin lớp học",
-    description: "Môn học, trình độ, địa điểm",
-    fields: ["subject", "level", "location", "description"] as const,
+    description: "Danh mục, môn học, trình độ, địa điểm",
+    fields: ["categoryId", "subjectId", "levelId", "location", "description"] as const,
   },
   {
     value: "schedule",
@@ -97,13 +103,14 @@ export function CreateRequestModal({
     trigger,
     formState: { errors },
     reset,
+    watch,
   } = useForm<ClassRequestFormValues>({
     resolver: zodResolver(
       classRequestSchema
     ) as Resolver<ClassRequestFormValues>,
     defaultValues: {
-      subject: "",
-      level: "",
+      subjectId: "",
+      levelId: "",
       description: "",
       daysOfWeek: [],
       startTime: "",
@@ -114,6 +121,13 @@ export function CreateRequestModal({
       maxBudget: 0,
     },
   })
+
+  const selectedCategory = watch("categoryId")
+  
+  // Fetch master data
+  const { data: categories = [] } = useGetCategories()
+  const { data: subjects = [] } = useGetSubjects(selectedCategory)
+  const { data: levels = [] } = useGetLevels(selectedCategory)
 
   const stepIndex = React.useMemo(
     () => STEPS.findIndex((s) => s.value === currentStep),
@@ -156,7 +170,9 @@ export function CreateRequestModal({
   )
 
   const onSubmit = (data: ClassRequestFormValues) => {
-    mutate(data, {
+    // Exclude categoryId khi gửi
+    const { categoryId: _categoryId, ...submitData } = data
+    mutate(submitData as TClassResquestParam, {
       onSuccess: () => {
         setIsSubmitted(true)
         toast.success("Gửi yêu cầu thành công!")
@@ -190,7 +206,7 @@ export function CreateRequestModal({
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className="p-8 sm:max-w-lg max-h-[90vh] overflow-y-auto">
+      <DialogContent className="p-8 sm:max-w-lg overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-primary text-xl">
             Gửi yêu cầu thuê gia sư
@@ -233,42 +249,63 @@ export function CreateRequestModal({
             <StepperContent value="class-info">
               <FieldGroup>
                 <Field>
-                  <FieldLabel htmlFor="subject">Tên môn học</FieldLabel>
-                  <Input
-                    id="subject"
-                    type="text"
-                    placeholder="Nhập tên môn học ..."
-                    {...register("subject")}
+                  <FieldLabel htmlFor="categoryId">Danh mục</FieldLabel>
+                  <Controller
+                    control={control}
+                    name="categoryId"
+                    render={({ field }) => (
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <SelectTrigger id="categoryId">
+                          <SelectValue placeholder="Chọn danh mục" />
+                        </SelectTrigger>
+                        <SelectContent position="popper">
+                          <SelectGroup>
+                            {categories.map((category) => (
+                              <SelectItem key={category.id} value={category.id}>
+                                {category.name}
+                              </SelectItem>
+                            ))}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    )}
                   />
-                  {errors.subject && (
+                  {errors.categoryId && (
                     <p className="text-destructive text-sm">
-                      {errors.subject.message}
+                      {errors.categoryId.message}
                     </p>
                   )}
                 </Field>
 
                 <div className="gap-4 grid grid-cols-2">
                   <Field>
-                    <FieldLabel htmlFor="level">Trình độ lớp</FieldLabel>
+                    <FieldLabel htmlFor="subjectId">Môn học</FieldLabel>
                     <Controller
                       control={control}
-                      name="level"
+                      name="subjectId"
                       render={({ field }) => (
                         <Select
                           value={field.value}
                           onValueChange={field.onChange}
+                          disabled={!selectedCategory}
                         >
-                          <SelectTrigger id="level">
-                            <SelectValue placeholder="Chọn cấp độ" />
+                          <SelectTrigger id="subjectId">
+                            <SelectValue
+                              placeholder={
+                                selectedCategory
+                                  ? "Chọn môn học"
+                                  : "Chọn danh mục trước"
+                              }
+                            />
                           </SelectTrigger>
-                          <SelectContent>
+                          <SelectContent position="popper">
                             <SelectGroup>
-                              {Array.from({ length: 12 }, (_, i) => (
-                                <SelectItem
-                                  key={i + 1}
-                                  value={`Grade ${i + 1}`}
-                                >
-                                  {String(i + 1).padStart(2, "0")}
+                              {subjects.map((subject) => (
+                                <SelectItem key={subject.id} value={subject.id}>
+                                  {subject.name}
                                 </SelectItem>
                               ))}
                             </SelectGroup>
@@ -276,28 +313,67 @@ export function CreateRequestModal({
                         </Select>
                       )}
                     />
-                    {errors.level && (
+                    {errors.subjectId && (
                       <p className="text-destructive text-sm">
-                        {errors.level.message}
+                        {errors.subjectId.message}
                       </p>
                     )}
                   </Field>
 
                   <Field>
-                    <FieldLabel htmlFor="location">Địa chỉ</FieldLabel>
-                    <Input
-                      id="location"
-                      type="text"
-                      placeholder="Nhập địa chỉ cụ thể ..."
-                      {...register("location")}
+                    <FieldLabel htmlFor="levelId">Trình độ lớp</FieldLabel>
+                    <Controller
+                      control={control}
+                      name="levelId"
+                      render={({ field }) => (
+                        <Select
+                          value={field.value}
+                          onValueChange={field.onChange}
+                          disabled={!selectedCategory}
+                        >
+                          <SelectTrigger id="levelId">
+                            <SelectValue
+                              placeholder={
+                                selectedCategory
+                                  ? "Chọn trình độ"
+                                  : "Chọn danh mục trước"
+                              }
+                            />
+                          </SelectTrigger>
+                          <SelectContent position="popper">
+                            <SelectGroup>
+                              {levels.map((level) => (
+                                <SelectItem key={level.id} value={level.id}>
+                                  {level.name}
+                                </SelectItem>
+                              ))}
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                      )}
                     />
-                    {errors.location && (
+                    {errors.levelId && (
                       <p className="text-destructive text-sm">
-                        {errors.location.message}
+                        {errors.levelId.message}
                       </p>
                     )}
                   </Field>
                 </div>
+
+                <Field>
+                  <FieldLabel htmlFor="location">Địa chỉ</FieldLabel>
+                  <Input
+                    id="location"
+                    type="text"
+                    placeholder="Nhập địa chỉ cụ thể ..."
+                    {...register("location")}
+                  />
+                  {errors.location && (
+                    <p className="text-destructive text-sm">
+                      {errors.location.message}
+                    </p>
+                  )}
+                </Field>
 
                 <Field>
                   <FieldLabel htmlFor="description">Mô tả</FieldLabel>

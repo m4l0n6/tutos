@@ -1,15 +1,7 @@
 import { MUser } from "./auth"
-
-export type DayOfWeekType =
-  | "MONDAY"
-  | "TUESDAY"
-  | "WEDNESDAY"
-  | "THURSDAY"
-  | "FRIDAY"
-  | "SATURDAY"
-  | "SUNDAY"
-
-export type ClassStatusRequest = "PENDING" | "OPEN" | "CLOSED" | "CANCELLED"
+import { TSubjectClassRequest, TSubjectClass } from "./subject"
+import { TLevelClassRequest, TLevelClass } from "./level"
+import { TCategoryClass } from "./category"
 
 export type ClassStatus =
   | "RECRUITING"
@@ -18,33 +10,55 @@ export type ClassStatus =
   | "COMPLETED"
   | "CANCELLED"
 
+export type ClassRequestStatus = "PENDING" | "OPEN" | "CLOSED" | "CANCELLED"
+
+export type ApplicationStatus =
+  | "PENDING"
+  | "TRIAL"
+  | "ACCEPTED"
+  | "REJECTED"
+  | "TRIAL_FAILED"
+
+export type DayOfWeek =
+  | "MONDAY"
+  | "TUESDAY"
+  | "WEDNESDAY"
+  | "THURSDAY"
+  | "FRIDAY"
+  | "SATURDAY"
+  | "SUNDAY"
+
 export type MClassRequest = {
   id: string
   parentId: string
-  subject: string
-  level: string
-  description: string
-  daysOfWeek: DayOfWeekType[]
+  subject: TSubjectClassRequest
+  level: TLevelClassRequest
+  description: string | null
+  daysOfWeek: DayOfWeek[]
   startTime: string
   endTime: string
   timeNote: string | null
   location: string
+  status: ClassRequestStatus
   minBudget: number
   maxBudget: number
-  status: ClassStatusRequest
   createdAt: string
   updatedAt: string
   parent: MUser
+
+  subjectId: string
+  levelId: string
 }
 
 export type MClass = {
   id: string
   requestId: string
   name: string
-  subject: MSubject
-  level: MLevel
-  category: MCategory
-  daysOfWeek: DayOfWeekType[]
+  category: TCategoryClass
+  subject: TSubjectClass
+  level: TLevelClass
+  parentName: string
+  daysOfWeek: DayOfWeek[]
   startTime: string
   endTime: string
   timeNote: string | null
@@ -53,33 +67,28 @@ export type MClass = {
   acceptanceFee: number
   status: ClassStatus
   selectedTutorId: string | null
-  parentName: string
-  isTrialConfirmedByParent: boolean
-  isTrialConfirmedByTutor: boolean
   createdAt: string
   updatedAt: string
+  request: MClassRequest
+  applications: MClassApplication[]
 }
 
-export type MCategory = {
+export type MClassApplication = {
   id: string
-  name: string
-}
-
-export type MSubject = {
-  id: string
-  name: string
-}
-
-export type MLevel = {
-  id: string
-  name: string
+  classId: string
+  tutorProfileId: string
+  coverLetter: string
+  proposedRate: number
+  status: ApplicationStatus
+  isDepositPaid: boolean
+  isContactViewed: boolean
 }
 
 export type TClassResquestParam = {
-  subject: MSubject
-  level: MLevel
+  subjectId: string
+  levelId: string
   description: string
-  daysOfWeek: DayOfWeekType[]
+  daysOfWeek: DayOfWeek[]
   startTime: string
   endTime: string
   timeNote: string

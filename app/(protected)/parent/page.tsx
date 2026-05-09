@@ -11,9 +11,6 @@ import { WeeklySchedule } from './_component/dashboard/weekly-schedule';
 import { PromotionalBanner } from './_component/dashboard/promotional-banner';
 import { CreateRequestModal } from './_component/dashboard/create-request-modal';
 import { useAuth } from '@/context/AuthContext';
-import {
-  useGetTimeSlots,
-} from "@/hooks/queries/useMasterDataQuery"
 
 const mockSearchingRequests = [
   {
@@ -83,7 +80,6 @@ const ParentDashboardPage = () => {
     day: 'numeric',
   });
   const { user } = useAuth();
-  const { data: timeSlots } = useGetTimeSlots()
 
   return (
     <div className="flex flex-col bg-background min-h-screen">
