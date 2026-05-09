@@ -135,7 +135,7 @@ const ParentDashboardPage = () => {
           {/* Column: Requests & Notifications */}
           <div className="space-y-8 lg:col-span-8">
             <SearchingRequests requests={mockSearchingRequests} />
-            <Notifications notifications={mockNotifications} />
+            {/* <Notifications notifications={mockNotifications} /> */}
           </div>
 
           {/* Column: Weekly Schedule Widget */}
