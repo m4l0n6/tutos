@@ -22,8 +22,8 @@ export const tutorProfileFormSchema = z.object({
   education: z.string().trim().min(1, "Vui lòng nhập học thức"),
   hourlyRate: z.number().min(0, "Mức giá không hợp lệ"),
   location: z.string().trim().min(1, "Vui lòng nhập khu vực"),
-  subjects: z.array(z.string()).min(1, "Vui lòng chọn ít nhất 1 môn học"),
-  levels: z.array(z.string()).min(1, "Vui lòng chọn ít nhất 1 cấp độ"),
+  subjectIds: z.array(z.string()).min(1, "Vui lòng chọn ít nhất 1 môn học"),
+  levelIds: z.array(z.string()).min(1, "Vui lòng chọn ít nhất 1 cấp độ"),
 })
 
 export type TutorProfileFormValues = z.infer<typeof tutorProfileFormSchema>

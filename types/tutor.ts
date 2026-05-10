@@ -4,8 +4,8 @@ export type TutorProfile = {
   bio: string
   education: string
   cvUrls: string[]
-  subjects: string[]
-  levels: string[]
+  subjectIds: string[]
+  levelIds: string[]
   hourlyRate: number
   location: string
   createdAt: string
@@ -17,8 +17,8 @@ export type CreateTutorProfileParams = {
   education: string
   cvUrls?: string[]
   files?: File[]
-  subjects: string[]
-  levels: string[]
+  subjectIds: string[]
+  levelIds: string[]
   hourlyRate: number
   location: string
 }

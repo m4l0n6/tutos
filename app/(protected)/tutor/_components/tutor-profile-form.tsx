@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Badge } from "@/components/ui/badge"
@@ -26,7 +26,10 @@ import {
   useGetLevels,
   useGetSubjects,
 } from "@/hooks/queries/useMasterDataQuery"
-import { useCreateTutorProfile } from "@/hooks/queries/useTutorProfileQuery"
+import {
+  useCreateTutorProfile,
+  useUpdateTutorProfile,
+} from "@/hooks/queries/useTutorProfileQuery"
 import { useUpdateUser } from "@/hooks/queries/useUserQuery"
 import {
   MAX_BIO_WORDS,
@@ -35,7 +38,8 @@ import {
   type TutorProfileFormValues,
 } from "@/lib/validations/tutor"
 import type { ILevel, ISubject } from "@/types/master-data"
-import { Loader2, Upload } from "lucide-react"
+import type { TutorProfile } from "@/types/tutor"
+import { Loader2, Trash2, Upload } from "lucide-react"
 import { toast } from "sonner"
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024
@@ -48,7 +52,15 @@ type FileFieldProps = {
   multiple?: boolean
   files: File[]
   onChange: (files: File[]) => void
+  onRemove?: (index: number) => void
   error?: string | null
+}
+
+type TutorProfileFormProps = {
+  mode?: "create" | "update"
+  initialProfile?: TutorProfile | null
+  onCancel?: () => void
+  onSuccess?: () => void
 }
 
 function formatFileSize(bytes: number) {
@@ -68,6 +80,7 @@ function FileField({
   multiple = false,
   files,
   onChange,
+  onRemove,
   error,
 }: FileFieldProps) {
   const inputId = useMemo(
@@ -104,14 +117,27 @@ function FileField({
         />
 
         {files.length > 0 && (
-          <div className="flex flex-wrap gap-2">
-            {files.map((file) => (
-              <Badge
+          <div className="space-y-2">
+            {files.map((file, index) => (
+              <div
                 key={`${file.name}-${file.lastModified}`}
-                variant="secondary"
+                className="flex items-center justify-between gap-3 rounded-lg border px-3 py-2"
               >
-                {file.name}
-              </Badge>
+                <Badge variant="secondary" className="max-w-[80%] truncate">
+                  {file.name}
+                </Badge>
+                {onRemove ? (
+                  <Button
+                    type="button"
+                    size="icon-xs"
+                    variant="ghost"
+                    onClick={() => onRemove(index)}
+                    aria-label={`Xoa file ${file.name}`}
+                  >
+                    <Trash2 className="size-3.5" />
+                  </Button>
+                ) : null}
+              </div>
             ))}
           </div>
         )}
@@ -177,7 +203,12 @@ function MultiSelectField({
   )
 }
 
-export function TutorProfileForm() {
+export function TutorProfileForm({
+  mode = "create",
+  initialProfile = null,
+  onCancel,
+  onSuccess,
+}: TutorProfileFormProps) {
   const { user } = useAuth()
   const {
     data: subjects = [],
@@ -189,18 +220,25 @@ export function TutorProfileForm() {
     isLoading: levelsLoading,
     isError: levelsError,
   } = useGetLevels()
-  const { mutateAsync, isPending } = useCreateTutorProfile()
+  const { mutateAsync: createTutorProfile, isPending: isCreating } =
+    useCreateTutorProfile()
+  const { mutateAsync: updateTutorProfile, isPending: isUpdatingProfile } =
+    useUpdateTutorProfile()
   const { mutateAsync: updateUser } = useUpdateUser()
 
   const [avatarFile, setAvatarFile] = useState<File | null>(null)
   const [cvFiles, setCvFiles] = useState<File[]>([])
-  const [cvLinks, setCvLinks] = useState<string[]>([])
-  const [cvLinkInput, setCvLinkInput] = useState<string>("")
   const [avatarError, setAvatarError] = useState<string | null>(null)
   const [cvError, setCvError] = useState<string | null>(null)
   const [submitError, setSubmitError] = useState<string | null>(null)
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null)
   const [avatarLoading, setAvatarLoading] = useState(false)
+  const [existingCvUrls, setExistingCvUrls] = useState<string[]>(
+    initialProfile?.cvUrls ?? []
+  )
+
+  const isPending = isCreating || isUpdatingProfile
+  const isUpdateMode = mode === "update"
 
   const {
     register,
@@ -212,16 +250,47 @@ export function TutorProfileForm() {
   } = useForm<TutorProfileFormValues>({
     resolver: zodResolver(tutorProfileFormSchema),
     defaultValues: {
-      fullName: user?.fullName || "",
-      phone: user?.phone || "",
-      bio: "",
-      education: "",
-      hourlyRate: 0,
-      location: "",
-      subjects: [],
-      levels: [],
+      fullName: user?.fullName ?? "",
+      phone: user?.phone ?? "",
+      bio: initialProfile?.bio ?? "",
+      education: initialProfile?.education ?? "",
+      hourlyRate: initialProfile?.hourlyRate ?? 0,
+      location: initialProfile?.location ?? "",
+      subjectIds: initialProfile?.subjectIds ?? [],
+      levelIds: initialProfile?.levelIds ?? [],
     },
   })
+
+  useEffect(() => {
+    setExistingCvUrls(initialProfile?.cvUrls ?? [])
+    setAvatarPreview(null)
+    setAvatarFile(null)
+    setCvFiles([])
+    reset({
+      fullName: user?.fullName ?? "",
+      phone: user?.phone ?? "",
+      bio: initialProfile?.bio ?? "",
+      education: initialProfile?.education ?? "",
+      hourlyRate: initialProfile?.hourlyRate ?? 0,
+      location: initialProfile?.location ?? "",
+      subjectIds: initialProfile?.subjectIds ?? [],
+      levelIds: initialProfile?.levelIds ?? [],
+    })
+  }, [initialProfile, reset, user?.fullName, user?.phone])
+
+  useEffect(() => {
+    if (!initialProfile) return
+    reset({
+      fullName: user?.fullName ?? "",
+      phone: user?.phone ?? "",
+      bio: initialProfile?.bio ?? "",
+      education: initialProfile?.education ?? "",
+      hourlyRate: initialProfile?.hourlyRate ?? 0,
+      location: initialProfile?.location ?? "",
+      subjectIds: initialProfile?.subjectIds ?? [],
+      levelIds: initialProfile?.levelIds ?? [],
+    })
+  }, [initialProfile, reset, subjects, levels, user?.fullName, user?.phone])
 
   const bioValue = watch("bio")
   const selectedSubjectOptions = useMemo(
@@ -271,8 +340,10 @@ export function TutorProfileForm() {
   const resolveCvFiles = (files: File[]) => {
     setCvError(null)
 
-    if (files.length > MAX_CV_FILES) {
-      setCvError(`Tối đa ${MAX_CV_FILES} file`)
+    if (files.length + existingCvUrls.length > MAX_CV_FILES) {
+      setCvError(
+        `Tối đa ${MAX_CV_FILES} file (hiện có ${existingCvUrls.length} file cũ)`
+      )
       return
     }
 
@@ -291,16 +362,14 @@ export function TutorProfileForm() {
     setCvFiles(files)
   }
 
-  const addCvLink = () => {
-    const url = cvLinkInput.trim()
-    if (!url) return
-    if (cvLinks.includes(url)) return
-    setCvLinks((s) => [...s, url])
-    setCvLinkInput("")
+  const removeExistingCvUrl = (index: number) => {
+    setCvError(null)
+    setExistingCvUrls((prev) => prev.filter((_, current) => current !== index))
   }
 
-  const removeCvLink = (url: string) => {
-    setCvLinks((s) => s.filter((u) => u !== url))
+  const removeNewCvFile = (index: number) => {
+    setCvError(null)
+    setCvFiles((prev) => prev.filter((_, current) => current !== index))
   }
 
   const onSubmit = async (values: TutorProfileFormValues) => {
@@ -308,12 +377,12 @@ export function TutorProfileForm() {
     setAvatarError(null)
     setCvError(null)
 
-    if (!avatarFile) {
+    if (!avatarFile && !isUpdateMode) {
       setAvatarError("Vui lòng tải lên ảnh đại diện PNG")
       return
     }
 
-    if (cvFiles.length === 0) {
+    if (cvFiles.length === 0 && existingCvUrls.length === 0) {
       setCvError("Vui lòng tải lên ít nhất 1 file CV")
       return
     }
@@ -321,35 +390,57 @@ export function TutorProfileForm() {
     if (!user?.id) return
 
     try {
+      const profilePayload = {
+        bio: values.bio.trim(),
+        education: values.education.trim(),
+        cvUrls: existingCvUrls,
+        files: cvFiles,
+        subjectIds: values.subjectIds,
+        levelIds: values.levelIds,
+        hourlyRate: values.hourlyRate,
+        location: values.location.trim(),
+      }
+
+      const profileRequest = isUpdateMode
+        ? updateTutorProfile(profilePayload)
+        : createTutorProfile(profilePayload)
+
       await Promise.all([
         updateUser({
           userId: user.id,
           fullName: values.fullName.trim(),
           phone: values.phone.trim(),
-          avatarUrl: avatarFile,
+          avatarUrl: avatarFile ?? undefined,
         }),
-        mutateAsync({
-          bio: values.bio.trim(),
-          education: values.education.trim(),
-          // pass existing links and new files separately
-          cvUrls: cvLinks,
-          files: cvFiles,
-          subjects: values.subjects,
-          levels: values.levels,
-          hourlyRate: values.hourlyRate,
-          location: values.location.trim(),
-        }),
+        profileRequest,
       ])
 
-      toast.success("Tạo hồ sơ gia sư thành công")
+      toast.success(
+        isUpdateMode
+          ? "Cập nhật hồ sơ gia sư thành công"
+          : "Tạo hồ sơ gia sư thành công"
+      )
+
+      if (isUpdateMode) {
+        setCvFiles([])
+        setAvatarFile(null)
+        setAvatarPreview(null)
+        onSuccess?.()
+        return
+      }
+
       reset()
       setAvatarFile(null)
       setAvatarPreview(null)
       setCvFiles([])
+      setExistingCvUrls([])
     } catch (error) {
       console.error(error)
-      setSubmitError("Không thể tạo hồ sơ. Vui lòng thử lại sau.")
-      toast.error("Không thể tạo hồ sơ. Vui lòng thử lại sau.")
+      const message = isUpdateMode
+        ? "Không thể cập nhật hồ sơ. Vui lòng thử lại sau."
+        : "Không thể tạo hồ sơ. Vui lòng thử lại sau."
+      setSubmitError(message)
+      toast.error(message)
     }
   }
 
@@ -385,7 +476,9 @@ export function TutorProfileForm() {
         <p className="text-sm font-medium tracking-[0.2em] text-muted-foreground uppercase">
           Tutor profile
         </p>
-        <h1 className="text-3xl font-bold text-primary">Tạo hồ sơ gia sư</h1>
+        <h1 className="text-3xl font-bold text-primary">
+          {isUpdateMode ? "Chỉnh sửa hồ sơ gia sư" : "Tạo hồ sơ gia sư"}
+        </h1>
         <p className="max-w-2xl text-sm text-muted-foreground md:text-base">
           Hoàn tất hồ sơ để mở khóa toàn bộ chức năng của hệ thống và bắt đầu
           nhận lớp ngay khi có yêu cầu phù hợp.
@@ -404,7 +497,6 @@ export function TutorProfileForm() {
 
           <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
             <div className="flex flex-col items-center gap-4">
-              {/* Avatar clickable */}
               <label
                 htmlFor="avatarUrl"
                 className="group relative cursor-pointer"
@@ -423,7 +515,6 @@ export function TutorProfileForm() {
                     </Avatar>
                   )}
 
-                  {/* Hover overlay */}
                   {!avatarLoading && (
                     <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 rounded-full bg-black/50 opacity-0 transition-opacity group-hover:opacity-100">
                       <Upload className="size-5 text-white" />
@@ -446,7 +537,6 @@ export function TutorProfileForm() {
                 }}
               />
 
-              {/* Text + error giữ nguyên */}
               <div className="space-y-1 text-center">
                 <FieldDescription>
                   Chỉ nhận 1 file PNG, tối đa 5MB.
@@ -564,7 +654,7 @@ export function TutorProfileForm() {
           <div className="grid gap-4 md:grid-cols-2">
             <Controller
               control={control}
-              name="subjects"
+              name="subjectIds"
               render={({ field }) => (
                 <MultiSelectField
                   title="Môn học"
@@ -572,14 +662,14 @@ export function TutorProfileForm() {
                   options={selectedSubjectOptions}
                   value={field.value}
                   onChange={field.onChange}
-                  error={errors.subjects?.message}
+                  error={errors.subjectIds?.message}
                 />
               )}
             />
 
             <Controller
               control={control}
-              name="levels"
+              name="levelIds"
               render={({ field }) => (
                 <MultiSelectField
                   title="Cấp độ"
@@ -587,7 +677,7 @@ export function TutorProfileForm() {
                   options={selectedLevelOptions}
                   value={field.value}
                   onChange={field.onChange}
-                  error={errors.levels?.message}
+                  error={errors.levelIds?.message}
                 />
               )}
             />
@@ -603,56 +693,50 @@ export function TutorProfileForm() {
           </div>
 
           <div className="space-y-4">
+            {existingCvUrls.length > 0 && (
+              <Field>
+                <FieldLabel>File đính kèm hiện có</FieldLabel>
+                <div className="space-y-2">
+                  {existingCvUrls.map((url, index) => (
+                    <div
+                      key={`${url}-${index}`}
+                      className="flex items-center justify-between gap-3 rounded-lg border px-3 py-2"
+                    >
+                      <a
+                        href={url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="truncate text-sm text-primary underline-offset-4 hover:underline"
+                      >
+                        {`File đính kèm ${index + 1}`}
+                      </a>
+                      <Button
+                        type="button"
+                        size="icon-xs"
+                        variant="ghost"
+                        onClick={() => removeExistingCvUrl(index)}
+                        aria-label={`Xoa file dinh kem ${index + 1}`}
+                      >
+                        <Trash2 className="size-3.5" />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              </Field>
+            )}
+
             <FileField
-              label="CV / Chứng chỉ"
+              label={
+                isUpdateMode ? "Tải thêm CV / Chứng chỉ mới" : "CV / Chứng chỉ"
+              }
               description="Tối đa 5 file, mỗi file 5MB. Hỗ trợ PDF, JPG, PNG."
               accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png"
               multiple
               files={cvFiles}
               onChange={resolveCvFiles}
+              onRemove={removeNewCvFile}
               error={cvError}
             />
-
-            <Field>
-              <FieldLabel>CV links (URL)</FieldLabel>
-              <div className="flex gap-2">
-                <Input
-                  placeholder="https://drive.google.com/...."
-                  value={cvLinkInput}
-                  onChange={(e) => setCvLinkInput(e.target.value)}
-                />
-                <Button type="button" onClick={addCvLink}>
-                  Thêm
-                </Button>
-              </div>
-              {cvLinks.length > 0 && (
-                <div className="mt-2 flex flex-wrap gap-2">
-                  {cvLinks.map((link) => (
-                    <Badge
-                      key={link}
-                      variant="secondary"
-                      className="flex items-center gap-2"
-                    >
-                      <a
-                        href={link}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="max-w-[180px] truncate underline"
-                      >
-                        {link}
-                      </a>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => removeCvLink(link)}
-                      >
-                        Xoá
-                      </Button>
-                    </Badge>
-                  ))}
-                </div>
-              )}
-            </Field>
           </div>
         </section>
 
@@ -667,10 +751,28 @@ export function TutorProfileForm() {
             Kiểm tra lại thông tin trước khi gửi. Sau khi tạo hồ sơ, bạn có thể
             sử dụng ứng dụng như bình thường.
           </div>
-          <Button type="submit" className="min-w-40" disabled={isPending}>
-            {isPending ? <Loader2 className="size-4 animate-spin" /> : null}
-            {isPending ? "Đang tạo..." : "Tạo hồ sơ"}
-          </Button>
+          <div className="flex w-full flex-col gap-2 md:w-auto md:flex-row">
+            {isUpdateMode && onCancel ? (
+              <Button
+                type="button"
+                variant="outline"
+                onClick={onCancel}
+                disabled={isPending}
+              >
+                Hủy
+              </Button>
+            ) : null}
+            <Button type="submit" className="min-w-40" disabled={isPending}>
+              {isPending ? <Loader2 className="size-4 animate-spin" /> : null}
+              {isPending
+                ? isUpdateMode
+                  ? "Đang cập nhật..."
+                  : "Đang tạo..."
+                : isUpdateMode
+                  ? "Lưu thay đổi"
+                  : "Tạo hồ sơ"}
+            </Button>
+          </div>
         </div>
       </form>
     </div>

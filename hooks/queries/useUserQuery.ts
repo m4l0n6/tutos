@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import { api } from "@/lib/axios"
 import { getToken } from "@/lib/auth"
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 
 import { MUser } from "@/types/auth"
 
@@ -21,12 +21,14 @@ export function useUpdateUser() {
       phone,
     }: {
       userId: string
-      avatarUrl: File
+      avatarUrl?: File
       fullName: string
       phone: string
     }) => {
       const formData = new FormData()
-      formData.append("avatarUrl", avatarUrl, avatarUrl.name)
+      if (avatarUrl) {
+        formData.append("avatarUrl", avatarUrl, avatarUrl.name)
+      }
       formData.append("fullName", fullName)
       formData.append("phone", phone)
 

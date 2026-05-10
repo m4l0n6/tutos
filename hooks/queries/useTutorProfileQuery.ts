@@ -48,17 +48,16 @@ export function useCreateTutorProfile() {
       formData.append("hourlyRate", String(payload.hourlyRate))
       formData.append("location", payload.location)
 
-      payload.subjects.forEach((id) => formData.append("subjects", id))
-      payload.levels.forEach((id) => formData.append("levels", id))
+      payload.subjectIds.forEach((id) => formData.append("subjectIds", id))
+      payload.levelIds.forEach((id) => formData.append("levelIds", id))
 
       if (payload.cvUrls) {
         payload.cvUrls.forEach((url) => formData.append("cvUrls", url))
       }
 
-      // For POST the backend expects uploaded files under `cvUrls` as well.
       if (payload.files) {
         payload.files.forEach((file) =>
-          formData.append("cvUrls", file, file.name)
+          formData.append("files", file, file.name)
         )
       }
 
@@ -94,10 +93,10 @@ export function useUpdateTutorProfile() {
       if (payload.location !== undefined)
         formData.append("location", payload.location as string)
 
-      if (payload.subjects)
-        payload.subjects.forEach((id) => formData.append("subjects", id))
-      if (payload.levels)
-        payload.levels.forEach((id) => formData.append("levels", id))
+      if (payload.subjectIds)
+        payload.subjectIds.forEach((id) => formData.append("subjectIds", id))
+      if (payload.levelIds)
+        payload.levelIds.forEach((id) => formData.append("levelIds", id))
 
       if (payload.cvUrls)
         payload.cvUrls.forEach((url) => formData.append("cvUrls", url))
