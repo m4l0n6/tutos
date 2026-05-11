@@ -18,6 +18,7 @@ import { toast } from "sonner"
 import { Controller, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { registerSchema, RegisterFormValues } from "@/lib/validations/auth"
+import { PasswordInput } from "@/components/password-input"
 import { OTPForm } from "./otp-form"
 
 export function SignupForm({
@@ -61,8 +62,8 @@ export function SignupForm({
     >
       <FieldGroup>
         <div className="flex flex-col items-center gap-1 text-center">
-          <h1 className="text-2xl font-bold">Create your account</h1>
-          <p className="text-sm text-balance text-muted-foreground">
+          <h1 className="font-bold text-2xl">Create your account</h1>
+          <p className="text-muted-foreground text-sm text-balance">
             Fill in the form below to create your account
           </p>
         </div>
@@ -77,7 +78,7 @@ export function SignupForm({
             {...field("fullName")}
           />
           {errors.fullName && (
-            <p className="text-sm text-destructive">
+            <p className="text-destructive text-sm">
               {errors.fullName.message}
             </p>
           )}
@@ -93,7 +94,7 @@ export function SignupForm({
             {...field("email")}
           />
           {errors.email && (
-            <p className="text-sm text-destructive">{errors.email.message}</p>
+            <p className="text-destructive text-sm">{errors.email.message}</p>
           )}
         </Field>
 
@@ -107,7 +108,7 @@ export function SignupForm({
             {...field("phone")}
           />
           {errors.phone && (
-            <p className="text-sm text-destructive">{errors.phone.message}</p>
+            <p className="text-destructive text-sm">{errors.phone.message}</p>
           )}
         </Field>
 
@@ -120,7 +121,7 @@ export function SignupForm({
               <RadioGroup
                 value={roleField.value}
                 onValueChange={roleField.onChange}
-                className="grid grid-cols-1 gap-3 sm:grid-cols-2"
+                className="gap-3 grid grid-cols-1 sm:grid-cols-2"
               >
                 <FieldLabel
                   htmlFor="role-parent"
@@ -140,21 +141,20 @@ export function SignupForm({
             )}
           />
           {errors.role && (
-            <p className="text-sm text-destructive">{errors.role.message}</p>
+            <p className="text-destructive text-sm">{errors.role.message}</p>
           )}
         </FieldSet>
 
         <Field>
           <FieldLabel htmlFor="password">Password</FieldLabel>
-          <Input
+          <PasswordInput
             id="password"
-            type="password"
             className="bg-background"
             placeholder="e.g: password123"
             {...field("password")}
           />
           {errors.password && (
-            <p className="text-sm text-destructive">
+            <p className="text-destructive text-sm">
               {errors.password.message}
             </p>
           )}
@@ -165,15 +165,14 @@ export function SignupForm({
 
         <Field>
           <FieldLabel htmlFor="confirmPassword">Confirm Password</FieldLabel>
-          <Input
+          <PasswordInput
             id="confirmPassword"
-            type="password"
             className="bg-background"
             placeholder="e.g: password123"
             {...field("confirmPassword")}
           />
           {errors.confirmPassword && (
-            <p className="text-sm text-destructive">
+            <p className="text-destructive text-sm">
               {errors.confirmPassword.message}
             </p>
           )}

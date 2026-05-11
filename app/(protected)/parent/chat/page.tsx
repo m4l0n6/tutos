@@ -1,10 +1,10 @@
+import { ChatComponent } from "@/components/chat";
 
-const ParentChatPage = () => {
+export default function ChatApp() {
+
   return (
-    <div>
-        <h1 className="font-h1 text-on-surface">Chat với gia sư</h1>
+    <div className="flex bg-white border border-[#e0e0e0] rounded-xl h-full overflow-hidden font-sans">
+      <ChatComponent />
     </div>
-    );
+  )
 }
-
-export default ParentChatPage;
