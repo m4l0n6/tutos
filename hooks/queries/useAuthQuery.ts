@@ -8,10 +8,10 @@ export function useRegister() {
     mutationFn: (payload: RegisterParams) =>
       api.post<string>("/auth/register", payload).then((res) => res.data),
     onSuccess: (data) => {
-      console.log("Đăng ký thành công:", data)
+      console.log("Register successful:", data)
     },
     onError: (error) => {
-      console.error("Đăng ký thất bại:", error)
+      console.error("Register failed:", error)
     },
   })
 }
@@ -46,5 +46,19 @@ export function useLogin() {
     onError: (error) => {
       console.error("Login failed:", error)
     },
+  })
+}
+
+
+export function useRole() {
+  return useMutation({
+    mutationFn: (payload: { role: "TUTOR" | "PARENT" }) =>
+      api.post("/auth/onboarding", payload).then((res) => res.data),
+    onSuccess: (data) => {
+      console.log("Role set successfully:", data)
+    },
+    onError: (error) => {
+      console.error("Failed to set role:", error)
+    }
   })
 }
