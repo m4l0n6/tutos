@@ -35,7 +35,8 @@ export default function TutorLayout({
   }, [user, loading])
 
   if (loading) return <Loading />
-  if (!user || user.role !== "TUTOR") return null
+  if (!user) return <Loading />
+  if (user.role !== "TUTOR") return <Loading />
 
   if (isLoading) {
     return <Loading text="Đang tải hồ sơ gia sư" />
@@ -43,7 +44,7 @@ export default function TutorLayout({
 
   if (isError) {
     return (
-      <div className="flex min-h-[70vh] items-center justify-center px-6 py-10">
+      <div className="flex justify-center items-center px-6 py-10 min-h-[70vh]">
         <Empty className="max-w-xl">
           <EmptyHeader>
             <EmptyTitle>Không thể tải hồ sơ gia sư</EmptyTitle>
@@ -64,7 +65,7 @@ export default function TutorLayout({
   return (
     <>
       <Header />
-      <main className="flex min-w-full flex-col items-center justify-between bg-background">
+      <main className="flex flex-col justify-between items-center bg-background min-w-full">
         {children}
       </main>
       <Footer />
