@@ -20,28 +20,27 @@ import {
   LogOutIcon,
 } from "lucide-react"
 import { useAuth } from "@/context/AuthContext"
-
+import { useRouter } from "next/navigation"
 
 export function NavUser() {
-    const { user,logout } = useAuth()
+  const { user, logout } = useAuth()
+  const router = useRouter()
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <div className="flex items-center gap-2 cursor-pointer">
+        <div className="flex cursor-pointer items-center gap-2">
           <Avatar className="size-8">
             <AvatarImage src={user?.avatarUrl} />
             <AvatarFallback>{user?.fullName?.charAt(0)}</AvatarFallback>
           </Avatar>
           <div>
-            <span className="">
-              {user?.fullName}
-            </span>
+            <span className="">{user?.fullName}</span>
           </div>
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-60">
-        <DropdownMenuItem className="flex justify-start items-center gap-2">
+        <DropdownMenuItem className="flex items-center justify-start gap-2">
           <DropdownMenuLabel className="flex items-center gap-3">
             <Avatar className="size-10">
               <AvatarImage src={user?.avatarUrl} />
@@ -52,18 +51,15 @@ export function NavUser() {
                 {user?.fullName}
               </span>{" "}
               <br />
-              <div className="max-w-full overflow-ellipsis overflow-hidden text-muted-foreground text-xs whitespace-nowrap">
+              <div className="max-w-full overflow-hidden text-xs overflow-ellipsis whitespace-nowrap text-muted-foreground">
                 {user?.email}
-              </div>
-              <div className="mt-0.5 text-[10px] text-muted-foreground">
-                Store owner
               </div>
             </div>
           </DropdownMenuLabel>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
+          <DropdownMenuItem onSelect={() => router.push("/tutor/profile")}>
             <UserIcon />
             Profile
           </DropdownMenuItem>
@@ -79,24 +75,7 @@ export function NavUser() {
             Keyboard shortcuts
           </DropdownMenuItem> */}
         </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <LifeBuoyIcon />
-            Seller help
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <BookOpenIcon />
-            Seller guides
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <CreditCardIcon />
-            Plan & billing
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
+
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem
