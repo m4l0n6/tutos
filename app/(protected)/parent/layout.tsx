@@ -3,15 +3,15 @@ import { useAuth } from "@/context/AuthContext"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
 import { Loading } from "@/components/loading"
-import { Footer } from "@/components/wrapper/footer"
-import { Header } from "./_component/wrapper/header"
+import { AppShell } from "@/components/app-shell/app-shell"
+import { LayoutGridIcon, ShapesIcon, MessagesSquareIcon, HelpCircleIcon, BookOpenIcon } from "lucide-react"
 
 export default function ParentLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const { user, loading } = useAuth()
+  const { user, loading, logout } = useAuth()
   const router = useRouter()
 
   useEffect(() => {
@@ -23,12 +23,38 @@ export default function ParentLayout({
   if (loading) return <Loading />
   if (!user || user.role !== "PARENT") return null
 
-  return <>
-        <Header />
-        <main className="flex flex-col justify-between items-center bg-accent py-8 min-w-full">
-          <div className="z-[-99] absolute inset-0 flex justify-center items-center pointer-events-none mask-[radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
-          {children}
-        </main>
-        <Footer />
-      </>
+  const navGroups = [
+    {
+      label: "Main",
+      items: [
+        { 
+          title: "Dashboard", 
+          path: "/parent", 
+          icon: (<LayoutGridIcon/>), 
+        },
+        { title: "My Classes", path: "/parent/my-classes", icon: (<ShapesIcon/>)
+        },
+        { title: "Chat", path: "/parent/chat", icon: (<MessagesSquareIcon/>)
+        },
+      ],
+    },
+  ]
+
+  const footerNavLinks = [
+    {
+      title: "Help Center",
+      path: "#/help",
+      icon: <HelpCircleIcon />,
+    },
+    {
+      title: "Documentation",
+      path: "#/documentation",
+      icon: <BookOpenIcon />,
+    },
+  ]
+
+  return <AppShell navGroups={navGroups} footerNavLinks={footerNavLinks} user={user} logout={logout}>
+    {children}
+  </AppShell>
+
 }

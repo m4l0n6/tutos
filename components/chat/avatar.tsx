@@ -6,34 +6,35 @@ const AVATAR_COLORS: Record<string, { bg: string; text: string }> = {
   pink: { bg: "#FBEAF0", text: "#993556" },
   amber: { bg: "#FAEEDA", text: "#854F0B" },
   green: { bg: "#EAF3DE", text: "#3B6D11" },
-};
-
-interface AvatarProps {
-  initials: string;
-  avClass: string;
-  size?: number;
-  fontSize?: number;
 }
 
-export function Avatar({ initials, avClass, size = 38, fontSize = 12 }: AvatarProps) {
-  const colors = AVATAR_COLORS[avClass] ?? { bg: "#eee", text: "#555" };
+interface AvatarProps {
+  initials: string
+  avClass: string
+  size?: number
+  fontSize?: number
+}
+
+export function Avatar({
+  initials,
+  avClass,
+  size = 38,
+  fontSize = 12,
+}: AvatarProps) {
+  const colors = AVATAR_COLORS[avClass] ?? { bg: "#eee", text: "#555" }
   return (
     <div
+      className="flex flex-shrink-0 justify-center items-center rounded-full font-medium"
       style={{
         width: size,
         height: size,
         minWidth: size,
-        borderRadius: "50%",
-        background: colors.bg,
+        backgroundColor: colors.bg,
         color: colors.text,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        fontWeight: 500,
         fontSize,
       }}
     >
       {initials}
     </div>
-  );
+  )
 }

@@ -18,6 +18,7 @@ import { FacebookIcon, GoogleIcon } from "@/components/icons"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { loginSchema, LoginFormValues } from "@/lib/validations/auth"
+import { PasswordInput } from "@/components/password-input"
 
 export function LoginForm() {
   const router = useRouter()
@@ -79,9 +80,8 @@ export function LoginForm() {
               Forgot your password?
             </a>
           </div>
-          <Input
+          <PasswordInput
             id="password"
-            type="password"
             required
             placeholder="******"
             {...register("password")}

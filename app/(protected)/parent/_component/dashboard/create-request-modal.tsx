@@ -261,7 +261,7 @@ export function CreateRequestModal({
                         <SelectTrigger id="categoryId">
                           <SelectValue placeholder="Chọn danh mục" />
                         </SelectTrigger>
-                        <SelectContent position="popper">
+                        <SelectContent>
                           <SelectGroup>
                             {categories.map((category) => (
                               <SelectItem key={category.id} value={category.id}>
@@ -301,7 +301,7 @@ export function CreateRequestModal({
                               }
                             />
                           </SelectTrigger>
-                          <SelectContent position="popper">
+                          <SelectContent>
                             <SelectGroup>
                               {subjects.map((subject) => (
                                 <SelectItem key={subject.id} value={subject.id}>
@@ -340,7 +340,7 @@ export function CreateRequestModal({
                               }
                             />
                           </SelectTrigger>
-                          <SelectContent position="popper">
+                          <SelectContent>
                             <SelectGroup>
                               {levels.map((level) => (
                                 <SelectItem key={level.id} value={level.id}>
