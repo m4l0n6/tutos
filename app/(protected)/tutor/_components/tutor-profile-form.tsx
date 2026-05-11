@@ -37,7 +37,8 @@ import {
   tutorProfileFormSchema,
   type TutorProfileFormValues,
 } from "@/lib/validations/tutor"
-import type { ILevel, ISubject } from "@/types/master-data"
+import { ISubject } from "@/types/subject"
+import { ILevel } from "@/types/level"
 import type { TutorProfile } from "@/types/tutor"
 import { Loader2, Trash2, Upload } from "lucide-react"
 import { toast } from "sonner"
@@ -94,13 +95,13 @@ function FileField({
       <div className="flex flex-col gap-3">
         <label
           htmlFor={inputId}
-          className="flex cursor-pointer flex-col gap-2 rounded-xl border border-dashed border-muted-foreground/30 bg-muted/20 p-4 transition-colors hover:border-primary/40 hover:bg-muted/40"
+          className="flex flex-col gap-2 bg-muted/20 hover:bg-muted/40 p-4 border border-muted-foreground/30 hover:border-primary/40 border-dashed rounded-xl transition-colors cursor-pointer"
         >
-          <span className="inline-flex items-center gap-2 text-sm font-medium text-foreground">
+          <span className="inline-flex items-center gap-2 font-medium text-foreground text-sm">
             <Upload className="size-4" />
             Chọn tệp
           </span>
-          <span className="text-sm text-muted-foreground">{description}</span>
+          <span className="text-muted-foreground text-sm">{description}</span>
         </label>
 
         <Input
@@ -121,7 +122,7 @@ function FileField({
             {files.map((file, index) => (
               <div
                 key={`${file.name}-${file.lastModified}`}
-                className="flex items-center justify-between gap-3 rounded-lg border px-3 py-2"
+                className="flex justify-between items-center gap-3 px-3 py-2 border rounded-lg"
               >
                 <Badge variant="secondary" className="max-w-[80%] truncate">
                   {file.name}
@@ -142,7 +143,7 @@ function FileField({
           </div>
         )}
 
-        {error && <p className="text-sm text-destructive">{error}</p>}
+        {error && <p className="text-destructive text-sm">{error}</p>}
       </div>
     </Field>
   )
@@ -175,16 +176,16 @@ function MultiSelectField({
           <Button
             variant="outline"
             type="button"
-            className="h-auto min-h-10 w-full justify-between px-3 py-2"
+            className="justify-between px-3 py-2 w-full h-auto min-h-10"
           >
             <FacetedBadgeList
               options={options}
               placeholder={placeholder}
-              className="min-h-5 flex-1"
+              className="flex-1 min-h-5"
             />
           </Button>
         </FacetedTrigger>
-        <FacetedContent className="w-[320px] p-0">
+        <FacetedContent className="p-0 w-[320px]">
           <FacetedInput placeholder={placeholder} />
           <FacetedList>
             <FacetedEmpty>Không tìm thấy kết quả.</FacetedEmpty>
@@ -198,7 +199,7 @@ function MultiSelectField({
           </FacetedList>
         </FacetedContent>
       </Faceted>
-      {error && <p className="text-sm text-destructive">{error}</p>}
+      {error && <p className="text-destructive text-sm">{error}</p>}
     </Field>
   )
 }
@@ -446,8 +447,8 @@ export function TutorProfileForm({
 
   if (subjectsLoading || levelsLoading) {
     return (
-      <div className="mx-auto flex min-h-[70vh] w-full max-w-4xl items-center justify-center px-6 py-12">
-        <div className="flex items-center gap-3 rounded-2xl border bg-card px-4 py-3 text-muted-foreground shadow-sm">
+      <div className="flex justify-center items-center mx-auto px-6 py-12 w-full max-w-4xl min-h-[70vh]">
+        <div className="flex items-center gap-3 bg-card shadow-sm px-4 py-3 border rounded-2xl text-muted-foreground">
           <Spinner />
           <span>Đang tải dữ liệu hồ sơ...</span>
         </div>
@@ -457,12 +458,12 @@ export function TutorProfileForm({
 
   if (subjectsError || levelsError) {
     return (
-      <div className="mx-auto flex min-h-[70vh] w-full max-w-4xl items-center justify-center px-6 py-12">
-        <div className="max-w-lg rounded-2xl border border-dashed p-6 text-center">
-          <p className="text-lg font-semibold text-destructive">
+      <div className="flex justify-center items-center mx-auto px-6 py-12 w-full max-w-4xl min-h-[70vh]">
+        <div className="p-6 border border-dashed rounded-2xl max-w-lg text-center">
+          <p className="font-semibold text-destructive text-lg">
             Không thể tải danh mục môn học hoặc cấp độ
           </p>
-          <p className="mt-2 text-sm text-muted-foreground">
+          <p className="mt-2 text-muted-foreground text-sm">
             Vui lòng tải lại trang để thử lại.
           </p>
         </div>
@@ -471,31 +472,31 @@ export function TutorProfileForm({
   }
 
   return (
-    <div className="mx-auto w-full max-w-5xl px-4 py-8 md:px-8 md:py-10">
-      <div className="mb-6 space-y-2">
-        <p className="text-sm font-medium tracking-[0.2em] text-muted-foreground uppercase">
+    <div className="mx-auto px-4 md:px-8 py-8 md:py-10 w-full max-w-5xl">
+      <div className="space-y-2 mb-6">
+        <p className="font-medium text-muted-foreground text-sm uppercase tracking-[0.2em]">
           Tutor profile
         </p>
-        <h1 className="text-3xl font-bold text-primary">
+        <h1 className="font-bold text-primary text-3xl">
           {isUpdateMode ? "Chỉnh sửa hồ sơ gia sư" : "Tạo hồ sơ gia sư"}
         </h1>
-        <p className="max-w-2xl text-sm text-muted-foreground md:text-base">
+        <p className="max-w-2xl text-muted-foreground text-sm md:text-base">
           Hoàn tất hồ sơ để mở khóa toàn bộ chức năng của hệ thống và bắt đầu
           nhận lớp ngay khi có yêu cầu phù hợp.
         </p>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-        <section className="rounded-3xl border bg-card p-5 shadow-sm md:p-6">
-          <div className="mb-5 flex items-center justify-between gap-4">
+        <section className="bg-card shadow-sm p-5 md:p-6 border rounded-3xl">
+          <div className="flex justify-between items-center gap-4 mb-5">
             <div>
-              <h2 className="text-lg font-semibold text-foreground">
+              <h2 className="font-semibold text-foreground text-lg">
                 Thông tin cá nhân
               </h2>
             </div>
           </div>
 
-          <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
+          <div className="gap-6 grid lg:grid-cols-[280px_1fr]">
             <div className="flex flex-col items-center gap-4">
               <label
                 htmlFor="avatarUrl"
@@ -503,11 +504,11 @@ export function TutorProfileForm({
               >
                 <div className="relative size-28">
                   {avatarLoading ? (
-                    <div className="flex size-28 items-center justify-center rounded-full border-2 border-dashed border-muted-foreground/30 bg-muted/30">
-                      <Loader2 className="size-6 animate-spin text-muted-foreground" />
+                    <div className="flex justify-center items-center bg-muted/30 border-2 border-muted-foreground/30 border-dashed rounded-full size-28">
+                      <Loader2 className="size-6 text-muted-foreground animate-spin" />
                     </div>
                   ) : (
-                    <Avatar className="size-28 rounded-full">
+                    <Avatar className="rounded-full size-28">
                       <AvatarImage src={avatarPreview ?? user?.avatarUrl} />
                       <AvatarFallback className="rounded-full text-2xl">
                         {user?.fullName?.slice(0, 2)?.toUpperCase() || "TV"}
@@ -516,9 +517,9 @@ export function TutorProfileForm({
                   )}
 
                   {!avatarLoading && (
-                    <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 rounded-full bg-black/50 opacity-0 transition-opacity group-hover:opacity-100">
+                    <div className="absolute inset-0 flex flex-col justify-center items-center gap-1 bg-black/50 opacity-0 group-hover:opacity-100 rounded-full transition-opacity">
                       <Upload className="size-5 text-white" />
-                      <span className="text-[10px] font-medium text-white">
+                      <span className="font-medium text-[10px] text-white">
                         Đổi ảnh
                       </span>
                     </div>
@@ -542,23 +543,23 @@ export function TutorProfileForm({
                   Chỉ nhận 1 file PNG, tối đa 5MB.
                 </FieldDescription>
                 {avatarFile && (
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-muted-foreground text-sm">
                     Đã chọn: {avatarFile.name} (
                     {formatFileSize(avatarFile.size)})
                   </p>
                 )}
                 {avatarError && (
-                  <p className="text-sm text-destructive">{avatarError}</p>
+                  <p className="text-destructive text-sm">{avatarError}</p>
                 )}
               </div>
             </div>
 
-            <div className="grid gap-4 md:grid-cols-2">
+            <div className="gap-4 grid md:grid-cols-2">
               <Field>
                 <FieldLabel htmlFor="fullName">Họ và tên</FieldLabel>
                 <Input id="fullName" {...register("fullName")} />
                 {errors.fullName && (
-                  <p className="text-sm text-destructive">
+                  <p className="text-destructive text-sm">
                     {errors.fullName.message}
                   </p>
                 )}
@@ -568,7 +569,7 @@ export function TutorProfileForm({
                 <FieldLabel htmlFor="phone">Số điện thoại</FieldLabel>
                 <Input id="phone" {...register("phone")} />
                 {errors.phone && (
-                  <p className="text-sm text-destructive">
+                  <p className="text-destructive text-sm">
                     {errors.phone.message}
                   </p>
                 )}
@@ -582,13 +583,13 @@ export function TutorProfileForm({
                   className="min-h-32 resize-none"
                   {...register("bio")}
                 />
-                <div className="mt-1 flex items-center justify-between gap-3 text-sm text-muted-foreground">
+                <div className="flex justify-between items-center gap-3 mt-1 text-muted-foreground text-sm">
                   <span>
                     {countWords(bioValue)} / {MAX_BIO_WORDS} từ
                   </span>
                 </div>
                 {errors.bio && (
-                  <p className="text-sm text-destructive">
+                  <p className="text-destructive text-sm">
                     {errors.bio.message}
                   </p>
                 )}
@@ -602,7 +603,7 @@ export function TutorProfileForm({
                   {...register("education")}
                 />
                 {errors.education && (
-                  <p className="text-sm text-destructive">
+                  <p className="text-destructive text-sm">
                     {errors.education.message}
                   </p>
                 )}
@@ -618,7 +619,7 @@ export function TutorProfileForm({
                   {...register("hourlyRate", { valueAsNumber: true })}
                 />
                 {errors.hourlyRate && (
-                  <p className="text-sm text-destructive">
+                  <p className="text-destructive text-sm">
                     {errors.hourlyRate.message}
                   </p>
                 )}
@@ -632,7 +633,7 @@ export function TutorProfileForm({
                   {...register("location")}
                 />
                 {errors.location && (
-                  <p className="text-sm text-destructive">
+                  <p className="text-destructive text-sm">
                     {errors.location.message}
                   </p>
                 )}
@@ -641,17 +642,17 @@ export function TutorProfileForm({
           </div>
         </section>
 
-        <section className="rounded-3xl border bg-card p-5 shadow-sm md:p-6">
+        <section className="bg-card shadow-sm p-5 md:p-6 border rounded-3xl">
           <div className="mb-5">
-            <h2 className="text-lg font-semibold text-foreground">
+            <h2 className="font-semibold text-foreground text-lg">
               Chuyên môn
             </h2>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               Chọn môn học và cấp độ mà bạn có thể giảng dạy.
             </p>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="gap-4 grid md:grid-cols-2">
             <Controller
               control={control}
               name="subjectIds"
@@ -684,10 +685,10 @@ export function TutorProfileForm({
           </div>
         </section>
 
-        <section className="rounded-3xl border bg-card p-5 shadow-sm md:p-6">
+        <section className="bg-card shadow-sm p-5 md:p-6 border rounded-3xl">
           <div className="mb-5">
-            <h2 className="text-lg font-semibold text-foreground">Tài liệu</h2>
-            <p className="text-sm text-muted-foreground">
+            <h2 className="font-semibold text-foreground text-lg">Tài liệu</h2>
+            <p className="text-muted-foreground text-sm">
               Tải lên CV, chứng chỉ hoặc tài liệu liên quan để tăng độ tin cậy.
             </p>
           </div>
@@ -700,13 +701,13 @@ export function TutorProfileForm({
                   {existingCvUrls.map((url, index) => (
                     <div
                       key={`${url}-${index}`}
-                      className="flex items-center justify-between gap-3 rounded-lg border px-3 py-2"
+                      className="flex justify-between items-center gap-3 px-3 py-2 border rounded-lg"
                     >
                       <a
                         href={url}
                         target="_blank"
                         rel="noreferrer"
-                        className="truncate text-sm text-primary underline-offset-4 hover:underline"
+                        className="text-primary text-sm hover:underline underline-offset-4 truncate"
                       >
                         {`File đính kèm ${index + 1}`}
                       </a>
@@ -741,17 +742,17 @@ export function TutorProfileForm({
         </section>
 
         {submitError && (
-          <div className="rounded-2xl border border-destructive/20 bg-destructive/5 px-4 py-3 text-sm text-destructive">
+          <div className="bg-destructive/5 px-4 py-3 border border-destructive/20 rounded-2xl text-destructive text-sm">
             {submitError}
           </div>
         )}
 
-        <div className="flex flex-col gap-3 rounded-3xl border bg-card p-5 shadow-sm md:flex-row md:items-center md:justify-between md:p-6">
-          <div className="text-sm text-muted-foreground">
+        <div className="flex md:flex-row flex-col md:justify-between md:items-center gap-3 bg-card shadow-sm p-5 md:p-6 border rounded-3xl">
+          <div className="text-muted-foreground text-sm">
             Kiểm tra lại thông tin trước khi gửi. Sau khi tạo hồ sơ, bạn có thể
             sử dụng ứng dụng như bình thường.
           </div>
-          <div className="flex w-full flex-col gap-2 md:w-auto md:flex-row">
+          <div className="flex md:flex-row flex-col gap-2 w-full md:w-auto">
             {isUpdateMode && onCancel ? (
               <Button
                 type="button"
