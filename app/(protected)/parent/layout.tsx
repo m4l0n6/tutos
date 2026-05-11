@@ -21,21 +21,24 @@ export default function ParentLayout({
   }, [user, loading])
 
   if (loading) return <Loading />
-  if (!user || user.role !== "PARENT") return null
+  if (!user) return <Loading />
+  if (user.role !== "PARENT") return <Loading />
 
   const navGroups = [
     {
       label: "Main",
       items: [
-        { 
-          title: "Dashboard", 
-          path: "/parent", 
-          icon: (<LayoutGridIcon/>), 
+        {
+          title: "Dashboard",
+          path: "/parent",
+          icon: <LayoutGridIcon />,
         },
-        { title: "My Classes", path: "/parent/my-classes", icon: (<ShapesIcon/>)
+        {
+          title: "My Classes",
+          path: "/parent/my-classes",
+          icon: <ShapesIcon />,
         },
-        { title: "Chat", path: "/parent/chat", icon: (<MessagesSquareIcon/>)
-        },
+        { title: "Chat", path: "/parent/chat", icon: <MessagesSquareIcon /> },
       ],
     },
   ]
@@ -53,8 +56,14 @@ export default function ParentLayout({
     },
   ]
 
-  return <AppShell navGroups={navGroups} footerNavLinks={footerNavLinks} user={user} logout={logout}>
-    {children}
-  </AppShell>
-
+  return (
+    <AppShell
+      navGroups={navGroups}
+      footerNavLinks={footerNavLinks}
+      user={user}
+      logout={logout}
+    >
+      {children}
+    </AppShell>
+  )
 }
