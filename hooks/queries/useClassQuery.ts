@@ -4,6 +4,7 @@ import type { MClass, TClassResquestParam } from "@/types/classes"
 
 export const classKeys = {
   all: ["classes"] as const,
+  myParent: () => [...classKeys.all, "my-parent"] as const,
 }
 
 export function useGetClass() {
@@ -18,5 +19,13 @@ export function useCreateClassRequest() {
   return useMutation({
     mutationFn: (data: TClassResquestParam) =>
       api.post("/class-requests", data).then((res) => res.data.data),
+  })
+}
+
+export function useGetMyParentClasses() {
+  return useQuery<MClass[]>({
+    queryKey: classKeys.myParent(),
+    queryFn: () => api.get("/classes/parent/my").then((res) => res.data.data),
+    staleTime: 1000 * 60 * 5,
   })
 }

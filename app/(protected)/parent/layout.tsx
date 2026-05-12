@@ -3,7 +3,7 @@ import { useAuth } from "@/context/AuthContext"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
 import { Loading } from "@/components/loading"
-import { AppShell } from "@/components/app-shell/app-shell"
+import { AppShell } from "@/components/common/app-shell/app-shell"
 import { LayoutGridIcon, ShapesIcon, MessagesSquareIcon, HelpCircleIcon, BookOpenIcon } from "lucide-react"
 
 export default function ParentLayout({

@@ -8,7 +8,7 @@ import { CustomSidebarTrigger } from "./custom-sidebar-trigger"
 import { NavUser } from "./nav-user"
 import { SendIcon, BellIcon } from "lucide-react"
 import type { MUser } from "@/types/auth"
-import Notification from "@/components/notification"
+import Notification from "@/components/common/notification"
 import { usePathname } from "next/navigation"
 
 interface AppHeaderProps {
