@@ -5,6 +5,10 @@ import { Check, Heart, GraduationCap } from "lucide-react"
 import { useRole } from "@/hooks/queries/useAuthQuery"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
+import { getToken } from "@/lib/auth"
+import { api } from "@/lib/axios"
+import { userKeys } from "@/hooks/queries/useUserQuery"
+import { useQueryClient } from "@tanstack/react-query"
 
 type Role = "TUTOR" | "PARENT" | null
 
@@ -37,24 +41,38 @@ export default function RoleSelector({ onConfirm }: RoleSelectorProps) {
     const [selected, setSelected] = useState<Role>(null)
     const { mutate } = useRole()
     const router = useRouter()
+    const queryClient = useQueryClient()
 
   const handleConfirm = () => {
     if (selected) {
-        mutate({ role: selected }, {
-          onSuccess: () => {
-            toast.success("Role set successfully! Redirecting...")
-            if (onConfirm) onConfirm(selected)
+        mutate(
+          { role: selected },
+          {
+            onSuccess: async (response) => {
+              toast.success("Role set successfully! Redirecting...")
 
-            if(selected === "TUTOR") {
-              router.push("/tutor")
-            } else {
-              router.push("/parent")
-            }
-          },
+              const token = getToken()
+              const res = await api.get("/auth/me", {
+                headers: { Authorization: `Bearer ${token}` },
+              })
+              const updatedUser = res.data.data
+
+              queryClient.setQueryData(userKeys.me(), updatedUser)
+              
+              if (onConfirm) onConfirm(selected)
+
+              if (selected === "TUTOR") {
+                router.push("/tutor")
+              } else {
+                router.push("/parent")
+              }
+            },
             onError: (error) => {
-                console.error("Failed to set role:", error)
-            }
-        })
+              toast.error("Role set failed")
+              console.error("Failed to set role:", error)
+            },
+          }
+        )
     }
   }
 
