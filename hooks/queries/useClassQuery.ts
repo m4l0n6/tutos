@@ -29,3 +29,11 @@ export function useGetMyParentClasses() {
     staleTime: 1000 * 60 * 5,
   })
 }
+
+export function useGetClassById(classId: string) {
+  return useQuery<MClass>({
+    queryKey: [...classKeys.all, classId],
+    queryFn: () => api.get(`/classes/${classId}`).then((res) => res.data.data),
+    staleTime: 1000 * 60 * 5,
+  })
+}

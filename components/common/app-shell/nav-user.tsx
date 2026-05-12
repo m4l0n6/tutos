@@ -15,6 +15,7 @@ import {
   SettingsIcon,
   CreditCardIcon,
   LogOutIcon,
+  Moon,
 } from "lucide-react"
 
 import type { MUser } from "@/types/auth"
@@ -41,7 +42,9 @@ export function NavUser({ user, logout }: NavUserProps) {
               <AvatarFallback>{user?.fullName?.charAt(0)}</AvatarFallback>
             </Avatar>
             <div>
-              <span className="font-medium text-foreground">{user?.fullName}</span>{" "}
+              <span className="font-medium text-foreground">
+                {user?.fullName}
+              </span>{" "}
               <br />
               <div className="max-w-full overflow-ellipsis overflow-hidden text-muted-foreground text-xs whitespace-nowrap">
                 {user?.email}
@@ -54,6 +57,10 @@ export function NavUser({ user, logout }: NavUserProps) {
           <DropdownMenuItem>
             <UserIcon />
             Account
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Moon />
+            Theme
           </DropdownMenuItem>
           <DropdownMenuItem>
             <SettingsIcon />
