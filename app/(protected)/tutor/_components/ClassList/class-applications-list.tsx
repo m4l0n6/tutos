@@ -1,8 +1,9 @@
 "use client"
 
+import { useState } from "react"
 import { RotateCcw } from "lucide-react"
 import { ClassCard } from "./class-card"
-import { ClassApplication } from "@/types/classes"
+import { ClassApplication, ApplicationStatus } from "@/types/classes"
 
 interface Props {
   title: string
@@ -12,6 +13,18 @@ interface Props {
   isError?: boolean
 }
 
+const STATUS_FILTER_OPTIONS: {
+  value: ApplicationStatus | "ALL"
+  label: string
+}[] = [
+  { value: "ALL", label: "Tất cả" },
+  { value: "PENDING", label: "Chờ duyệt" },
+  { value: "TRIAL", label: "Học thử" },
+  { value: "ACCEPTED", label: "Đã chấp nhận" },
+  { value: "REJECTED", label: "Đã từ chối" },
+  { value: "TRIAL_FAILED", label: "Học thử thất bại" },
+]
+
 export const ClassApplicationsList = ({
   title,
   data,
@@ -19,12 +32,22 @@ export const ClassApplicationsList = ({
   isLoading = false,
   isError = false,
 }: Props) => {
-  const hasData = data && data.length > 0
+  const [activeStatus, setActiveStatus] = useState<ApplicationStatus | "ALL">(
+    "ALL"
+  )
+
+  const filtered =
+    activeStatus === "ALL"
+      ? data
+      : data.filter((app) => app.status === activeStatus)
+
+  const hasData = filtered && filtered.length > 0
 
   return (
     <div>
-      <div className="mb-6 flex items-center justify-between">
-        <h2 className="text-xl font-bold text-primary">{title}</h2>
+      {/* Dòng 1: Title + Nút làm mới */}
+      <div className="flex items-center justify-between">
+        <h2 className="text-xl leading-none font-bold text-primary">{title}</h2>
         {onRefresh && (
           <button
             onClick={onRefresh}
@@ -32,10 +55,47 @@ export const ClassApplicationsList = ({
             className="inline-flex items-center gap-2 rounded px-3 py-1 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground disabled:opacity-50"
             title="Làm mới"
           >
-            <RotateCcw className="size-4" />
+            <RotateCcw
+              className={`size-4 ${isLoading ? "animate-spin" : ""}`}
+            />
             Làm mới
           </button>
         )}
+      </div>
+
+      {/* Dòng 2: Status filter pills */}
+      <div className="mt-3 mb-4 flex flex-wrap gap-2">
+        {STATUS_FILTER_OPTIONS.map((opt) => {
+          const count =
+            opt.value === "ALL"
+              ? data.length
+              : data.filter((a) => a.status === opt.value).length
+
+          if (opt.value !== "ALL" && count === 0) return null
+
+          return (
+            <button
+              key={opt.value}
+              onClick={() => setActiveStatus(opt.value)}
+              className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
+                activeStatus === opt.value
+                  ? "border-primary bg-primary text-primary-foreground"
+                  : "border-border bg-background text-muted-foreground hover:border-primary/50 hover:text-foreground"
+              }`}
+            >
+              {opt.label}
+              <span
+                className={`inline-flex size-4 items-center justify-center rounded-full text-[10px] ${
+                  activeStatus === opt.value
+                    ? "bg-primary-foreground/20 text-primary-foreground"
+                    : "bg-muted text-muted-foreground"
+                }`}
+              >
+                {count}
+              </span>
+            </button>
+          )
+        })}
       </div>
 
       {isLoading ? (
@@ -54,7 +114,7 @@ export const ClassApplicationsList = ({
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
-          {data.map((app) => (
+          {filtered.map((app) => (
             <ClassCard
               key={app.id}
               classData={app.class}

@@ -2,6 +2,7 @@ import { useState, useMemo } from "react"
 import { RotateCcw } from "lucide-react"
 import { ClassCard } from "./class-card"
 import { MClass } from "@/types/classes"
+import { ClassFilters, ClassFilterState } from "./class-filters"
 
 interface ClassListProps {
   title: string
@@ -10,6 +11,7 @@ interface ClassListProps {
   onRefresh?: () => void
   isLoading?: boolean
   isError?: boolean
+  onFilterChange: (filters: ClassFilterState) => void
 }
 
 export const ClassList = ({
@@ -19,6 +21,7 @@ export const ClassList = ({
   onRefresh,
   isLoading = false,
   isError = false,
+  onFilterChange,
 }: ClassListProps) => {
   const [visibleCount, setVisibleCount] = useState(12)
   const showMore = () => setVisibleCount((prev) => prev + 12)
@@ -38,8 +41,9 @@ export const ClassList = ({
 
   return (
     <div>
-      <div className="mb-6 flex items-center justify-between">
-        <h2 className="text-xl font-bold text-primary">{title}</h2>
+      {/* Dòng 1: Title + Nút làm mới */}
+      <div className="flex items-center justify-between">
+        <h2 className="text-xl leading-none font-bold text-primary">{title}</h2>
         {onRefresh && (
           <button
             onClick={onRefresh}
@@ -47,10 +51,17 @@ export const ClassList = ({
             className="inline-flex items-center gap-2 rounded px-3 py-1 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground disabled:opacity-50"
             title="Làm mới"
           >
-            <RotateCcw className="size-4" />
+            <RotateCcw
+              className={`size-4 ${isLoading ? "animate-spin" : ""}`}
+            />
             Làm mới
           </button>
         )}
+      </div>
+
+      {/* Dòng 2: Filters */}
+      <div className="mt-3 mb-4">
+        <ClassFilters onFilterChange={onFilterChange} />
       </div>
 
       {isLoading ? (
@@ -85,7 +96,7 @@ export const ClassList = ({
                 className="rounded bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
                 onClick={showMore}
               >
-                Show {remaining >= 12 ? 12 : remaining} more
+                Xem thêm {remaining >= 12 ? 12 : remaining}
               </button>
             </div>
           )}

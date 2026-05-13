@@ -1,12 +1,14 @@
 "use client"
 
-import { GraduationCap, Clock, Wallet } from "lucide-react"
-import { Stat, StatIndicator, StatLabel, StatValue } from "@/components/ui/stat"
+import * as React from "react"
 import { useAuth } from "@/context/AuthContext"
 import { ClassList } from "./_components/ClassList/class-list"
 import { ClassApplicationsList } from "./_components/ClassList/class-applications-list"
 import { useGetClass } from "@/hooks/queries/useClassQuery"
 import { useGetClassApplication } from "@/hooks/queries/useClassApplicationQuery"
+import { TutorStats } from "./_components/TutorStats"
+import { ClassFilterState } from "./_components/ClassList/class-filters"
+import { DayOfWeek, MClass } from "@/types/classes"
 
 const TutorPage = () => {
   const currentDate = new Date()
@@ -17,6 +19,8 @@ const TutorPage = () => {
     day: "numeric",
   })
   const { user } = useAuth()
+  const [filters, setFilters] = React.useState<ClassFilterState>({})
+
   const {
     data: classList = [],
     isLoading: isClassLoading,
@@ -32,8 +36,64 @@ const TutorPage = () => {
   } = useGetClassApplication()
 
   const appliedClassIds = (classApplications || [])
-    .map((a: any) => a.classId ?? a.class?.id)
+    .map(
+      (a: { classId?: string; class?: { id?: string } }) =>
+        a.classId ?? a.class?.id
+    )
     .filter(Boolean)
+
+  const handleFilterChange = React.useCallback(
+    (newFilters: ClassFilterState) => {
+      setFilters(newFilters)
+    },
+    []
+  )
+
+  const filteredClassList = React.useMemo(() => {
+    return classList.filter((c: MClass) => {
+      // category: match against c.category.id
+      if (filters.categoryId) {
+        const filterCategories = filters.categoryId.split(",").filter(Boolean)
+        if (
+          filterCategories.length > 0 &&
+          !filterCategories.includes(c.category.id)
+        ) {
+          return false
+        }
+      }
+
+      // subject: match against c.subject.id
+      if (filters.subjectId) {
+        const filterSubjects = filters.subjectId.split(",").filter(Boolean)
+        if (
+          filterSubjects.length > 0 &&
+          !filterSubjects.includes(c.subject.id)
+        ) {
+          return false
+        }
+      }
+
+      // level: match against c.level.id
+      if (filters.levelId) {
+        const filterLevels = filters.levelId.split(",").filter(Boolean)
+        if (filterLevels.length > 0 && !filterLevels.includes(c.level.id)) {
+          return false
+        }
+      }
+
+      if (filters.dayOfWeek) {
+        const filterDays = filters.dayOfWeek.split(",").filter(Boolean)
+        if (
+          filterDays.length > 0 &&
+          !filterDays.some((day) => c.daysOfWeek.includes(day as DayOfWeek))
+        ) {
+          return false
+        }
+      }
+
+      return true
+    })
+  }, [classList, filters])
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
@@ -52,38 +112,7 @@ const TutorPage = () => {
         </header>
 
         {/* Statistics Bento Grid */}
-        <section className="grid grid-cols-1 gap-6 md:grid-cols-4">
-          <Stat>
-            <StatIndicator variant="icon" color="success">
-              <GraduationCap className="size-4" />
-            </StatIndicator>
-            <StatLabel>Lớp đang dạy</StatLabel>
-            <StatValue>03</StatValue>
-          </Stat>
-
-          <Stat>
-            <StatIndicator variant="icon" color="warning">
-              <Clock className="size-4" />
-            </StatIndicator>
-            <StatLabel>Yêu cầu chờ duyệt</StatLabel>
-            <StatValue>02</StatValue>
-          </Stat>
-
-          <Stat>
-            <StatIndicator variant="icon" color="info">
-              <Wallet className="size-4" />
-            </StatIndicator>
-            <StatLabel>Tổng tiền nhận tháng này dự kiến</StatLabel>
-            <StatValue>4.200k VNĐ</StatValue>
-          </Stat>
-          <Stat>
-            <StatIndicator variant="icon" color="info">
-              <Wallet className="size-4" />
-            </StatIndicator>
-            <StatLabel>Tổng tiền nhận tháng này dự kiến</StatLabel>
-            <StatValue>4.200k VNĐ</StatValue>
-          </Stat>
-        </section>
+        <TutorStats />
 
         {/* Main Dashboard Layout */}
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
@@ -100,11 +129,12 @@ const TutorPage = () => {
             {/* Classes Section */}
             <ClassList
               title="Lớp học mới nhất"
-              data={classList}
+              data={filteredClassList}
               appliedClassIds={appliedClassIds}
               onRefresh={refetchClasses}
               isLoading={isClassLoading}
               isError={isClassError}
+              onFilterChange={handleFilterChange}
             />
           </div>
 
