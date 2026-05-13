@@ -12,7 +12,6 @@ import {
   BreadcrumbPage,
 } from "@/components/ui/breadcrumb"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
@@ -28,61 +27,8 @@ import {
 import { DayOfWeekLabel } from "@/lib/contant"
 import { DayOfWeek, MClass, ApplicationStatus } from "@/types/classes"
 import { Status, StatusLabel, StatusIndicator } from "@/components/ui/status"
-
-// ─── Configs ─────────────────────────────────────────────────────────────────
-
-const STATUS_CONFIG: Record<
-  MClass["status"],
-  { label: string; variant: "default" | "success" | "error" | "warning" | "info" }  > = {
-  RECRUITING: {
-    label: "Đang tuyển gia sư", 
-    variant: "info",
-  },
-  TRIAL: {
-    label: "Đang dùng thử",
-    variant: "info",
-  },
-  ACTIVE: {
-    label: "Đã xác nhận gia sư",
-    variant: "default",
-  },
-  COMPLETED: {
-    label: "Hoàn thành",
-    variant: "success",
-  },
-  CANCELLED: {
-    label: "Đã huỷ",
-    variant: "error",
-  },
-}
-
-const APPLICATION_STATUS_CONFIG: Record<
-  ApplicationStatus,
-  { label: string; variant: "default" | "success" | "error" | "warning" | "info" }
-> = {
-  PENDING: {
-    label: "Đang chờ duyệt",
-    variant: "info",
-  },
-  ACCEPTED: {
-    label: "Đã chấp nhận",
-    variant: "success",
-  },
-  REJECTED: {
-    label: "Đã từ chối",
-    variant: "error",
-  },
-  TRIAL: {
-    label: "Dạy thử",
-    variant: "info",
-  },
-  TRIAL_FAILED: {
-    label: "Dạy thử thất bại",
-    variant: "error",
-  },
-}
-
-// ─── Helpers ─────────────────────────────────────────────────────────────────
+import { STATUS_CONFIG } from "../_component/class-config"
+import { ClassDetailSkeleton } from "./_component/class-detail-skeleton"
 
 function formatCurrency(amount: number) {
   return new Intl.NumberFormat("vi-VN").format(amount) + " VND"
@@ -91,96 +37,6 @@ function formatCurrency(amount: number) {
 function formatDays(days: DayOfWeek[]) {
   return days.map((d) => DayOfWeekLabel[d]).join(", ")
 }
-
-// ─── Skeleton ─────────────────────────────────────────────────────────────────
-
-function ClassDetailSkeleton() {
-  return (
-    <div className="space-y-6">
-      {/* Card 1 skeleton */}
-      <Card>
-        <CardHeader>
-          <div className="flex justify-between items-start gap-3">
-            <Skeleton className="w-2/3 h-7" />
-            <Skeleton className="rounded-full w-32 h-6" />
-          </div>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {/* Tags */}
-          <div className="flex gap-2">
-            <Skeleton className="rounded-full w-28 h-6" />
-            <Skeleton className="rounded-full w-24 h-6" />
-          </div>
-
-          <Separator />
-
-          {/* Info grid */}
-          <div className="gap-4 grid grid-cols-1 sm:grid-cols-2">
-            {Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="flex items-start gap-2">
-                <Skeleton className="mt-0.5 rounded w-4 h-4 shrink-0" />
-                <div className="flex-1 space-y-1.5">
-                  <Skeleton className="w-24 h-3.5" />
-                  <Skeleton className="w-40 h-4" />
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <Separator />
-
-          {/* Description */}
-          <div className="space-y-2">
-            <Skeleton className="w-32 h-5" />
-            <Skeleton className="w-full h-4" />
-            <Skeleton className="w-4/5 h-4" />
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Card 2 skeleton — applications */}
-      <Card>
-        <CardHeader className="pb-3">
-          <div className="flex items-center gap-2">
-            <Skeleton className="rounded w-5 h-5" />
-            <Skeleton className="w-44 h-6" />
-          </div>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {Array.from({ length: 2 }).map((_, i) => (
-            <div
-              key={i}
-              className="flex sm:flex-row flex-col justify-between items-start sm:items-center gap-4 p-4 border rounded-md"
-            >
-              {/* Avatar + name */}
-              <div className="flex items-center gap-4">
-                <Skeleton className="rounded-full w-10 h-10 shrink-0" />
-                <div className="space-y-2">
-                  <Skeleton className="w-32 h-4" />
-                  <Skeleton className="rounded-md w-20 h-5" />
-                </div>
-              </div>
-
-              {/* Cover letter + rate */}
-              <div className="flex-1 space-y-1.5">
-                <Skeleton className="w-full h-4" />
-                <Skeleton className="w-3/4 h-4" />
-              </div>
-
-              {/* Actions */}
-              <div className="flex items-center gap-2 shrink-0">
-                <Skeleton className="rounded-md w-24 h-8" />
-                <Skeleton className="rounded-md w-20 h-8" />
-              </div>
-            </div>
-          ))}
-        </CardContent>
-      </Card>
-    </div>
-  )
-}
-
-// ─── Page ─────────────────────────────────────────────────────────────────────
 
 const ClassDetailsPage = () => {
   const { id } = useParams<{ id: string }>()
@@ -331,15 +187,7 @@ const ClassDetailsPage = () => {
                           <p className="font-medium">
                             {app.tutorProfile.user.fullName}
                           </p>
-                          <Status
-                            variant={
-                              APPLICATION_STATUS_CONFIG[app.status].variant
-                            }
-                          >
-                            <StatusLabel>
-                              {APPLICATION_STATUS_CONFIG[app.status].label}
-                            </StatusLabel>
-                          </Status>
+                          <div>{app.tutorProfile.location}</div>
                         </div>
                       </div>
 
@@ -358,13 +206,13 @@ const ClassDetailsPage = () => {
 
                       <div className="flex items-center gap-2 shrink-0">
                         <Button size="sm" variant="outline">
-                          <Link
-                            href={`/tutor/${app.tutorProfile.id}`}
-                          >
+                          <Link href={`/tutor/${app.tutorProfile.id}`}>
                             Xem hồ sơ
                           </Link>
                         </Button>
-                        <Button size="sm">Dạy thử</Button>
+                        {app.status !== "TRIAL" && (
+                          <Button size="sm">Dạy thử</Button>
+                        )}
                       </div>
                     </div>
                   ))

@@ -17,32 +17,7 @@ import { MClass, DayOfWeek } from "@/types/classes"
 import { Status, StatusIndicator, StatusLabel } from "@/components/ui/status"
 import { DayOfWeekLabel } from "@/lib/contant"
 import { Button } from "@/components/ui/button"
-
-const STATUS_CONFIG: Record<
-  MClass["status"],
-  { label: string; variant: "default" | "success" | "error" | "warning" | "info" }
-> = {
-  RECRUITING: {
-    label: "Đang tuyển gia sư",
-    variant: "info",
-  },
-  TRIAL: {
-    label: "Đang dùng thử",
-    variant: "info",
-  },
-  ACTIVE: {
-    label: "Đã xác nhận gia sư",
-    variant: "default",
-  },
-  COMPLETED: {
-    label: "Hoàn thành",
-    variant: "success",
-  },
-  CANCELLED: {
-    label: "Đã huỷ",
-    variant: "error",
-  },
-}
+import { STATUS_CONFIG } from "./class-config"
 
 function formatDays(daysOfWeek: DayOfWeek[]): string {
   return daysOfWeek.map((d) => DayOfWeekLabel[d]).join(", ")
@@ -165,14 +140,16 @@ export default function TutorClassCard({
                 Nhắn tin cho trung tâm
               </Button>
 
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={() => onReview?.(classData)}
-              >
-                <Star className="w-4 h-4" />
-                Đánh giá gia sư
-              </Button>
+              {classData.status === "COMPLETED" && (
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => onReview?.(classData)}
+                >
+                  <Star className="w-4 h-4" />
+                  Đánh giá gia sư
+                </Button>
+              )}
             </div>
 
             <div className="flex flex-1 justify-end">

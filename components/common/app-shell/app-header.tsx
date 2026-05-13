@@ -10,7 +10,7 @@ import { SendIcon, BellIcon } from "lucide-react"
 import type { MUser } from "@/types/auth"
 import Notification from "@/components/common/notification"
 import { usePathname } from "next/navigation"
-
+import { useGetMyNotifications } from "@/hooks/queries/useNotificationQuery"
 interface AppHeaderProps {
   user?: MUser | null
   logout?: () => void
@@ -20,6 +20,7 @@ interface AppHeaderProps {
 
 export function AppHeader({ user, logout, navGroups, footerNavLinks }: AppHeaderProps) {
   const pathname = usePathname()
+  const { data: notifications } = useGetMyNotifications()
 
   const allNavItems: SidebarNavItem[] = [
     ...(navGroups ?? []).flatMap((g) =>
@@ -53,7 +54,7 @@ export function AppHeader({ user, logout, navGroups, footerNavLinks }: AppHeader
         <AppBreadcrumbs page={activeItem} />
       </div>
       <div className="flex items-center gap-3">
-        <Notification />
+        <Notification data={notifications || []} />
         <Separator
           className="data-[orientation=vertical]:self-center h-4"
           orientation="vertical"
