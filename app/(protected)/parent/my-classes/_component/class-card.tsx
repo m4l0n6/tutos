@@ -24,7 +24,7 @@ const STATUS_CONFIG: Record<
 > = {
   RECRUITING: {
     label: "Đang tuyển gia sư",
-    variant: "warning",
+    variant: "info",
   },
   TRIAL: {
     label: "Đang dùng thử",
