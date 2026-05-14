@@ -2,6 +2,7 @@ import { MUser } from "./auth"
 import { TSubjectClassRequest, TSubjectClass } from "./subject"
 import { TLevelClassRequest, TLevelClass } from "./level"
 import { TCategoryClass } from "./category"
+import { ITutorProfile } from "./tutor"
 
 export type ClassStatus =
   | "RECRUITING"
@@ -55,7 +56,7 @@ export type MClass = {
   requestId: string
   name: string
   category: TCategoryClass
-  subject: TSubjectClass
+  subject: TSubjectClassRequest
   level: TLevelClass
   parentName: string
   daysOfWeek: DayOfWeek[]
@@ -80,8 +81,13 @@ export type MClassApplication = {
   coverLetter: string
   proposedRate: number
   status: ApplicationStatus
+  appliedAt?: string
+  updatedAt?: string
   isDepositPaid: boolean
   isContactViewed: boolean
+  tutorProfile: ITutorProfile
+
+  class: MClass
 }
 
 export type TClassResquestParam = {
@@ -95,16 +101,4 @@ export type TClassResquestParam = {
   location: string
   minBudget: number
   maxBudget: number
-}
-
-export type ClassApplication = {
-  id: string
-  classId: string
-  tutorProfileId?: string
-  coverLetter?: string
-  proposedRate?: number
-  status: string
-  appliedAt?: string
-  updatedAt?: string
-  class: MClass
 }

@@ -1,4 +1,4 @@
-import { ChatComponent } from "@/components/chat";
+import { ChatComponent } from "@/components/common/chat";
 
 export default function ChatApp() {
 

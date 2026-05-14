@@ -1,4 +1,6 @@
-export type TutorProfile = {
+import { MUser } from './auth';
+
+export type ITutorProfile = {
   id: string
   userId: string
   bio: string
@@ -10,6 +12,11 @@ export type TutorProfile = {
   location: string
   createdAt: string
   updatedAt: string
+
+  isVerified: boolean
+  averageRating: number
+  totalReviews: number
+  user: MUser
 }
 
 export type CreateTutorProfileParams = {
