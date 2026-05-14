@@ -35,9 +35,16 @@ const STATUS_OPTIONS: { label: string; value: ClassStatus }[] = [
 interface ClassFilterProps {
   value?: ClassStatus
   onValueChange: (value?: ClassStatus) => void
+  searchValue?: string
+  onSearchChange: (value: string) => void
 }
 
-export const ClassFilter = ({ value, onValueChange }: ClassFilterProps) => {
+export const ClassFilter = ({
+  value,
+  onValueChange,
+  searchValue = "",
+  onSearchChange,
+}: ClassFilterProps) => {
   const [open, setOpen] = React.useState(false)
 
   const selectedValueSet = React.useMemo(
@@ -62,7 +69,12 @@ export const ClassFilter = ({ value, onValueChange }: ClassFilterProps) => {
     <div className="flex md:flex-row flex-col md:justify-between md:items-center gap-3 w-full">
       <div className="relative w-full md:max-w-sm">
         <Search className="top-1/2 left-3 absolute w-4 h-4 text-muted-foreground -translate-y-1/2" />
-        <Input placeholder="Search classes..." className="pl-9" />
+        <Input
+          placeholder="Search classes..."
+          className="pl-9"
+          value={searchValue}
+          onChange={(e) => onSearchChange(e.target.value)}
+        />
       </div>
 
       <Popover open={open} onOpenChange={setOpen}>
