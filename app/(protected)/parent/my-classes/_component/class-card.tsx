@@ -18,6 +18,7 @@ import { Status, StatusIndicator, StatusLabel } from "@/components/ui/status"
 import { DayOfWeekLabel } from "@/lib/contant"
 import { Button } from "@/components/ui/button"
 import { STATUS_CONFIG } from "./class-config"
+import { Badge } from "@/components/ui/badge"
 
 function formatDays(daysOfWeek: DayOfWeek[]): string {
   return daysOfWeek.map((d) => DayOfWeekLabel[d]).join(", ")
@@ -45,6 +46,7 @@ export default function TutorClassCard({
 }: TutorClassCardProps) {
   const {
     name,
+    category,
     subject,
     level,
     daysOfWeek,
@@ -53,7 +55,6 @@ export default function TutorClassCard({
     location,
     status,
     acceptanceFee,
-    parentName,
   } = classData
 
   const statusCfg = STATUS_CONFIG[status]
@@ -64,7 +65,7 @@ export default function TutorClassCard({
     location.toLowerCase().includes("zoom")
 
   return (
-    <Card className="group bg-white shadow-sm hover:shadow-md border border-slate-200 rounded-2xl w-full overflow-hidden transition-all duration-300">
+    <Card className="group shadow-sm hover:shadow-md rounded-2xl w-full overflow-hidden transition-all hover:-translate-y-1 duration-300">
       <CardContent>
         <div className="p-4">
           {/* Header Row */}
@@ -82,28 +83,32 @@ export default function TutorClassCard({
             </div>
             {/* Subject + Level tags */}
             <div className="flex flex-wrap items-center gap-2 mt-2">
-              <span className="inline-flex items-center gap-1 bg-primary-50 px-2 py-0.5 border border-primary-100 rounded-full font-medium text-primary text-xs">
+              <Badge>
+                <BookOpen className="w-3 h-3" />
+                {category.name}
+              </Badge>
+              <Badge variant="outline">
                 <BookOpen className="w-3 h-3" />
                 {subject.name}
-              </span>
-              <span className="inline-flex items-center gap-1 bg-primary-50 px-2 py-0.5 border border-primary-100 rounded-full font-medium text-primary text-xs">
+              </Badge>
+              <Badge variant="outline">
                 <GraduationCap className="w-3 h-3" />
                 {level.name}
-              </span>
+              </Badge>
             </div>
           </div>
 
-          <Separator className="bg-slate-100 my-4" />
+          <Separator className="my-4" />
 
           {/* Schedule + Location */}
           <div className="flex flex-wrap gap-4 text-sm">
             <div className="flex items-center gap-2 min-w-0">
               <div className="flex justify-center items-center bg-primary-50 rounded-lg shrink-0">
-                <Calendar className="w-4 h-4 text-primary" />
+                <Calendar className="w-4 h-4" />
               </div>
-              <span className="font-medium text-slate-700">
+              <span className="font-medium">
                 {formatDays(daysOfWeek)}{" "}
-                <span className="font-normal text-slate-500">
+                <span className="font-normal">
                   ({startTime} - {endTime})
                 </span>
               </span>
@@ -112,9 +117,9 @@ export default function TutorClassCard({
             <div className="flex items-center gap-2 min-w-0">
               <div className="flex justify-center items-center bg-primary-50 rounded-lg shrink-0">
                 {isOnline ? (
-                  <Wifi className="w-4 h-4 text-primary" />
+                  <Wifi className="w-4 h-4" />
                 ) : (
-                  <MapPin className="w-4 h-4 text-primary" />
+                  <MapPin className="w-4 h-4" />
                 )}
               </div>
               <span className="truncate">{location}</span>
@@ -125,12 +130,12 @@ export default function TutorClassCard({
           <div className="flex items-center gap-2 mt-3 text-sm">
             <DollarSign className="w-4 h-4" />
             <span>Học phí tiếp nhận:</span>
-            <span className="font-semibold text-primary">
+            <span className="font-semibold">
               {formatCurrency(acceptanceFee)}
             </span>
           </div>
 
-          <Separator className="bg-slate-100 my-4" />
+          <Separator className="my-4" />
 
           {/* Actions */}
           <div className="flex justify-items gap-2 w-full">

@@ -1,6 +1,6 @@
 import { useQuery, useMutation } from "@tanstack/react-query"
 import { api } from "@/lib/axios"
-import type { MClass, TClassResquestParam } from "@/types/classes"
+import type { MClass, TClassResquestParam, ClassStatus } from "@/types/classes"
 
 export const classKeys = {
   all: ["classes"] as const,
@@ -22,10 +22,16 @@ export function useCreateClassRequest() {
   })
 }
 
-export function useGetMyParentClasses() {
+export function useGetMyParentClasses(status?: ClassStatus) {
   return useQuery<MClass[]>({
-    queryKey: classKeys.myParent(),
-    queryFn: () => api.get("/classes/parent/my").then((res) => res.data.data),
+    queryKey: [...classKeys.myParent(), status ?? "all"],
+    queryFn: () => {
+      const statusQuery = status ? `?status=${status}` : ""
+
+      return api
+        .get(`/classes/parent/my${statusQuery}`)
+        .then((res) => res.data.data)
+    },
     staleTime: 1000 * 60 * 5,
   })
 }

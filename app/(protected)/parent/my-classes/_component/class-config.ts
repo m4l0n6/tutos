@@ -13,7 +13,7 @@ MClass["status"],
     variant: "info",
   },
   ACTIVE: {
-    label: "Đã xác nhận gia sư",
+    label: "Đã tìm được gia sư",
     variant: "success",
   },
   COMPLETED: {

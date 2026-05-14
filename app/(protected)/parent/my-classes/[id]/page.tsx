@@ -25,10 +25,11 @@ import {
   Users,
 } from "lucide-react"
 import { DayOfWeekLabel } from "@/lib/contant"
-import { DayOfWeek, MClass, ApplicationStatus } from "@/types/classes"
+import { DayOfWeek } from "@/types/classes"
 import { Status, StatusLabel, StatusIndicator } from "@/components/ui/status"
 import { STATUS_CONFIG } from "../_component/class-config"
 import { ClassDetailSkeleton } from "./_component/class-detail-skeleton"
+import { Badge } from "@/components/ui/badge"
 
 function formatCurrency(amount: number) {
   return new Intl.NumberFormat("vi-VN").format(amount) + " VND"
@@ -93,14 +94,18 @@ const ClassDetailsPage = () => {
 
               <CardContent className="space-y-4">
                 <div className="flex flex-wrap gap-2">
-                  <span className="inline-flex items-center gap-1.5 bg-primary/10 px-3 py-1 rounded-full font-medium text-primary text-sm">
+                  <Badge>
+                    <BookOpen className="w-3.5 h-3.5" />
+                    {classData.subject.category.name}
+                  </Badge>
+                  <Badge variant="outline">
                     <BookOpen className="w-3.5 h-3.5" />
                     {classData.subject.name}
-                  </span>
-                  <span className="inline-flex items-center gap-1.5 bg-primary/10 px-3 py-1 rounded-full font-medium text-primary text-sm">
+                  </Badge>
+                  <Badge variant="outline">
                     <GraduationCap className="w-3.5 h-3.5" />
                     {classData.level.name}
-                  </span>
+                  </Badge>
                 </div>
 
                 <Separator />
@@ -123,7 +128,7 @@ const ClassDetailsPage = () => {
                     icon={<DollarSign className="w-4 h-4" />}
                     label="Học phí tiếp nhận"
                   >
-                    <span className="font-semibold text-primary">
+                    <span className="font-semibold">
                       {formatCurrency(classData.acceptanceFee)}
                     </span>
                   </InfoRow>
@@ -154,7 +159,7 @@ const ClassDetailsPage = () => {
             <Card>
               <CardHeader className="pb-3">
                 <div className="flex items-center gap-2">
-                  <Users className="w-5 h-5 text-primary" />
+                  <Users className="w-5 h-5" />
                   <CardTitle className="text-lg">
                     Gia sư ứng tuyển
                     <span className="ml-2 font-normal text-muted-foreground text-sm">

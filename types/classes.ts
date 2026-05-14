@@ -56,7 +56,7 @@ export type MClass = {
   requestId: string
   name: string
   category: TCategoryClass
-  subject: TSubjectClass
+  subject: TSubjectClassRequest
   level: TLevelClass
   parentName: string
   daysOfWeek: DayOfWeek[]
@@ -86,6 +86,8 @@ export type MClassApplication = {
   isDepositPaid: boolean
   isContactViewed: boolean
   tutorProfile: ITutorProfile
+
+  class: MClass
 }
 
 export type TClassResquestParam = {
