@@ -44,7 +44,7 @@ export default function TutorLayout({
 
   if (isError) {
     return (
-      <div className="flex justify-center items-center px-6 py-10 min-h-[70vh]">
+      <div className="flex min-h-[70vh] items-center justify-center px-6 py-10">
         <Empty className="max-w-xl">
           <EmptyHeader>
             <EmptyTitle>Không thể tải hồ sơ gia sư</EmptyTitle>
@@ -65,7 +65,7 @@ export default function TutorLayout({
   return (
     <>
       <Header />
-      <main className="flex flex-col justify-between items-center bg-background min-w-full">
+      <main className="flex min-w-full flex-col items-center justify-between bg-background">
         {children}
       </main>
       <Footer />

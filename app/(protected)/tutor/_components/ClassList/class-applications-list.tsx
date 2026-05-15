@@ -32,6 +32,9 @@ export const ClassApplicationsList = ({
   isLoading = false,
   isError = false,
 }: Props) => {
+  const [visibleCount, setVisibleCount] = useState(10)
+  const showMore = () => setVisibleCount((prev) => prev + 10)
+
   const [activeStatus, setActiveStatus] = useState<ApplicationStatus | "ALL">(
     "ALL"
   )
@@ -41,6 +44,8 @@ export const ClassApplicationsList = ({
       ? data
       : data.filter((app) => app.status === activeStatus)
 
+  const visibleData = filtered.slice(0, visibleCount)
+  const remaining = Math.max(0, filtered.length - visibleCount)
   const hasData = filtered && filtered.length > 0
 
   return (
@@ -113,16 +118,28 @@ export const ClassApplicationsList = ({
           <p className="text-muted-foreground">Chưa có yêu cầu</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
-          {filtered.map((app) => (
-            <ClassCard
-              key={app.id}
-              classData={app.class}
-              showApply={false}
-              statusOverride={app.status}
-            />
-          ))}
-        </div>
+        <>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-5">
+            {visibleData.map((app) => (
+              <ClassCard
+                key={app.id}
+                classData={app.class}
+                showApply={false}
+                statusOverride={app.status}
+              />
+            ))}
+          </div>
+          {remaining > 0 && (
+            <div className="mt-6 flex justify-center">
+              <button
+                className="rounded bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+                onClick={showMore}
+              >
+                Xem thêm {remaining >= 10 ? 10 : remaining}
+              </button>
+            </div>
+          )}
+        </>
       )}
     </div>
   )

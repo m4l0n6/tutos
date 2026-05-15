@@ -23,8 +23,8 @@ export const ClassList = ({
   isError = false,
   onFilterChange,
 }: ClassListProps) => {
-  const [visibleCount, setVisibleCount] = useState(12)
-  const showMore = () => setVisibleCount((prev) => prev + 12)
+  const [visibleCount, setVisibleCount] = useState(15)
+  const showMore = () => setVisibleCount((prev) => prev + 15)
 
   const filteredData = useMemo(() => {
     if (!appliedClassIds || appliedClassIds.length === 0) return data
@@ -80,12 +80,7 @@ export const ClassList = ({
         </div>
       ) : (
         <>
-          <div
-            className="grid gap-4"
-            style={{
-              gridTemplateColumns: "repeat(auto-fit, minmax(285px, 1fr))",
-            }}
-          >
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-5">
             {visibleData.map((item, idx) => (
               <ClassCard key={item.id || idx} classData={item} />
             ))}
@@ -96,7 +91,7 @@ export const ClassList = ({
                 className="rounded bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
                 onClick={showMore}
               >
-                Xem thêm {remaining >= 12 ? 12 : remaining}
+                Xem thêm {remaining >= 15 ? 15 : remaining}
               </button>
             </div>
           )}
