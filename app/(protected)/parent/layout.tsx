@@ -34,6 +34,11 @@ export default function ParentLayout({
           icon: <LayoutGridIcon />,
         },
         {
+          title: "My Requests",
+          path: "/parent/my-requests",
+          icon: <ShapesIcon />,
+        },
+        {
           title: "My Classes",
           path: "/parent/my-classes",
           icon: <ShapesIcon />,

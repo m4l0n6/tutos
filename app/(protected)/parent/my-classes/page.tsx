@@ -30,7 +30,7 @@ const ParentMyClassPage = () => {
   return (
     <div className="flex flex-col bg-background min-h-screen">
       <main className="flex-1 space-y-8 mx-auto px-8 py-8 w-7xl">
-        <h1 className="font-bold text-primary text-2xl">My Classes</h1>
+        <h1 className="font-bold text-2xl">My Classes</h1>
         <ClassFilter
           value={status}
           onValueChange={setStatus}

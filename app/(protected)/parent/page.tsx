@@ -9,7 +9,6 @@ import { SearchingRequests } from './_component/dashboard/searching-requests';
 import { Notifications } from './_component/dashboard/notifications';
 import { WeeklySchedule } from './_component/dashboard/weekly-schedule';
 import { PromotionalBanner } from './_component/dashboard/promotional-banner';
-import { CreateRequestModal } from './_component/dashboard/create-request-modal';
 import { useAuth } from '@/context/AuthContext';
 
 const mockSearchingRequests = [
@@ -71,7 +70,6 @@ const mockSchedule = [
 ];
 
 const ParentDashboardPage = () => {
-  const [modalOpen, setModalOpen] = useState(false);
   const currentDate = new Date();
   const dayOfWeek = currentDate.toLocaleDateString('vi-VN', { weekday: 'long' });
   const dateString = currentDate.toLocaleDateString('vi-VN', {
@@ -84,23 +82,16 @@ const ParentDashboardPage = () => {
   return (
     <div className="flex flex-col bg-background min-h-screen">
       {/* Modal */}
-      <CreateRequestModal open={modalOpen} onOpenChange={setModalOpen}/>
+      
       <main className="flex-1 space-y-8 mx-auto px-8 py-8 w-full max-w-7xl">
         {/* Header Section */}
         <div className="flex md:flex-row flex-col justify-between md:items-end gap-4">
           <div>
-            <h1 className="font-bold text-primary text-2xl">Xin chào, {user?.fullName}</h1>
+            <h1 className="font-bold text-2xl">Xin chào, {user?.fullName}</h1>
             <p className="text-body-lg text-on-surface-variant">
               Hôm nay là {dayOfWeek}, ngày {dateString}. Chúc các con một ngày học tập hiệu quả!
             </p>
           </div>
-          <Button
-            onClick={() => setModalOpen(true)}
-            size="lg"
-          >
-            <Plus className="w-5 h-5" />
-            Tạo yêu cầu mới
-          </Button>
         </div>
 
         {/* Statistics Bento Grid */}
