@@ -15,6 +15,19 @@ export function useGetClass() {
   })
 }
 
+export function useGetTutorClass(status?: string) {
+  return useQuery<MClass[]>({
+    queryKey: ["classes", { status }],
+    queryFn: () => {
+      const params = status ? { status } : {}
+      return api
+        .get("/classes/tutor/my", { params })
+        .then((res) => res.data.data)
+    },
+    staleTime: 1000 * 60 * 5,
+  })
+}
+
 export function useCreateClassRequest() {
   return useMutation({
     mutationFn: (data: TClassResquestParam) =>
