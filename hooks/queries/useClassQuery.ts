@@ -14,6 +14,14 @@ export function useGetClass() {
     staleTime: 1000 * 60 * 5,
   })
 }
+export function useGetClassById(id: string) {
+  return useQuery<MClass>({
+    queryKey: [...classKeys.all, id],
+    queryFn: () => api.get(`/classes/${id}`).then((res) => res.data.data),
+    enabled: !!id,
+    staleTime: 1000 * 60 * 5,
+  })
+}
 
 export function useGetTutorClass(status?: string) {
   return useQuery<MClass[]>({

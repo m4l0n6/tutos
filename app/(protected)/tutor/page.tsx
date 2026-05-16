@@ -4,6 +4,7 @@ import * as React from "react"
 import { useAuth } from "@/context/AuthContext"
 import { ClassList } from "./_components/ClassList/class-list"
 import { ClassApplicationsList } from "./_components/ClassList/class-applications-list"
+import { MyClassList } from "./_components/ClassList/my-class-list"
 import { useGetClass } from "@/hooks/queries/useClassQuery"
 import { useGetClassApplication } from "@/hooks/queries/useClassApplicationQuery"
 import { TutorStats } from "./_components/TutorStats"
@@ -51,7 +52,6 @@ const TutorPage = () => {
 
   const filteredClassList = React.useMemo(() => {
     return classList.filter((c: MClass) => {
-      // category: match against c.category.id
       if (filters.categoryId) {
         const filterCategories = filters.categoryId.split(",").filter(Boolean)
         if (
@@ -62,7 +62,6 @@ const TutorPage = () => {
         }
       }
 
-      // subject: match against c.subject.id
       if (filters.subjectId) {
         const filterSubjects = filters.subjectId.split(",").filter(Boolean)
         if (
@@ -73,7 +72,6 @@ const TutorPage = () => {
         }
       }
 
-      // level: match against c.level.id
       if (filters.levelId) {
         const filterLevels = filters.levelId.split(",").filter(Boolean)
         if (filterLevels.length > 0 && !filterLevels.includes(c.level.id)) {
@@ -117,9 +115,12 @@ const TutorPage = () => {
         {/* Main Dashboard Layout */}
         <div className="grid grid-cols-1 gap-8">
           <div className="space-y-8">
+            {/* My Classes */}
+            <MyClassList />
+
             {/* Applications Section */}
             <ClassApplicationsList
-              title="Ứng tuyển của bạn"
+              title="Đơn ứng tuyển của tôi"
               data={classApplications}
               onRefresh={refetchApplications}
               isLoading={isAppLoading}

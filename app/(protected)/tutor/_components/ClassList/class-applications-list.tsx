@@ -3,7 +3,11 @@
 import { useState } from "react"
 import { RotateCcw } from "lucide-react"
 import { ClassCard } from "./class-card"
-import { MClassApplication, ApplicationStatus } from "@/types/classes"
+import { ClassApplication, ApplicationStatus } from "@/types/classes"
+import {
+  APPLICATION_STATUS_FILTER_OPTIONS,
+  getStatusClass,
+} from "@/lib/class-status"
 
 interface Props {
   title: string
@@ -12,18 +16,6 @@ interface Props {
   isLoading?: boolean
   isError?: boolean
 }
-
-const STATUS_FILTER_OPTIONS: {
-  value: ApplicationStatus | "ALL"
-  label: string
-}[] = [
-  { value: "ALL", label: "Tất cả" },
-  { value: "PENDING", label: "Chờ duyệt" },
-  { value: "TRIAL", label: "Học thử" },
-  { value: "ACCEPTED", label: "Đã chấp nhận" },
-  { value: "REJECTED", label: "Đã từ chối" },
-  { value: "TRIAL_FAILED", label: "Học thử thất bại" },
-]
 
 export const ClassApplicationsList = ({
   title,
@@ -70,7 +62,7 @@ export const ClassApplicationsList = ({
 
       {/* Dòng 2: Status filter pills */}
       <div className="mt-3 mb-4 flex flex-wrap gap-2">
-        {STATUS_FILTER_OPTIONS.map((opt) => {
+        {APPLICATION_STATUS_FILTER_OPTIONS.map((opt) => {
           const count =
             opt.value === "ALL"
               ? data.length
@@ -78,12 +70,14 @@ export const ClassApplicationsList = ({
 
           if (opt.value !== "ALL" && count === 0) return null
 
+          const isActive = activeStatus === opt.value
+
           return (
             <button
               key={opt.value}
               onClick={() => setActiveStatus(opt.value)}
               className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
-                activeStatus === opt.value
+                isActive
                   ? "border-primary bg-primary text-primary-foreground"
                   : "border-border bg-background text-muted-foreground hover:border-primary/50 hover:text-foreground"
               }`}
@@ -91,7 +85,7 @@ export const ClassApplicationsList = ({
               {opt.label}
               <span
                 className={`inline-flex size-4 items-center justify-center rounded-full text-[10px] ${
-                  activeStatus === opt.value
+                  isActive
                     ? "bg-primary-foreground/20 text-primary-foreground"
                     : "bg-muted text-muted-foreground"
                 }`}
