@@ -1,0 +1,25 @@
+.responsiveGrid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+/* ipad portrait -> 2 columns */
+@media (min-width: 800px) {
+  .responsiveGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* tablet landscape -> 3 columns */
+@media (min-width: 1000px) {
+  .responsiveGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* desktop -> 5 columns */
+@media (min-width: 1200px) {
+  .responsiveGrid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
