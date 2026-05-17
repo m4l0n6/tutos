@@ -17,7 +17,7 @@ import { MClass, DayOfWeek } from "@/types/classes"
 import { Status, StatusIndicator, StatusLabel } from "@/components/ui/status"
 import { DayOfWeekLabel } from "@/lib/contant"
 import { Button } from "@/components/ui/button"
-import { STATUS_CONFIG } from "./class-config"
+import { getStatusLabel, getStatusVariant } from "@/lib/class-status"
 import { Badge } from "@/components/ui/badge"
 
 function formatDays(daysOfWeek: DayOfWeek[]): string {
@@ -57,7 +57,8 @@ export default function TutorClassCard({
     acceptanceFee,
   } = classData
 
-  const statusCfg = STATUS_CONFIG[status]
+  const statusLabel = getStatusLabel(status)
+  const statusVariant = getStatusVariant(status)
 
   const isOnline =
     location.toLowerCase().includes("online") ||
@@ -65,34 +66,34 @@ export default function TutorClassCard({
     location.toLowerCase().includes("zoom")
 
   return (
-    <Card className="group shadow-sm hover:shadow-md rounded-2xl w-full overflow-hidden transition-all hover:-translate-y-1 duration-300">
+    <Card className="group w-full overflow-hidden rounded-2xl shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
       <CardContent>
         <div className="p-4">
           {/* Header Row */}
-          <div className="flex-1 min-w-0">
-            <div className="flex justify-between items-start gap-2">
+          <div className="min-w-0 flex-1">
+            <div className="flex items-start justify-between gap-2">
               <div className="min-w-0">
-                <h3 className="pr-2 font-semibold text-slate-800 text-base truncate leading-tight">
+                <h3 className="truncate pr-2 text-base leading-tight font-semibold text-slate-800">
                   {name}
                 </h3>
               </div>
-              <Status variant={statusCfg.variant}>
+              <Status variant={statusVariant}>
                 <StatusIndicator />
-                <StatusLabel>{statusCfg.label}</StatusLabel>
+                <StatusLabel>{statusLabel}</StatusLabel>
               </Status>
             </div>
             {/* Subject + Level tags */}
-            <div className="flex flex-wrap items-center gap-2 mt-2">
+            <div className="mt-2 flex flex-wrap items-center gap-2">
               <Badge>
-                <BookOpen className="w-3 h-3" />
+                <BookOpen className="h-3 w-3" />
                 {category.name}
               </Badge>
               <Badge variant="outline">
-                <BookOpen className="w-3 h-3" />
+                <BookOpen className="h-3 w-3" />
                 {subject.name}
               </Badge>
               <Badge variant="outline">
-                <GraduationCap className="w-3 h-3" />
+                <GraduationCap className="h-3 w-3" />
                 {level.name}
               </Badge>
             </div>
@@ -102,9 +103,9 @@ export default function TutorClassCard({
 
           {/* Schedule + Location */}
           <div className="flex flex-wrap gap-4 text-sm">
-            <div className="flex items-center gap-2 min-w-0">
-              <div className="flex justify-center items-center bg-primary-50 rounded-lg shrink-0">
-                <Calendar className="w-4 h-4" />
+            <div className="flex min-w-0 items-center gap-2">
+              <div className="bg-primary-50 flex shrink-0 items-center justify-center rounded-lg">
+                <Calendar className="h-4 w-4" />
               </div>
               <span className="font-medium">
                 {formatDays(daysOfWeek)}{" "}
@@ -114,12 +115,12 @@ export default function TutorClassCard({
               </span>
             </div>
 
-            <div className="flex items-center gap-2 min-w-0">
-              <div className="flex justify-center items-center bg-primary-50 rounded-lg shrink-0">
+            <div className="flex min-w-0 items-center gap-2">
+              <div className="bg-primary-50 flex shrink-0 items-center justify-center rounded-lg">
                 {isOnline ? (
-                  <Wifi className="w-4 h-4" />
+                  <Wifi className="h-4 w-4" />
                 ) : (
-                  <MapPin className="w-4 h-4" />
+                  <MapPin className="h-4 w-4" />
                 )}
               </div>
               <span className="truncate">{location}</span>
@@ -127,8 +128,8 @@ export default function TutorClassCard({
           </div>
 
           {/* Acceptance Fee */}
-          <div className="flex items-center gap-2 mt-3 text-sm">
-            <DollarSign className="w-4 h-4" />
+          <div className="mt-3 flex items-center gap-2 text-sm">
+            <DollarSign className="h-4 w-4" />
             <span>Học phí tiếp nhận:</span>
             <span className="font-semibold">
               {formatCurrency(acceptanceFee)}
@@ -138,10 +139,10 @@ export default function TutorClassCard({
           <Separator className="my-4" />
 
           {/* Actions */}
-          <div className="flex justify-items gap-2 w-full">
+          <div className="justify-items flex w-full gap-2">
             <div className="flex items-center gap-2">
               <Button size="sm" onClick={() => onMessage?.(classData)}>
-                <MessageCircle className="w-4 h-4" />
+                <MessageCircle className="h-4 w-4" />
                 Nhắn tin cho trung tâm
               </Button>
 
@@ -151,7 +152,7 @@ export default function TutorClassCard({
                   variant="outline"
                   onClick={() => onReview?.(classData)}
                 >
-                  <Star className="w-4 h-4" />
+                  <Star className="h-4 w-4" />
                   Đánh giá gia sư
                 </Button>
               )}
@@ -164,7 +165,7 @@ export default function TutorClassCard({
                 variant="outline"
               >
                 Xem chi tiết
-                <ChevronRight className="w-4 h-4" />
+                <ChevronRight className="h-4 w-4" />
               </Button>
             </div>
           </div>
