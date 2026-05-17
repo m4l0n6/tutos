@@ -126,7 +126,7 @@ const ClassDetailsPage = () => {
                   </InfoRow>
                   <InfoRow
                     icon={<DollarSign className="h-4 w-4" />}
-                    label="Học phí tiếp nhận"
+                    label="Phí tiếp nhận"
                   >
                     <span className="font-semibold">
                       {formatCurrency(classData.acceptanceFee)}

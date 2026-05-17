@@ -20,7 +20,9 @@ const TutorPage = () => {
     day: "numeric",
   })
   const { user } = useAuth()
-  const [filters, setFilters] = React.useState<ClassFilterState>({})
+  const [filters, setFilters] = React.useState<ClassFilterState>({
+    status: "RECRUITING",
+  })
 
   const {
     data: classList = [],
@@ -45,7 +47,7 @@ const TutorPage = () => {
 
   const handleFilterChange = React.useCallback(
     (newFilters: ClassFilterState) => {
-      setFilters(newFilters)
+      setFilters((prev) => ({ ...prev, ...newFilters }))
     },
     []
   )
@@ -75,6 +77,12 @@ const TutorPage = () => {
       if (filters.levelId) {
         const filterLevels = filters.levelId.split(",").filter(Boolean)
         if (filterLevels.length > 0 && !filterLevels.includes(c.level.id)) {
+          return false
+        }
+      }
+
+      if (filters.status) {
+        if (c.status !== filters.status) {
           return false
         }
       }

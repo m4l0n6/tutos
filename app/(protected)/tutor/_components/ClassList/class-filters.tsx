@@ -122,6 +122,7 @@ export interface ClassFilterState {
   subjectId?: string
   levelId?: string
   dayOfWeek?: string
+  status?: string
 }
 
 interface ClassFiltersProps {
