@@ -3,24 +3,22 @@
 import { useMemo, useState } from "react"
 import { RotateCcw } from "lucide-react"
 import { useGetTutorClass } from "@/hooks/queries/useClassQuery"
-import type { MClass } from "@/types/classes"
-import ClassCard from "./ClassCard"
-import SkeletonCard from "./SkeletonCard"
-import styles from "./my-classes.module.css"
+import type { ClassStatus, MClass } from "@/types/classes"
+import ClassCard from "./_component/ClassCard"
+import SkeletonCard from "./_component/SkeletonCard"
+import styles from "./_component/my-classes.module.css"
 import {
   TABS,
   ACTIVE_STATUSES,
   COMPLETED_STATUSES,
-  isUpcoming,
-  getNextSessionDate,
   shouldShowNextSession,
   EMPTY_MSG,
-} from "./utils"
+} from "./_component/utils"
 
 export default function MyClassesPage() {
-  const [activeTab, setActiveTab] = useState<
-    "all" | "active" | "upcoming" | "completed"
-  >("all")
+  const [activeTab, setActiveTab] = useState<"all" | "active" | "completed">(
+    "all"
+  )
 
   const {
     data: classList = [],
@@ -30,31 +28,23 @@ export default function MyClassesPage() {
   } = useGetTutorClass()
 
   const activeClasses = useMemo(
-    () => classList.filter((c) => ACTIVE_STATUSES.includes(c.status as any)),
+    () =>
+      classList.filter((c) =>
+        ACTIVE_STATUSES.includes(c.status as ClassStatus)
+      ),
     [classList]
   )
-
-  const upcomingClasses = useMemo(
-    () =>
-      activeClasses
-        .filter(isUpcoming)
-        .sort(
-          (a, b) =>
-            (getNextSessionDate(a)?.getTime() ?? 0) -
-            (getNextSessionDate(b)?.getTime() ?? 0)
-        ),
-    [activeClasses]
-  )
-
   const completedClasses = useMemo(
-    () => classList.filter((c) => COMPLETED_STATUSES.includes(c.status as any)),
+    () =>
+      classList.filter((c) =>
+        COMPLETED_STATUSES.includes(c.status as ClassStatus)
+      ),
     [classList]
   )
 
   const tabCounts: Record<string, number> = {
     all: classList.length,
     active: activeClasses.length,
-    upcoming: upcomingClasses.length,
     completed: completedClasses.length,
   }
 
@@ -63,9 +53,7 @@ export default function MyClassesPage() {
       ? classList
       : activeTab === "active"
         ? activeClasses
-        : activeTab === "upcoming"
-          ? upcomingClasses
-          : completedClasses
+        : completedClasses
 
   return (
     <div className="flex min-h-screen flex-col bg-background">

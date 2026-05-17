@@ -104,3 +104,34 @@ export const APPLICATION_STATUS_FILTER_OPTIONS: {
   { value: "REJECTED", label: "Đã từ chối" },
   { value: "TRIAL_FAILED", label: "Học thử thất bại" },
 ]
+
+// ─── UI status variant mapping (for `Status` component variants) ───────────
+export type StatusVariant = "default" | "success" | "error" | "warning" | "info"
+
+export const CLASS_STATUS_VARIANT: Record<ClassStatus, StatusVariant> = {
+  RECRUITING: "info",
+  TRIAL: "info",
+  ACTIVE: "success",
+  COMPLETED: "success",
+  CANCELLED: "error",
+}
+
+export const APPLICATION_STATUS_VARIANT: Record<
+  ApplicationStatus,
+  StatusVariant
+> = {
+  PENDING: "warning",
+  TRIAL: "info",
+  ACCEPTED: "success",
+  REJECTED: "error",
+  TRIAL_FAILED: "warning",
+}
+
+/** Tra variant (statusVariants) cho bất kỳ status nào. */
+export function getStatusVariant(status: string): StatusVariant {
+  return (
+    (CLASS_STATUS_VARIANT as Record<string, StatusVariant>)[status] ??
+    (APPLICATION_STATUS_VARIANT as Record<string, StatusVariant>)[status] ??
+    "default"
+  )
+}

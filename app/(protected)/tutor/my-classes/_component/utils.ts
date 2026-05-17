@@ -47,22 +47,15 @@ export function formatNextSession(cls: MClass): string {
   return `${dayLabel}, ${cls.startTime} – ${cls.endTime}`
 }
 
-export function isUpcoming(cls: MClass): boolean {
-  const next = getNextSessionDate(cls)
-  if (!next) return false
-  return (next.getTime() - Date.now()) / 86_400_000 <= 7
-}
-
 export function shouldShowNextSession(cls: MClass): boolean {
   return !COMPLETED_STATUSES.includes(cls.status as ClassStatus)
 }
 
-export type Tab = "all" | "active" | "upcoming" | "completed"
+export type Tab = "all" | "active" | "completed"
 
 export const TABS: { key: Tab; label: string }[] = [
   { key: "all", label: "Tất cả" },
   { key: "active", label: "Đang dạy" },
-  { key: "upcoming", label: "Sắp tới" },
   { key: "completed", label: "Đã hoàn thành" },
 ]
 
@@ -72,7 +65,6 @@ export const COMPLETED_STATUSES: ClassStatus[] = ["COMPLETED", "CANCELLED"]
 export const EMPTY_MSG: Record<Tab, string> = {
   all: "Bạn chưa có lớp nào.",
   active: "Bạn chưa có lớp nào đang hoạt động.",
-  upcoming: "Không có lớp nào có lịch dạy trong 7 ngày tới.",
   completed: "Bạn chưa có lớp nào đã hoàn thành.",
 }
 
