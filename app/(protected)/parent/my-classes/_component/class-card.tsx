@@ -130,7 +130,7 @@ export default function TutorClassCard({
           {/* Acceptance Fee */}
           <div className="mt-3 flex items-center gap-2 text-sm">
             <DollarSign className="h-4 w-4" />
-            <span>Học phí tiếp nhận:</span>
+            <span>Phí tiếp nhận:</span>
             <span className="font-semibold">
               {formatCurrency(acceptanceFee)}
             </span>
