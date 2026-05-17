@@ -25,6 +25,19 @@ export function useGetClass() {
   })
 }
 
+export function useGetTutorClass(status?: string) {
+  return useQuery<MClass[]>({
+    queryKey: ["classes", { status }],
+    queryFn: () => {
+      const params = status ? { status } : {}
+      return api
+        .get("/classes/tutor/my", { params })
+        .then((res) => res.data.data)
+    },
+    staleTime: 1000 * 60 * 5,
+  })
+}
+
 export function useCreateClassRequest() {
   return useMutation({
     mutationFn: (data: TClassResquestParam) =>
@@ -54,10 +67,11 @@ export function useGetMyParentClasses(status?: ClassStatus) {
   })
 }
 
-export function useGetClassById(classId: string) {
+export function useGetClassById(id: string) {
   return useQuery<MClass>({
-    queryKey: [...classKeys.all, classId],
-    queryFn: () => api.get(`/classes/${classId}`).then((res) => res.data.data),
+    queryKey: [...classKeys.all, id],
+    queryFn: () => api.get(`/classes/${id}`).then((res) => res.data.data),
+    enabled: !!id,
     staleTime: 1000 * 60 * 5,
   })
 }

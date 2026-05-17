@@ -72,6 +72,8 @@ export type MClass = {
   updatedAt: string
   request: MClassRequest
   applications: MClassApplication[]
+  isTrialConfirmedByParent: boolean
+  isTrialConfirmedByTutor: boolean
 }
 
 export type MClassApplication = {
