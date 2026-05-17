@@ -1,15 +1,16 @@
 "use client"
 
-import { useState } from "react"
-import { Plus, GraduationCap, Clock, Wallet } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Stat, StatIndicator, StatLabel, StatValue } from "@/components/ui/stat"
-import { SearchingRequests } from "./_component/dashboard/searching-requests"
-import { Notifications } from "./_component/dashboard/notifications"
-import { WeeklySchedule } from "../tutor/_components/weekly-schedule"
-import { PromotionalBanner } from "./_component/dashboard/promotional-banner"
-import { CreateRequestModal } from "./_component/dashboard/create-request-modal"
-import { useAuth } from "@/context/AuthContext"
+'use client';
+
+import { useState } from 'react';
+import { Plus, GraduationCap, Clock, Wallet } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Stat, StatIndicator, StatLabel, StatValue } from '@/components/ui/stat';
+import { SearchingRequests } from './_component/dashboard/searching-requests';
+import { Notifications } from './_component/dashboard/notifications';
+import { WeeklySchedule } from './_component/dashboard/weekly-schedule';
+import { PromotionalBanner } from './_component/dashboard/promotional-banner';
+import { useAuth } from '@/context/AuthContext';
 
 const mockSearchingRequests = [
   {
@@ -77,36 +78,29 @@ const mockSchedule = [
 ]
 
 const ParentDashboardPage = () => {
-  const [modalOpen, setModalOpen] = useState(false)
-  const currentDate = new Date()
-  const dayOfWeek = currentDate.toLocaleDateString("vi-VN", { weekday: "long" })
-  const dateString = currentDate.toLocaleDateString("vi-VN", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  })
-  const { user } = useAuth()
+  const currentDate = new Date();
+  const dayOfWeek = currentDate.toLocaleDateString('vi-VN', { weekday: 'long' });
+  const dateString = currentDate.toLocaleDateString('vi-VN', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+  const { user } = useAuth();
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
       {/* Modal */}
-      <CreateRequestModal open={modalOpen} onOpenChange={setModalOpen} />
-      <main className="mx-auto w-full max-w-7xl flex-1 space-y-8 px-8 py-8">
+      
+      <main className="flex-1 space-y-8 mx-auto px-8 py-8 w-full max-w-7xl">
         {/* Header Section */}
         <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
           <div>
-            <h1 className="text-2xl font-bold text-primary">
-              Xin chào, {user?.fullName}
-            </h1>
+            <h1 className="font-bold text-2xl">Xin chào, {user?.fullName}</h1>
             <p className="text-body-lg text-on-surface-variant">
               Hôm nay là {dayOfWeek}, ngày {dateString}. Chúc các con một ngày
               học tập hiệu quả!
             </p>
           </div>
-          <Button onClick={() => setModalOpen(true)} size="lg">
-            <Plus className="h-5 w-5" />
-            Tạo yêu cầu mới
-          </Button>
         </div>
 
         {/* Statistics Bento Grid */}
