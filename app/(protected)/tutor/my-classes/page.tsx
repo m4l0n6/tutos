@@ -56,23 +56,23 @@ export default function MyClassesPage() {
         : completedClasses
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
-      <main className="max-w-10xl mx-auto w-full flex-1 px-8 py-8">
-        <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+    <div className="flex flex-col bg-background min-h-screen">
+      <main className="flex-1 mx-auto px-8 py-8 w-full max-w-10xl">
+        <div className="flex md:flex-row flex-col md:justify-between md:items-start gap-4 mb-6">
           <div>
-            <h1 className="text-2xl font-bold text-primary">Lớp học của tôi</h1>
+            <h1 className="font-bold text-primary text-2xl">My Classes</h1>
             {!isLoading && !isError && (
-              <p className="mt-1 text-sm text-muted-foreground">
-                Bạn đang có{" "}
+              <p className="mt-1 text-muted-foreground text-sm">
+                You currently have{" "}
                 <span className="font-semibold text-foreground">
-                  {classList.length} lớp học
+                  {classList.length} classes
                 </span>{" "}
-                trong hệ thống.
+                in the system.
               </p>
             )}
           </div>
 
-          <div className="flex w-fit items-center gap-1 rounded-xl border border-border bg-muted/40 p-1">
+          <div className="flex items-center gap-1 bg-muted/40 p-1 border border-border rounded-xl w-fit">
             {TABS.map((tab) => (
               <button
                 key={tab.key}
@@ -100,11 +100,11 @@ export default function MyClassesPage() {
           </div>
         </div>
 
-        <div className="mb-6 flex justify-end">
+        <div className="flex justify-end mb-6">
           <button
             onClick={() => refetch()}
             disabled={isLoading}
-            className="inline-flex items-center gap-2 rounded-lg border border-border px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted disabled:opacity-50"
+            className="inline-flex items-center gap-2 hover:bg-muted disabled:opacity-50 px-3 py-1.5 border border-border rounded-lg font-medium text-muted-foreground text-sm transition-colors"
           >
             <RotateCcw
               className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`}
@@ -120,14 +120,14 @@ export default function MyClassesPage() {
             ))}
           </div>
         ) : isError ? (
-          <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-destructive/40 py-20 text-center">
-            <p className="text-sm text-destructive">
-              Không thể tải danh sách. Vui lòng thử lại.
+          <div className="flex flex-col justify-center items-center py-20 border border-destructive/40 border-dashed rounded-2xl text-center">
+            <p className="text-destructive text-sm">
+              Cannot load list. Please try again.
             </p>
           </div>
         ) : displayList.length === 0 ? (
-          <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border py-20 text-center">
-            <p className="text-sm text-muted-foreground">
+          <div className="flex flex-col justify-center items-center py-20 border border-border border-dashed rounded-2xl text-center">
+            <p className="text-muted-foreground text-sm">
               {EMPTY_MSG[activeTab]}
             </p>
           </div>

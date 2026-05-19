@@ -15,11 +15,6 @@ export function CallToAction() {
 			</div>
 			<div className="flex justify-center items-center gap-2">
 				<Link href="/login">
-					<Button className="shadow" variant="secondary">
-					Schedule Demo
-				</Button>
-				</Link>
-				<Link href="/signup">
 					<Button className="shadow">
 					Get Started {" "}
 						<ArrowRightIcon data-icon="inline-end" />

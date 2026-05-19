@@ -42,17 +42,17 @@ export function ChatSidebar({
     <div className="flex flex-col bg-white border-[#e0e0e0] border-r w-72 min-w-72">
       {/* Header */}
       <div className="flex justify-between items-center px-4 py-4 border-[#e0e0e0] border-b">
-        <span className="font-medium text-[#111] text-[15px]">Chats</span>
+        <span className="font-medium text-[#111] text-[15px]">Messages</span>
         <div className="flex gap-1">
           <button
             className="flex justify-center items-center hover:bg-gray-100 rounded-lg w-7.5 h-7.5 text-4xl transition"
-            title="Tìm kiếm"
+            title="Search"
           >
             <Search size={16} />
           </button>
           <button
             className="flex justify-center items-center hover:bg-gray-100 rounded-lg w-7.5 h-7.5 text-4xl transition"
-            title="Soạn tin mới"
+            title="Compose New Message"
           >
             <MessageSquarePlus size={16} />
           </button>
@@ -77,7 +77,7 @@ export function ChatSidebar({
           <input
             value={search}
             onChange={(e) => onSearchChange(e.target.value)}
-            placeholder="Tìm hội thoại..."
+            placeholder="Search conversations..."
             className="bg-[#f5f5f5] focus:bg-white pr-2.5 pl-7.5 border border-[#e0e0e0] rounded-lg outline-none w-full h-8 text-[#111] text-sm transition"
           />
         </div>

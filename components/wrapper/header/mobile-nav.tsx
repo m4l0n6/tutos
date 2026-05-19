@@ -3,9 +3,7 @@ import React from "react"
 import { Portal, PortalBackdrop } from "@/components/ui/portal"
 import { Button } from "@/components/ui/button"
 import {
-  companyLinks,
   companyLinks2,
-  productLinks,
 } from "./nav-links"
 import { LinkItem } from "./sheard"
 import { XIcon, MenuIcon } from "lucide-react"
@@ -56,22 +54,7 @@ export function MobileNav() {
             data-slot={open ? "open" : "closed"}
           >
             <div className="flex flex-col gap-y-2 w-full">
-              <span className="text-sm">Product</span>
-              {productLinks.map((link) => (
-                <LinkItem
-                  className="active:bg-muted dark:active:bg-muted/50 p-2 rounded-lg"
-                  key={`product-${link.label}`}
-                  {...link}
-                />
-              ))}
-              <span className="text-sm">Company</span>
-              {companyLinks.map((link) => (
-                <LinkItem
-                  className="active:bg-muted dark:active:bg-muted/50 p-2 rounded-lg"
-                  key={`company-${link.label}`}
-                  {...link}
-                />
-              ))}
+             
               {companyLinks2.map((link) => (
                 <LinkItem
                   className="active:bg-muted dark:active:bg-muted/50 p-2 rounded-lg"

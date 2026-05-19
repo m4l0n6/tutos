@@ -57,7 +57,7 @@ export default function AuthSuccess() {
   return (
     <div className="flex flex-col justify-center items-center gap-4 w-full h-screen">
       <Spinner className="w-12 h-12" />
-      <p className="text-lg">Đang xử lý đăng nhập...</p>
+      <p className="text-lg">Processing login...</p>
     </div>
   )
 }

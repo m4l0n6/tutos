@@ -102,16 +102,16 @@ const TutorPage = () => {
   }, [classList, filters])
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
-      <main className="max-w-10xl mx-auto w-full flex-1 space-y-8 px-8 py-8">
+    <div className="flex flex-col bg-background min-h-screen">
+      <main className="flex-1 space-y-8 mx-auto px-8 py-8 w-full max-w-10xl">
         {/* Header Section */}
-        <header className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
+        <header className="flex md:flex-row flex-col justify-between md:items-end gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-primary">
-              Xin chào, {user?.fullName}
+            <h1 className="font-bold text-primary text-2xl">
+              Hello, {user?.fullName}
             </h1>
             <p className="text-body-lg text-on-surface-variant">
-              Hôm nay là {dayOfWeek}, ngày {dateString}. Chúc bạn có một ngày
+              Today is {dayOfWeek}, {dateString}. Wish you a wonderful day.
               làm việc hiệu quả!
             </p>
           </div>
@@ -121,7 +121,7 @@ const TutorPage = () => {
         <TutorStats />
 
         {/* Main Dashboard Layout */}
-        <div className="grid grid-cols-1 gap-8">
+        <div className="gap-8 grid grid-cols-1">
           <div className="space-y-8">
             {/* My Classes */}
             <MyClassList />
@@ -137,7 +137,7 @@ const TutorPage = () => {
 
             {/* Classes Section */}
             <ClassList
-              title="Lớp học mới nhất"
+              title="Latest Classes"
               data={filteredClassList}
               appliedClassIds={appliedClassIds}
               onRefresh={refetchClasses}

@@ -71,7 +71,7 @@ export function ClassApplyModal({
 
     const words = countWords(coverLetter)
     if (!coverLetter.trim()) {
-      setCoverError("Vui lòng nhập Cover Letter")
+      setCoverError("Please enter Cover Letter")
     }
 
     if (words > maxWords) {
@@ -80,7 +80,7 @@ export function ClassApplyModal({
 
     const rate = Number(proposedRate)
     if (proposedRate === "" || Number.isNaN(rate)) {
-      setRateError("Vui lòng nhập Proposed Rate")
+      setRateError("Please enter Proposed Rate")
     } else if (rate <= 0) {
       setRateError("Proposed Rate phải lớn hơn 0")
     }
@@ -102,7 +102,7 @@ export function ClassApplyModal({
 
     try {
       await mutateAsync(payload)
-      toast.success("Gửi đơn ứng tuyển thành công!")
+      toast.success("Application submitted successfully!")
       handleClose(false)
       onSuccess?.()
     } catch (err) {
@@ -117,7 +117,7 @@ export function ClassApplyModal({
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="max-h-[90vh] overflow-y-auto p-6 sm:max-w-lg">
         <DialogHeader>
-          <DialogTitle>Ứng tuyển lớp: {classData.name}</DialogTitle>
+          <DialogTitle>Apply for Class: {classData.name}</DialogTitle>
           <DialogDescription className="text-body-md text-on-surface-variant">
             {classData.category?.name} · {classData.level?.name}
           </DialogDescription>
@@ -128,7 +128,7 @@ export function ClassApplyModal({
             <FieldLabel htmlFor="coverLetter">Cover Letter</FieldLabel>
             <Textarea
               id="coverLetter"
-              placeholder="Viết vài dòng giới thiệu..."
+              placeholder="Write a brief introduction..."
               value={coverLetter}
               onChange={(e) => {
                 setCoverLetter(e.target.value)
@@ -153,7 +153,7 @@ export function ClassApplyModal({
               id="proposedRate"
               type="number"
               min={0}
-              placeholder="Nhập mức đề xuất"
+              placeholder="Enter proposed rate"
               value={proposedRate}
               onChange={(e) => {
                 setProposedRate(
@@ -177,7 +177,7 @@ export function ClassApplyModal({
           <DialogFooter className="mt-6">
             <DialogClose asChild>
               <Button type="button" variant="outline" disabled={isPending}>
-                Hủy
+                Cancel
               </Button>
             </DialogClose>
 
@@ -188,7 +188,7 @@ export function ClassApplyModal({
                 disabled={isPending}
               >
                 {isPending ? <Spinner /> : null}
-                {isPending ? "Đang gửi..." : "Gửi đơn"}
+                {isPending ? "Sending..." : "Submit Application"}
               </Button>
             </div>
           </DialogFooter>

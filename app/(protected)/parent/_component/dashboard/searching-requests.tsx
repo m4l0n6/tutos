@@ -22,7 +22,7 @@ export function SearchingRequests({ requests }: SearchingRequestsProps) {
   return (
     <section>
       <div className="flex justify-between items-center mb-4">
-        <h2 className="font-h2 text-on-surface">Lớp học đang tìm gia sư</h2>
+        <h2 className="font-h2 text-on-surface">Classes Looking for Tutors</h2>
         <a className="font-label-sm text-primary hover:underline cursor-pointer">
           Xem tất cả
         </a>
@@ -55,7 +55,7 @@ export function SearchingRequests({ requests }: SearchingRequestsProps) {
                 ))}
               </AvatarGroup>
               <Badge className="bg-primary-container/10 px-3 py-1 rounded-full text-primary whitespace-nowrap">
-                Đang tìm
+                Searching
               </Badge>
               <button className="p-2 text-outline hover:text-primary transition-colors shrink-0" title="Chi tiết">
                 <ChevronRight className="w-5 h-5" />

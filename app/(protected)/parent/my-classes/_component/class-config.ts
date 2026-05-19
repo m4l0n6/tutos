@@ -5,23 +5,23 @@ MClass["status"],
   { label: string; variant: "default" | "success" | "error" | "warning" | "info" }
 > = {
   RECRUITING: {
-    label: "Đang tuyển gia sư",
+    label: "Recruiting",
     variant: "info",
   },
   TRIAL: {
-    label: "Đang dạy thử",
+    label: "Trial",
     variant: "info",
   },
   ACTIVE: {
-    label: "Đã tìm được gia sư",
+    label: "Active",
     variant: "success",
   },
   COMPLETED: {
-    label: "Ghép thành công",
+    label: "Completed",
     variant: "success",
   },
   CANCELLED: {
-    label: "Đã huỷ",
+    label: "Cancelled",
     variant: "error",
   },
 }

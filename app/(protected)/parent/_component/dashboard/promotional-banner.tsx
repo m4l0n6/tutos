@@ -5,9 +5,9 @@ export function PromotionalBanner() {
   return (
     <section className="relative bg-primary bg-primary-container p-6 rounded-2xl overflow-hidden text-white">
       <div className="z-10 relative">
-        <h3 className="mb-2 font-h2 text-xl">Ưu đãi hè 2024</h3>
+        <h3 className="mb-2 font-h2 text-xl">Summer 2024 Offers</h3>
         <p className="mb-4 text-label-sm text-on-primary-container/80">
-          Giảm ngay 15% học phí khi đăng ký khóa ôn luyện thi đại học cấp tốc.
+          Get 15% off tuition when registering for express college entrance prep courses.
         </p>
         <Button
           size="sm"

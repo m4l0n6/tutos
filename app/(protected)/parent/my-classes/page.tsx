@@ -10,7 +10,19 @@ import { ClassCardSkeleton } from "./_component/class-skeleton-card"
 const ParentMyClassPage = () => {
   const router = useRouter()
   const [status, setStatus] = React.useState<ClassStatus | undefined>(undefined)
+  const [searchValue, setSearchValue] = React.useState("")
   const { data: myClasses, isLoading } = useGetMyParentClasses(status)
+
+  const filteredClasses = React.useMemo(() => {
+    if (!myClasses) return []
+
+    return myClasses.filter((classData) => {
+      const searchLower = searchValue.toLowerCase()
+      return (
+        classData.name.toLowerCase().includes(searchLower)
+      )
+    })
+  }, [myClasses, searchValue])
 
   const handleViewDetail = (classData: MClass) => {
     router.push(`/parent/my-classes/${classData.id}`)
@@ -18,15 +30,20 @@ const ParentMyClassPage = () => {
   return (
     <div className="flex flex-col bg-background min-h-screen">
       <main className="flex-1 space-y-8 mx-auto px-8 py-8 w-7xl">
-        <h1 className="font-bold text-primary text-2xl">My Classes</h1>
-        <ClassFilter value={status} onValueChange={setStatus} />
+        <h1 className="font-bold text-2xl">My Classes</h1>
+        <ClassFilter
+          value={status}
+          onValueChange={setStatus}
+          searchValue={searchValue}
+          onSearchChange={setSearchValue}
+        />
 
         <div className="gap-6 grid grid-cols-1 md:grid-cols-2">
           {isLoading
             ? Array.from({ length: 4 }).map((_, i) => (
                 <ClassCardSkeleton key={i} />
               ))
-            : myClasses?.map((classData) => (
+            : filteredClasses?.map((classData) => (
                 <TutorClassCard
                   key={classData.id}
                   classData={classData}
@@ -36,9 +53,9 @@ const ParentMyClassPage = () => {
         </div>
 
         {/* Empty state */}
-        {!isLoading && myClasses?.length === 0 && (
+        {!isLoading && filteredClasses?.length === 0 && (
           <p className="py-16 text-muted-foreground text-center">
-            Bạn chưa có lớp học nào.
+            You dont have any classes yet.
           </p>
         )}
       </main>
