@@ -18,7 +18,10 @@ import { Textarea } from "@/components/ui/textarea"
 import { Spinner } from "@/components/ui/spinner"
 import { toast } from "sonner"
 import { MClass } from "@/types/classes"
-import { useCreateClassApplication } from "@/hooks/queries/useClassApplicationQuery"
+import {
+  getClassApplicationErrorMessage,
+  useCreateClassApplication,
+} from "@/hooks/queries/useClassApplicationQuery"
 
 interface ClassApplyModalProps {
   open: boolean
@@ -37,6 +40,7 @@ export function ClassApplyModal({
   const [proposedRate, setProposedRate] = useState<number | "">("")
   const [coverError, setCoverError] = useState<string | null>(null)
   const [rateError, setRateError] = useState<string | null>(null)
+  const [submitError, setSubmitError] = useState<string | null>(null)
 
   const { mutateAsync, isPending } = useCreateClassApplication()
 
@@ -52,6 +56,9 @@ export function ClassApplyModal({
     if (!newOpen) {
       setCoverLetter("")
       setProposedRate("")
+      setCoverError(null)
+      setRateError(null)
+      setSubmitError(null)
     }
     onOpenChange(newOpen)
   }
@@ -60,6 +67,7 @@ export function ClassApplyModal({
     e.preventDefault()
     setCoverError(null)
     setRateError(null)
+    setSubmitError(null)
 
     const words = countWords(coverLetter)
     if (!coverLetter.trim()) {
@@ -99,7 +107,9 @@ export function ClassApplyModal({
       onSuccess?.()
     } catch (err) {
       console.error(err)
-      toast.error("Có lỗi xảy ra, vui lòng thử lại sau.")
+      const message = getClassApplicationErrorMessage(err)
+      setSubmitError(message)
+      toast.error(message)
     }
   }
 
@@ -123,6 +133,7 @@ export function ClassApplyModal({
               onChange={(e) => {
                 setCoverLetter(e.target.value)
                 if (coverError) setCoverError(null)
+                if (submitError) setSubmitError(null)
               }}
               className="resize-none"
             />
@@ -149,12 +160,19 @@ export function ClassApplyModal({
                   e.target.value === "" ? "" : Number(e.target.value)
                 )
                 if (rateError) setRateError(null)
+                if (submitError) setSubmitError(null)
               }}
             />
             {rateError && (
               <p className="mt-1 text-sm text-destructive">{rateError}</p>
             )}
           </Field>
+
+          {submitError && (
+            <p className="mt-4 rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">
+              {submitError}
+            </p>
+          )}
 
           <DialogFooter className="mt-6">
             <DialogClose asChild>

@@ -1,9 +1,40 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
+import { isAxiosError } from "axios"
 import { api } from "@/lib/axios"
 import { classKeys } from "./useClassQuery"
 
 export const classApplicationKeys = {
   all: ["classApplications"] as const,
+}
+
+export function getClassApplicationErrorMessage(error: unknown) {
+  if (isAxiosError(error)) {
+    const responseData = error.response?.data
+
+    if (
+      typeof responseData?.message === "string" &&
+      responseData.message.trim()
+    ) {
+      return responseData.message
+    }
+
+    if (
+      Array.isArray(responseData?.message) &&
+      responseData.message.length > 0
+    ) {
+      return responseData.message.join("\n")
+    }
+
+    if (typeof responseData?.error === "string" && responseData.error.trim()) {
+      return responseData.error
+    }
+  }
+
+  if (error instanceof Error && error.message.trim()) {
+    return error.message
+  }
+
+  return "Có lỗi xảy ra, vui lòng thử lại sau."
 }
 
 export function useGetClassApplication() {
