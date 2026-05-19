@@ -17,8 +17,6 @@ import type { MessageEntity, NotificationEntity } from "./types"
 // ─────────────────────────────────────────────
 
 interface SocketState {
-  chatSocket: Socket | null
-  notiSocket: Socket | null
   isChatConnected: boolean
   isNotiConnected: boolean
 
@@ -65,7 +63,7 @@ export function SocketProvider({ children }: { children: React.ReactNode }) {
   // ── Khởi tạo socket ──────────────────────────
   const initSockets = useCallback(() => {
     const token = getToken()
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL
+    const baseUrl = process.env.NEXT_PUBLIC_SOCKET_URL
 
     if (!token) {
       console.warn("[SocketProvider] No token — skipping socket init")
@@ -149,16 +147,23 @@ export function SocketProvider({ children }: { children: React.ReactNode }) {
   // ── Actions ───────────────────────────────────
 
   const sendMessage = useCallback(
-    (conversationId: string, content: string, attachments?: Attachment[]) => {
+    (
+      conversationId: string,
+      content: string,
+      attachments?: Attachment[],
+      onQueued?: (response: { status: "queued"; tempId: string }) => void
+    ) => {
       if (!chatRef.current?.connected) {
         console.warn("[SocketProvider] sendMessage: chat socket not connected")
         return
       }
-      chatRef.current.emit("sendMessage", {
-        conversationId,
-        content,
-        attachments,
-      })
+      chatRef.current.emit(
+        "sendMessage",
+        { conversationId, content, attachments },
+        (response: { status: "queued"; tempId: string }) => {
+          onQueued?.(response)
+        }
+      )
     },
     []
   )
@@ -198,8 +203,6 @@ export function SocketProvider({ children }: { children: React.ReactNode }) {
   return (
     <SocketContext.Provider
       value={{
-        chatSocket: chatRef.current,
-        notiSocket: notiRef.current,
         isChatConnected,
         isNotiConnected,
         unreadChat,
