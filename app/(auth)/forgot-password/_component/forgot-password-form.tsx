@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button"
 import Link from "next/link";
+import { Input } from "@/components/ui/input"
 
 const ForgotPasswordForm = () => {
     return (
@@ -11,12 +12,11 @@ const ForgotPasswordForm = () => {
           >
             Email
           </label>
-          <input
+          <Input
             id="email"
             type="email"
             autoComplete="email"
             required
-            className="flex bg-transparent file:bg-transparent disabled:opacity-50 px-3 py-2 border border-input file:border-0 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ring-offset-background focus-visible:ring-offset-2 w-full h-10 file:font-medium placeholder:text-muted-foreground text-sm file:text-sm disabled:cursor-not-allowed"
           />
         </div>
         <Button type="submit" className="w-full">

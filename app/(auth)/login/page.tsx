@@ -6,7 +6,6 @@ import { LoginForm } from "@/app/(auth)/login/_component/login-form"
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export default function LoginPage() {
   return (

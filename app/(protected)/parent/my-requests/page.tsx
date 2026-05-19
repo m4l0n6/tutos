@@ -1,19 +1,33 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { CreateRequestModal } from "./_component/create-request-modal";
 import RequestCard from "./_component/request-card";
 import { RequestCardSkeleton } from "./_component/request-skeleton-card";
 import { Button } from "@/components/ui/button";
-import { PlusIcon } from "lucide-react";
+import { PlusIcon, ChevronLeft, ChevronRight } from "lucide-react";
 import { useGetMyParentClassesRequest } from "@/hooks/queries/useClassQuery";
 import { MClassRequest } from "@/types/classes";
 
 const MyRequestsPage = () => {
   const router = useRouter();
   const [modalOpen, setModalOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
   const { data: requests, isLoading } = useGetMyParentClassesRequest();
+
+  const ITEMS_PER_PAGE = 5;
+
+  const { paginatedRequests, totalPages } = useMemo(() => {
+    if (!requests) return { paginatedRequests: [], totalPages: 0 };
+
+    const total = Math.ceil(requests.length / ITEMS_PER_PAGE);
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const endIndex = startIndex + ITEMS_PER_PAGE;
+    const paginated = requests.slice(startIndex, endIndex);
+
+    return { paginatedRequests: paginated, totalPages: total };
+  }, [requests, currentPage]);
 
   const handleMessage = (request: MClassRequest) => {
     console.log("Message:", request);
@@ -51,8 +65,8 @@ const MyRequestsPage = () => {
               <RequestCardSkeleton />
               <RequestCardSkeleton />
             </>
-          ) : requests && requests.length > 0 ? (
-            requests.map((request) => (
+          ) : paginatedRequests && paginatedRequests.length > 0 ? (
+            paginatedRequests.map((request) => (
               <RequestCard
                 key={request.id}
                 request={request}
@@ -67,6 +81,35 @@ const MyRequestsPage = () => {
             </div>
           )}
         </div>
+
+        {/* Pagination Controls */}
+        {totalPages > 1 && (
+          <div className="flex justify-between items-center mt-6">
+            <p className="text-on-surface-variant text-sm">
+              Page {currentPage} of {totalPages}
+            </p>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+              >
+                <ChevronLeft className="w-4 h-4" />
+                Previous
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                disabled={currentPage === totalPages}
+              >
+                Next
+                <ChevronRight className="w-4 h-4" />
+              </Button>
+            </div>
+          </div>
+        )}
       </main>
     </div>
   );
