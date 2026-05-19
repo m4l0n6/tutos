@@ -82,3 +82,20 @@ export function useConfirmTrial(classId: string) {
     },
   })
 }
+
+interface RejectTrialPayload {
+  reason: string
+}
+
+export function useRejectTrial(classId: string) {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (payload: RejectTrialPayload) =>
+      api
+        .patch(`/classes/${classId}/reject-trial`, payload)
+        .then((res) => res.data.data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [...classKeys.all, classId] })
+    },
+  })
+}

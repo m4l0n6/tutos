@@ -74,7 +74,7 @@ export type MClass = {
   applications: MClassApplication[]
   isTrialConfirmedByParent: boolean
   isTrialConfirmedByTutor: boolean
-  payment: MPayment[]
+  payments: MPayment[]
   totalTutorApplication: number
 }
 

@@ -13,7 +13,6 @@ const navItems = [
   {
     label: "My Classes",
     href: "/my-classes",
-    count: 3,
   },
   {
     label: "Chat",
