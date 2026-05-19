@@ -70,14 +70,14 @@ interface CreateRequestModalProps {
 const STEPS = [
   {
     value: "class-info",
-    title: "Thông tin lớp học",
-    description: "Danh mục, môn học, trình độ, địa điểm",
+    title: "Class Information",
+    description: "Category, Subject, Level, Location",
     fields: ["categoryId", "subjectId", "levelId", "location", "description"] as const,
   },
   {
     value: "schedule",
-    title: "Thời gian học",
-    description: "Lịch học và ngân sách",
+    title: "Class Schedule",
+    description: "Schedule and Budget",
     fields: [
       "daysOfWeek",
       "startTime",
@@ -152,15 +152,15 @@ export function CreateRequestModal({
     async (_value, direction) => {
       if (direction === "prev") return true
 
-      // Dùng ref thay vì state trực tiếp
+      // Use ref instead of state directly
       const stepData = STEPS.find((s) => s.value === currentStepRef.current)
       if (!stepData) return true
 
       const isValid = await trigger(stepData.fields)
 
       if (!isValid) {
-        toast.info("Vui lòng điền đầy đủ thông tin để tiếp tục", {
-          description: "Kiểm tra lại các trường bắt buộc và thử lại.",
+        toast.info("Please fill in all required information to continue", {
+          description: "Check required fields and try again.",
         })
       }
 
@@ -170,16 +170,16 @@ export function CreateRequestModal({
   )
 
   const onSubmit = (data: ClassRequestFormValues) => {
-    // Exclude categoryId khi gửi
+    // Exclude categoryId when sending
     const { categoryId: _categoryId, ...submitData } = data
     mutate(submitData as TClassResquestParam, {
       onSuccess: () => {
         setIsSubmitted(true)
-        toast.success("Gửi yêu cầu thành công!")
+        toast.success("Request submitted successfully!")
       },
       onError: (error) => {
         console.error(error.message)
-        toast.error("Gửi yêu cầu thất bại, vui lòng thử lại")
+        toast.error("Failed to submit request, please try again")
       },
     })
   }
@@ -193,10 +193,10 @@ export function CreateRequestModal({
               <CheckCircle className="w-12 h-12 text-primary" />
             </div>
             <h2 className="mb-2 font-bold text-h2 text-primary">
-              Gửi yêu cầu thành công!
+              Request submitted successfully!
             </h2>
             <p className="text-body-md text-on-surface-variant">
-              Chúng tôi sẽ xét duyệt yêu cầu của bạn và phản hồi trong vòng 24h.
+              We will review your request and respond within 24 hours.
             </p>
           </div>
         </DialogContent>
@@ -209,11 +209,10 @@ export function CreateRequestModal({
       <DialogContent className="p-8 sm:max-w-lg overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-primary text-xl">
-            Gửi yêu cầu thuê gia sư
+            Create Class Request
           </DialogTitle>
           <DialogDescription className="text-body-md text-on-surface-variant">
-            Vui lòng điền đầy đủ thông tin để chúng tôi tìm kiếm gia sư phù hợp
-            nhất cho con bạn.
+            Please fill out the form below to submit a new class request. Our team will review your request and get back to you within 24-48 hours.
           </DialogDescription>
         </DialogHeader>
 
@@ -245,11 +244,11 @@ export function CreateRequestModal({
               ))}
             </StepperList>
 
-            {/* Step 1: Thông tin lớp học */}
+            {/* Step 1: Class Information */}
             <StepperContent value="class-info">
               <FieldGroup>
                 <Field>
-                  <FieldLabel htmlFor="categoryId">Danh mục</FieldLabel>
+                  <FieldLabel htmlFor="categoryId">Category</FieldLabel>
                   <Controller
                     control={control}
                     name="categoryId"
@@ -259,7 +258,7 @@ export function CreateRequestModal({
                         onValueChange={field.onChange}
                       >
                         <SelectTrigger id="categoryId">
-                          <SelectValue placeholder="Chọn danh mục" />
+                          <SelectValue placeholder="Select Category" />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectGroup>
@@ -282,7 +281,7 @@ export function CreateRequestModal({
 
                 <div className="gap-4 grid grid-cols-2">
                   <Field>
-                    <FieldLabel htmlFor="subjectId">Môn học</FieldLabel>
+                    <FieldLabel htmlFor="subjectId">Subject</FieldLabel>
                     <Controller
                       control={control}
                       name="subjectId"
@@ -296,8 +295,8 @@ export function CreateRequestModal({
                             <SelectValue
                               placeholder={
                                 selectedCategory
-                                  ? "Chọn môn học"
-                                  : "Chọn danh mục trước"
+                                  ? "Select Subject"
+                                  : "Select Category First"
                               }
                             />
                           </SelectTrigger>
@@ -321,7 +320,7 @@ export function CreateRequestModal({
                   </Field>
 
                   <Field>
-                    <FieldLabel htmlFor="levelId">Trình độ lớp</FieldLabel>
+                    <FieldLabel htmlFor="levelId">Level</FieldLabel>
                     <Controller
                       control={control}
                       name="levelId"
@@ -335,8 +334,8 @@ export function CreateRequestModal({
                             <SelectValue
                               placeholder={
                                 selectedCategory
-                                  ? "Chọn trình độ"
-                                  : "Chọn danh mục trước"
+                                  ? "Select Level"
+                                  : "Select Category First"
                               }
                             />
                           </SelectTrigger>
@@ -361,11 +360,11 @@ export function CreateRequestModal({
                 </div>
 
                 <Field>
-                  <FieldLabel htmlFor="location">Địa chỉ</FieldLabel>
+                  <FieldLabel htmlFor="location">Address</FieldLabel>
                   <Input
                     id="location"
                     type="text"
-                    placeholder="Nhập địa chỉ cụ thể ..."
+                    placeholder="Enter specific address..."
                     {...register("location")}
                   />
                   {errors.location && (
@@ -376,10 +375,10 @@ export function CreateRequestModal({
                 </Field>
 
                 <Field>
-                  <FieldLabel htmlFor="description">Mô tả</FieldLabel>
+                  <FieldLabel htmlFor="description">Description</FieldLabel>
                   <Textarea
                     id="description"
-                    placeholder="Nhập mô tả chi tiết về yêu cầu của bạn ..."
+                    placeholder="Enter detailed description of your request..."
                     className="resize-none"
                     {...register("description")}
                   />
@@ -398,12 +397,12 @@ export function CreateRequestModal({
                 <div className="gap-4 grid grid-cols-2">
                   <Field>
                     <FieldLabel htmlFor="minBudget">
-                      Số tiền tối thiểu
+                      Minimum Budget
                     </FieldLabel>
                     <Input
                       id="minBudget"
                       type="number"
-                      placeholder="Nhập số tiền tối thiểu ..."
+                      placeholder="Enter minimum budget..."
                       {...register("minBudget", { valueAsNumber: true })}
                     />
                     {errors.minBudget && (
@@ -414,11 +413,11 @@ export function CreateRequestModal({
                   </Field>
 
                   <Field>
-                    <FieldLabel htmlFor="maxBudget">Số tiền tối đa</FieldLabel>
+                    <FieldLabel htmlFor="maxBudget">Maximum Budget</FieldLabel>
                     <Input
                       id="maxBudget"
                       type="number"
-                      placeholder="Nhập số tiền tối đa ..."
+                      placeholder="Enter maximum budget..."
                       {...register("maxBudget", { valueAsNumber: true })}
                     />
                     {errors.maxBudget && (
@@ -430,7 +429,7 @@ export function CreateRequestModal({
                 </div>
 
                 <FieldSet>
-                  <FieldLegend>Ngày trong tuần</FieldLegend>
+                  <FieldLegend>Days of Week</FieldLegend>
                   <Controller
                     control={control}
                     name="daysOfWeek"
@@ -473,7 +472,7 @@ export function CreateRequestModal({
 
                 <div className="gap-4 grid grid-cols-2">
                   <Field>
-                    <FieldLabel htmlFor="startTime">Giờ bắt đầu</FieldLabel>
+                    <FieldLabel htmlFor="startTime">Start Time</FieldLabel>
                     <Input
                       id="startTime"
                       type="time"
@@ -487,7 +486,7 @@ export function CreateRequestModal({
                   </Field>
 
                   <Field>
-                    <FieldLabel htmlFor="endTime">Giờ kết thúc</FieldLabel>
+                    <FieldLabel htmlFor="endTime">End Time</FieldLabel>
                     <Input id="endTime" type="time" {...register("endTime")} />
                     {errors.endTime && (
                       <p className="text-destructive text-sm">
@@ -498,10 +497,10 @@ export function CreateRequestModal({
                 </div>
 
                 <Field>
-                  <FieldLabel htmlFor="timeNote">Ghi chú thời gian</FieldLabel>
+                  <FieldLabel htmlFor="timeNote">Time Note</FieldLabel>
                   <Textarea
                     id="timeNote"
-                    placeholder="Nhập ghi chú thời gian ..."
+                    placeholder="Enter time note..."
                     {...register("timeNote")}
                   />
                   {errors.timeNote && (
@@ -517,7 +516,7 @@ export function CreateRequestModal({
             <DialogFooter className="mt-6">
               <DialogClose asChild>
                 <Button type="button" variant="outline" disabled={isPending}>
-                  Hủy
+                  Cancel
                 </Button>
               </DialogClose>
 
@@ -529,7 +528,7 @@ export function CreateRequestModal({
                       variant="outline"
                       disabled={isPending}
                     >
-                      Quay lại
+                      Back
                     </Button>
                   </StepperPrev>
                 )}
@@ -541,11 +540,11 @@ export function CreateRequestModal({
                     disabled={isPending}
                   >
                     {isPending ? <Spinner /> : <Send className="w-4 h-4" />}
-                    {isPending ? "Đang gửi..." : "Gửi yêu cầu"}
+                    {isPending ? "Sending..." : "Submit Request"}
                   </Button>
                 ) : (
                   <StepperNext asChild>
-                    <Button type="button">Tiếp theo</Button>
+                    <Button type="button">Next</Button>
                   </StepperNext>
                 )}
               </div>

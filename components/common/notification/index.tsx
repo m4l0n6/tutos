@@ -48,7 +48,7 @@ export default function NotificationPopover({ data }: NotificationProps) {
 
         <PopoverContent align="end" sideOffset={8} className="p-0 w-80">
           <div className="flex justify-between items-center px-4 py-3 border-b">
-            <p className="font-medium text-sm">Thông báo ({unreadCount})</p>
+            <p className="font-medium text-sm">Notifications ({unreadCount})</p>
             <Button
               variant="ghost"
               size="sm"
@@ -56,7 +56,7 @@ export default function NotificationPopover({ data }: NotificationProps) {
               onClick={() => markAllRead()}
               disabled={unreadCount === 0}
             >
-              Đánh dấu tất cả đã đọc
+              Mark all as read
             </Button>
           </div>
 
@@ -64,7 +64,7 @@ export default function NotificationPopover({ data }: NotificationProps) {
             <div className="flex flex-col justify-center items-center p-6">
               <Bell className="mb-2 w-8 h-8 text-muted-foreground" />
               <p className="text-muted-foreground text-sm">
-                Không có thông báo
+                No notifications
               </p>
             </div>
           ) : (

@@ -16,7 +16,7 @@ export function Notifications({ notifications }: NotificationsProps) {
   return (
     <section>
       <div className="flex justify-between items-center mb-4">
-        <h2 className="font-h2 text-on-surface">Thông báo mới</h2>
+        <h2 className="font-h2 text-on-surface">New Notifications</h2>
         <Button variant="ghost" size="icon">
           <MoreHorizontal className="text-outline-variant w-5 h-5" />
         </Button>

@@ -31,10 +31,10 @@ export default function Page() {
 
   if (isLoading) {
     return (
-      <div className="mx-auto flex min-h-[70vh] w-full max-w-4xl items-center justify-center px-6 py-12">
-        <div className="flex items-center gap-3 rounded-2xl border bg-card px-4 py-3 text-muted-foreground shadow-sm">
+      <div className="flex justify-center items-center mx-auto px-6 py-12 w-full max-w-4xl min-h-[70vh]">
+        <div className="flex items-center gap-3 bg-card shadow-sm px-4 py-3 border rounded-2xl text-muted-foreground">
           <Spinner />
-          <span>Đang tải hồ sơ gia sư...</span>
+          <span>Loading tutor profile...</span>
         </div>
       </div>
     )
@@ -54,25 +54,25 @@ export default function Page() {
   }
 
   return (
-    <div className="mx-auto w-full max-w-5xl px-4 py-8 md:px-8 md:py-10">
-      <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+    <div className="mx-auto px-4 md:px-8 py-8 md:py-10 w-full max-w-5xl">
+      <div className="flex md:flex-row flex-col md:justify-between md:items-start gap-4 mb-6">
         <div className="space-y-2">
-          <p className="text-sm font-medium tracking-[0.2em] text-muted-foreground uppercase">
+          <p className="font-medium text-muted-foreground text-sm uppercase tracking-[0.2em]">
             Tutor profile
           </p>
-          <h1 className="text-3xl font-bold text-primary">Hồ sơ gia sư</h1>
-          <p className="max-w-2xl text-sm text-muted-foreground md:text-base">
-            Quản lý thông tin hồ sơ để phụ huynh và hệ thống ghép lớp chính xác
+          <h1 className="font-bold text-primary text-3xl">Tutor Profile</h1>
+          <p className="max-w-2xl text-muted-foreground text-sm md:text-base">
+            Manage profile information so parents and the system can match classes accurately
             hơn.
           </p>
         </div>
-        <Button onClick={() => setIsEditing(true)}>Chỉnh sửa hồ sơ</Button>
+        <Button onClick={() => setIsEditing(true)}>Edit Profile</Button>
       </div>
 
-      <section className="rounded-3xl border bg-card p-5 shadow-sm md:p-6">
-        <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
+      <section className="bg-card shadow-sm p-5 md:p-6 border rounded-3xl">
+        <div className="gap-6 grid lg:grid-cols-[280px_1fr]">
           <div className="flex flex-col items-center gap-3">
-            <Avatar className="size-28 rounded-full">
+            <Avatar className="rounded-full size-28">
               <AvatarImage src={user?.avatarUrl} />
               <AvatarFallback className="rounded-full text-2xl">
                 {user?.fullName?.slice(0, 2)?.toUpperCase() || "TV"}
@@ -80,43 +80,43 @@ export default function Page() {
             </Avatar>
             <div className="text-center">
               <p className="font-semibold text-foreground">{user?.fullName}</p>
-              <p className="text-sm text-muted-foreground">{user?.phone}</p>
+              <p className="text-muted-foreground text-sm">{user?.phone}</p>
             </div>
           </div>
 
           <div className="space-y-6">
-            <div className="grid gap-4 md:grid-cols-2">
+            <div className="gap-4 grid md:grid-cols-2">
               <div className="space-y-1">
-                <p className="text-sm text-muted-foreground">Học thức</p>
+                <p className="text-muted-foreground text-sm">Học thức</p>
                 <p className="font-medium text-foreground">
                   {tutorProfile.education}
                 </p>
               </div>
               <div className="space-y-1">
-                <p className="text-sm text-muted-foreground">
-                  Mức phí theo giờ
+                <p className="text-muted-foreground text-sm">
+                  Hourly Rate
                 </p>
                 <p className="font-medium text-foreground">
-                  {tutorProfile.hourlyRate.toLocaleString("vi-VN")} đ/giờ
+                  {tutorProfile.hourlyRate.toLocaleString("en-US")} $/hour
                 </p>
               </div>
               <div className="space-y-1 md:col-span-2">
-                <p className="text-sm text-muted-foreground">Khu vực</p>
+                <p className="text-muted-foreground text-sm">Khu vực</p>
                 <p className="font-medium text-foreground">
                   {tutorProfile.location}
                 </p>
               </div>
               <div className="space-y-1 md:col-span-2">
-                <p className="text-sm text-muted-foreground">Bio</p>
-                <p className="whitespace-pre-line text-foreground">
+                <p className="text-muted-foreground text-sm">Bio</p>
+                <p className="text-foreground whitespace-pre-line">
                   {tutorProfile.bio}
                 </p>
               </div>
             </div>
 
-            <div className="grid gap-4 md:grid-cols-2">
+            <div className="gap-4 grid md:grid-cols-2">
               <div className="space-y-2">
-                <p className="text-sm text-muted-foreground">Môn học</p>
+                <p className="text-muted-foreground text-sm">Subject</p>
                 <div className="flex flex-wrap gap-2">
                   {(tutorProfile.subjectIds ?? []).map((id) => (
                     <Badge key={id} variant="secondary">
@@ -126,7 +126,7 @@ export default function Page() {
                 </div>
               </div>
               <div className="space-y-2">
-                <p className="text-sm text-muted-foreground">Cấp độ</p>
+                <p className="text-muted-foreground text-sm">Cấp độ</p>
                 <div className="flex flex-wrap gap-2">
                   {(tutorProfile.levelIds ?? []).map((id) => (
                     <Badge key={id} variant="secondary">
@@ -138,7 +138,7 @@ export default function Page() {
             </div>
 
             <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Tài liệu đính kèm</p>
+              <p className="text-muted-foreground text-sm">Tài liệu đính kèm</p>
               <div className="space-y-2">
                 {(tutorProfile.cvUrls ?? []).length > 0 ? (
                   tutorProfile.cvUrls.map((url, index) => (
@@ -147,14 +147,14 @@ export default function Page() {
                       href={url}
                       target="_blank"
                       rel="noreferrer"
-                      className="block rounded-lg border px-3 py-2 text-sm text-primary underline-offset-4 hover:underline"
+                      className="block px-3 py-2 border rounded-lg text-primary text-sm hover:underline underline-offset-4"
                     >
                       {`File đính kèm ${index + 1}`}
                     </a>
                   ))
                 ) : (
-                  <p className="text-sm text-muted-foreground">
-                    Chưa có tài liệu đính kèm.
+                  <p className="text-muted-foreground text-sm">
+                    No documents attached.
                   </p>
                 )}
               </div>

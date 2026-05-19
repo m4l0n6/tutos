@@ -5,12 +5,12 @@ import { Clock, GraduationCap, Wallet } from "lucide-react"
 
 export const TutorStats = () => {
   return (
-    <section className="grid grid-cols-1 gap-6 md:grid-cols-4">
+    <section className="gap-6 grid grid-cols-1 md:grid-cols-4">
       <Stat>
         <StatIndicator variant="icon" color="success">
           <GraduationCap className="size-4" />
         </StatIndicator>
-        <StatLabel>Lớp đang dạy</StatLabel>
+        <StatLabel>Classes Teaching</StatLabel>
         <StatValue>03</StatValue>
       </Stat>
 
@@ -18,7 +18,7 @@ export const TutorStats = () => {
         <StatIndicator variant="icon" color="warning">
           <Clock className="size-4" />
         </StatIndicator>
-        <StatLabel>Yêu cầu chờ duyệt</StatLabel>
+        <StatLabel>Pending Requests</StatLabel>
         <StatValue>02</StatValue>
       </Stat>
 
@@ -26,14 +26,14 @@ export const TutorStats = () => {
         <StatIndicator variant="icon" color="info">
           <Wallet className="size-4" />
         </StatIndicator>
-        <StatLabel>Tổng tiền nhận tháng này dự kiến</StatLabel>
+        <StatLabel>Estimated Monthly Income</StatLabel>
         <StatValue>4.200k VNĐ</StatValue>
       </Stat>
       <Stat>
         <StatIndicator variant="icon" color="info">
           <Wallet className="size-4" />
         </StatIndicator>
-        <StatLabel>Tổng tiền nhận tháng này dự kiến</StatLabel>
+        <StatLabel>Estimated Monthly Income</StatLabel>
         <StatValue>4.200k VNĐ</StatValue>
       </Stat>
     </section>

@@ -1,8 +1,3 @@
-/**
- * class-status.ts
- * Nguồn duy nhất cho tất cả config liên quan đến status của lớp học và đơn ứng tuyển.
- * Import từ file này thay vì định nghĩa rải rác ở từng component.
- */
 
 import type { ClassStatus, ApplicationStatus } from "@/types/classes"
 
@@ -13,19 +8,19 @@ export type AnyStatus = ClassStatus | ApplicationStatus
 // ─── Label ──────────────────────────────────────────────────────────────────
 
 export const CLASS_STATUS_LABEL: Record<ClassStatus, string> = {
-  RECRUITING: "Đang tuyển",
-  TRIAL: "Đang học thử",
-  ACTIVE: "Đang hoạt động",
-  COMPLETED: "Đã hoàn thành",
-  CANCELLED: "Đã hủy",
+  RECRUITING: "Recruiting",
+  TRIAL: "Trial",
+  ACTIVE: "Active",
+  COMPLETED: "Completed",
+  CANCELLED: "Cancelled",
 }
 
 export const APPLICATION_STATUS_LABEL: Record<ApplicationStatus, string> = {
-  PENDING: "Chờ duyệt",
-  TRIAL: "Học thử",
-  ACCEPTED: "Đã chấp nhận",
-  REJECTED: "Đã từ chối",
-  TRIAL_FAILED: "Học thử thất bại",
+  PENDING: "Pending",
+  TRIAL: "Trial",
+  ACCEPTED: "Accepted",
+  REJECTED: "Rejected",
+  TRIAL_FAILED: "Trial Failed",
 }
 
 /** Tra label cho bất kỳ status nào (ClassStatus hoặc ApplicationStatus). */
@@ -37,7 +32,6 @@ export function getStatusLabel(status: string): string {
   )
 }
 
-// ─── Badge Tailwind classes ──────────────────────────────────────────────────
 
 export const CLASS_STATUS_CLASS: Record<ClassStatus, string> = {
   RECRUITING: "border-violet-200 bg-violet-50 text-violet-700",
@@ -64,7 +58,6 @@ export function getStatusClass(status: string): string {
   )
 }
 
-// ─── Dot indicator (dùng trong MyClassList / danh sách nhỏ) ─────────────────
 
 export const CLASS_STATUS_DOT: Record<ClassStatus, string> = {
   RECRUITING: "bg-violet-400",
@@ -91,7 +84,6 @@ export function getStatusDot(status: string): string {
   )
 }
 
-// ─── Filter pill options (dùng trong ClassApplicationsList) ─────────────────
 
 export const APPLICATION_STATUS_FILTER_OPTIONS: {
   value: ApplicationStatus | "ALL"

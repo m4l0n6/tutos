@@ -99,7 +99,7 @@ function FileField({
         >
           <span className="inline-flex items-center gap-2 font-medium text-foreground text-sm">
             <Upload className="size-4" />
-            Chọn tệp
+            Select File
           </span>
           <span className="text-muted-foreground text-sm">{description}</span>
         </label>
@@ -188,7 +188,7 @@ function MultiSelectField({
         <FacetedContent className="p-0 w-[320px]">
           <FacetedInput placeholder={placeholder} />
           <FacetedList>
-            <FacetedEmpty>Không tìm thấy kết quả.</FacetedEmpty>
+            <FacetedEmpty>No results found.</FacetedEmpty>
             <FacetedGroup>
               {options.map((option) => (
                 <FacetedItem key={option.value} value={option.value}>
@@ -319,12 +319,12 @@ export function TutorProfileForm({
     }
 
     if (file.type !== "image/png") {
-      setAvatarError("Ảnh đại diện chỉ hỗ trợ PNG")
+      setAvatarError("Avatar only supports PNG")
       return
     }
 
     if (file.size > MAX_FILE_SIZE) {
-      setAvatarError("Ảnh đại diện tối đa 5MB")
+      setAvatarError("Avatar max 5MB")
       return
     }
 
@@ -343,20 +343,20 @@ export function TutorProfileForm({
 
     if (files.length + existingCvUrls.length > MAX_CV_FILES) {
       setCvError(
-        `Tối đa ${MAX_CV_FILES} file (hiện có ${existingCvUrls.length} file cũ)`
+        `Max ${MAX_CV_FILES} files (currently ${existingCvUrls.length} old files)`
       )
       return
     }
 
     const invalidFile = files.find((file) => !isAllowedTutorFile(file))
     if (invalidFile) {
-      setCvError("CV chỉ hỗ trợ PDF, JPG, PNG")
+      setCvError("CV only supports PDF, JPG, PNG")
       return
     }
 
     const oversizedFile = files.find((file) => file.size > MAX_FILE_SIZE)
     if (oversizedFile) {
-      setCvError("Mỗi file tối đa 5MB")
+      setCvError("Each file max 5MB")
       return
     }
 
@@ -379,12 +379,12 @@ export function TutorProfileForm({
     setCvError(null)
 
     if (!avatarFile && !isUpdateMode) {
-      setAvatarError("Vui lòng tải lên ảnh đại diện PNG")
+      setAvatarError("Please upload PNG avatar image")
       return
     }
 
     if (cvFiles.length === 0 && existingCvUrls.length === 0) {
-      setCvError("Vui lòng tải lên ít nhất 1 file CV")
+      setCvError("Please upload at least 1 CV file")
       return
     }
 
@@ -418,8 +418,8 @@ export function TutorProfileForm({
 
       toast.success(
         isUpdateMode
-          ? "Cập nhật hồ sơ gia sư thành công"
-          : "Tạo hồ sơ gia sư thành công"
+          ? "Tutor profile updated successfully"
+          : "Tutor profile created successfully"
       )
 
       if (isUpdateMode) {
@@ -438,8 +438,8 @@ export function TutorProfileForm({
     } catch (error) {
       console.error(error)
       const message = isUpdateMode
-        ? "Không thể cập nhật hồ sơ. Vui lòng thử lại sau."
-        : "Không thể tạo hồ sơ. Vui lòng thử lại sau."
+        ? "Cannot update profile. Please try again later."
+        : "Cannot create profile. Please try again later."
       setSubmitError(message)
       toast.error(message)
     }
@@ -450,7 +450,7 @@ export function TutorProfileForm({
       <div className="flex justify-center items-center mx-auto px-6 py-12 w-full max-w-4xl min-h-[70vh]">
         <div className="flex items-center gap-3 bg-card shadow-sm px-4 py-3 border rounded-2xl text-muted-foreground">
           <Spinner />
-          <span>Đang tải dữ liệu hồ sơ...</span>
+          <span>Loading profile data...</span>
         </div>
       </div>
     )
@@ -461,10 +461,10 @@ export function TutorProfileForm({
       <div className="flex justify-center items-center mx-auto px-6 py-12 w-full max-w-4xl min-h-[70vh]">
         <div className="p-6 border border-dashed rounded-2xl max-w-lg text-center">
           <p className="font-semibold text-destructive text-lg">
-            Không thể tải danh mục môn học hoặc cấp độ
+            Cannot load category or level
           </p>
           <p className="mt-2 text-muted-foreground text-sm">
-            Vui lòng tải lại trang để thử lại.
+            Please reload the page to try again.
           </p>
         </div>
       </div>
@@ -478,11 +478,11 @@ export function TutorProfileForm({
           Tutor profile
         </p>
         <h1 className="font-bold text-primary text-3xl">
-          {isUpdateMode ? "Chỉnh sửa hồ sơ gia sư" : "Tạo hồ sơ gia sư"}
+          {isUpdateMode ? "Edit Tutor Profile" : "Create Tutor Profile"}
         </h1>
         <p className="max-w-2xl text-muted-foreground text-sm md:text-base">
-          Hoàn tất hồ sơ để mở khóa toàn bộ chức năng của hệ thống và bắt đầu
-          nhận lớp ngay khi có yêu cầu phù hợp.
+          Complete your profile to unlock all system features and get started
+          accept classes immediately when suitable requests come in.
         </p>
       </div>
 
@@ -491,7 +491,7 @@ export function TutorProfileForm({
           <div className="flex justify-between items-center gap-4 mb-5">
             <div>
               <h2 className="font-semibold text-foreground text-lg">
-                Thông tin cá nhân
+                Personal Information
               </h2>
             </div>
           </div>
@@ -520,7 +520,7 @@ export function TutorProfileForm({
                     <div className="absolute inset-0 flex flex-col justify-center items-center gap-1 bg-black/50 opacity-0 group-hover:opacity-100 rounded-full transition-opacity">
                       <Upload className="size-5 text-white" />
                       <span className="font-medium text-[10px] text-white">
-                        Đổi ảnh
+                        Change Image
                       </span>
                     </div>
                   )}
@@ -540,11 +540,11 @@ export function TutorProfileForm({
 
               <div className="space-y-1 text-center">
                 <FieldDescription>
-                  Chỉ nhận 1 file PNG, tối đa 5MB.
+                  Accept 1 PNG file only, max 5MB.
                 </FieldDescription>
                 {avatarFile && (
                   <p className="text-muted-foreground text-sm">
-                    Đã chọn: {avatarFile.name} (
+                    Selected: {avatarFile.name} (
                     {formatFileSize(avatarFile.size)})
                   </p>
                 )}
@@ -556,7 +556,7 @@ export function TutorProfileForm({
 
             <div className="gap-4 grid md:grid-cols-2">
               <Field>
-                <FieldLabel htmlFor="fullName">Họ và tên</FieldLabel>
+                <FieldLabel htmlFor="fullName">Full Name</FieldLabel>
                 <Input id="fullName" {...register("fullName")} />
                 {errors.fullName && (
                   <p className="text-destructive text-sm">
@@ -566,7 +566,7 @@ export function TutorProfileForm({
               </Field>
 
               <Field>
-                <FieldLabel htmlFor="phone">Số điện thoại</FieldLabel>
+                <FieldLabel htmlFor="phone">Phone Number</FieldLabel>
                 <Input id="phone" {...register("phone")} />
                 {errors.phone && (
                   <p className="text-destructive text-sm">
@@ -585,7 +585,7 @@ export function TutorProfileForm({
                 />
                 <div className="flex justify-between items-center gap-3 mt-1 text-muted-foreground text-sm">
                   <span>
-                    {countWords(bioValue)} / {MAX_BIO_WORDS} từ
+                    {countWords(bioValue)} / {MAX_BIO_WORDS} words
                   </span>
                 </div>
                 {errors.bio && (
@@ -596,7 +596,7 @@ export function TutorProfileForm({
               </Field>
 
               <Field className="md:col-span-2">
-                <FieldLabel htmlFor="education">Học thức</FieldLabel>
+                <FieldLabel htmlFor="education">Education Level</FieldLabel>
                 <Input
                   id="education"
                   placeholder="e.g:Bachelor of Mathematics, University of Education"
@@ -610,7 +610,7 @@ export function TutorProfileForm({
               </Field>
 
               <Field>
-                <FieldLabel htmlFor="hourlyRate">Mức phí theo giờ</FieldLabel>
+                <FieldLabel htmlFor="hourlyRate">Hourly Rate</FieldLabel>
                 <Input
                   id="hourlyRate"
                   type="number"
@@ -626,7 +626,7 @@ export function TutorProfileForm({
               </Field>
 
               <Field>
-                <FieldLabel htmlFor="location">Khu vực</FieldLabel>
+                <FieldLabel htmlFor="location">Service Area</FieldLabel>
                 <Input
                   id="location"
                   placeholder="e.g:District 1, Ho Chi Minh City"
@@ -645,10 +645,10 @@ export function TutorProfileForm({
         <section className="bg-card shadow-sm p-5 md:p-6 border rounded-3xl">
           <div className="mb-5">
             <h2 className="font-semibold text-foreground text-lg">
-              Chuyên môn
+              Specialization
             </h2>
             <p className="text-muted-foreground text-sm">
-              Chọn môn học và cấp độ mà bạn có thể giảng dạy.
+              Select subjects and levels you can teach.
             </p>
           </div>
 
@@ -658,8 +658,8 @@ export function TutorProfileForm({
               name="subjectIds"
               render={({ field }) => (
                 <MultiSelectField
-                  title="Môn học"
-                  placeholder="e.g:Chọn môn học"
+                  title="Subject"
+                  placeholder="e.g: Select Subject"
                   options={selectedSubjectOptions}
                   value={field.value}
                   onChange={field.onChange}
@@ -673,8 +673,8 @@ export function TutorProfileForm({
               name="levelIds"
               render={({ field }) => (
                 <MultiSelectField
-                  title="Cấp độ"
-                  placeholder="e.g:Chọn cấp độ"
+                  title="Level"
+                  placeholder="e.g: Select Level"
                   options={selectedLevelOptions}
                   value={field.value}
                   onChange={field.onChange}
@@ -687,16 +687,16 @@ export function TutorProfileForm({
 
         <section className="bg-card shadow-sm p-5 md:p-6 border rounded-3xl">
           <div className="mb-5">
-            <h2 className="font-semibold text-foreground text-lg">Tài liệu</h2>
+            <h2 className="font-semibold text-foreground text-lg">Documents</h2>
             <p className="text-muted-foreground text-sm">
-              Tải lên CV, chứng chỉ hoặc tài liệu liên quan để tăng độ tin cậy.
+              Upload CV, certificates, or related documents to increase credibility.
             </p>
           </div>
 
           <div className="space-y-4">
             {existingCvUrls.length > 0 && (
               <Field>
-                <FieldLabel>File đính kèm hiện có</FieldLabel>
+                <FieldLabel>Current Attachments</FieldLabel>
                 <div className="space-y-2">
                   {existingCvUrls.map((url, index) => (
                     <div
@@ -709,7 +709,7 @@ export function TutorProfileForm({
                         rel="noreferrer"
                         className="text-primary text-sm hover:underline underline-offset-4 truncate"
                       >
-                        {`File đính kèm ${index + 1}`}
+                        {`Attachment ${index + 1}`}
                       </a>
                       <Button
                         type="button"
@@ -728,9 +728,9 @@ export function TutorProfileForm({
 
             <FileField
               label={
-                isUpdateMode ? "Tải thêm CV / Chứng chỉ mới" : "CV / Chứng chỉ"
+                isUpdateMode ? "Upload More CV / Certificates" : "CV / Certificates"
               }
-              description="Tối đa 5 file, mỗi file 5MB. Hỗ trợ PDF, JPG, PNG."
+              description="Max 5 files, each 5MB. Supports PDF, JPG, PNG."
               accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png"
               multiple
               files={cvFiles}
@@ -749,8 +749,8 @@ export function TutorProfileForm({
 
         <div className="flex md:flex-row flex-col md:justify-between md:items-center gap-3 bg-card shadow-sm p-5 md:p-6 border rounded-3xl">
           <div className="text-muted-foreground text-sm">
-            Kiểm tra lại thông tin trước khi gửi. Sau khi tạo hồ sơ, bạn có thể
-            sử dụng ứng dụng như bình thường.
+            Review your information before submitting. After creating profile, you can
+            use the application normally.
           </div>
           <div className="flex md:flex-row flex-col gap-2 w-full md:w-auto">
             {isUpdateMode && onCancel ? (
@@ -760,18 +760,18 @@ export function TutorProfileForm({
                 onClick={onCancel}
                 disabled={isPending}
               >
-                Hủy
+                Cancel
               </Button>
             ) : null}
             <Button type="submit" className="min-w-40" disabled={isPending}>
               {isPending ? <Loader2 className="size-4 animate-spin" /> : null}
               {isPending
                 ? isUpdateMode
-                  ? "Đang cập nhật..."
-                  : "Đang tạo..."
+                  ? "Updating..."
+                  : "Creating..."
                 : isUpdateMode
-                  ? "Lưu thay đổi"
-                  : "Tạo hồ sơ"}
+                  ? "Save Changes"
+                  : "Create Profile"}
             </Button>
           </div>
         </div>

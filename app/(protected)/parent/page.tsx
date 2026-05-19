@@ -43,8 +43,8 @@ const mockNotifications = [
     message: (
       <>
         Gia sư <strong>Trần Hoàng Nam</strong> đã nhận lớp{" "}
-        <strong>Toán Nâng Cao 10</strong> của bạn. Vui lòng kiểm tra chi tiết và
-        liên hệ với gia sư để sắp xếp lịch học.
+        <strong>Advanced Math 10</strong> of yours. Please check details and
+        contact a tutor to arrange class schedule.
       </>
     ),
     timestamp: "2 phút trước",
@@ -54,11 +54,11 @@ const mockNotifications = [
     type: "info" as const,
     message: (
       <>
-        Hệ thống: Nhắc nhở buổi học môn <strong>Lý 11</strong> sẽ diễn ra vào
+        System: Class Reminder for <strong>Physics 11</strong> will be held at
         lúc 19:00 tối nay.
       </>
     ),
-    timestamp: "1 giờ trước",
+    timestamp: "1 hour ago",
   },
 ]
 
@@ -88,28 +88,28 @@ const ParentDashboardPage = () => {
   const { user } = useAuth();
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
+    <div className="flex flex-col bg-background min-h-screen">
       {/* Modal */}
       
       <main className="flex-1 space-y-8 mx-auto px-8 py-8 w-full max-w-7xl">
         {/* Header Section */}
-        <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
+        <div className="flex md:flex-row flex-col justify-between md:items-end gap-4">
           <div>
-            <h1 className="font-bold text-2xl">Xin chào, {user?.fullName}</h1>
+            <h1 className="font-bold text-2xl">Hello, {user?.fullName}</h1>
             <p className="text-body-lg text-on-surface-variant">
-              Hôm nay là {dayOfWeek}, ngày {dateString}. Chúc các con một ngày
+              Today is {dayOfWeek}, {dateString}. Wish you and your children a wonderful day.
               học tập hiệu quả!
             </p>
           </div>
         </div>
 
         {/* Statistics Bento Grid */}
-        <section className="grid grid-cols-1 gap-6 md:grid-cols-3">
+        <section className="gap-6 grid grid-cols-1 md:grid-cols-3">
           <Stat>
             <StatIndicator variant="icon" color="success">
               <GraduationCap className="size-4" />
             </StatIndicator>
-            <StatLabel>Lớp đang học</StatLabel>
+            <StatLabel>Classes Attending</StatLabel>
             <StatValue>03</StatValue>
           </Stat>
 
@@ -117,7 +117,7 @@ const ParentDashboardPage = () => {
             <StatIndicator variant="icon" color="warning">
               <Clock className="size-4" />
             </StatIndicator>
-            <StatLabel>Yêu cầu chờ gia sư</StatLabel>
+            <StatLabel>Requests Pending Tutors</StatLabel>
             <StatValue>02</StatValue>
           </Stat>
 
@@ -125,13 +125,13 @@ const ParentDashboardPage = () => {
             <StatIndicator variant="icon" color="info">
               <Wallet className="size-4" />
             </StatIndicator>
-            <StatLabel>Tổng chi phí tháng này</StatLabel>
+            <StatLabel>Total Monthly Costs</StatLabel>
             <StatValue>4.200k VNĐ</StatValue>
           </Stat>
         </section>
 
         {/* Main Dashboard Layout */}
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
+        <div className="gap-8 grid grid-cols-1 lg:grid-cols-12">
           {/* Column: Requests & Notifications */}
           <div className="space-y-8 lg:col-span-8">
             <SearchingRequests requests={mockSearchingRequests} />

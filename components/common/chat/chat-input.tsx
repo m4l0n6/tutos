@@ -19,12 +19,12 @@ export function ChatInput({
         value={input}
         onChange={(e) => onInputChange(e.target.value)}
         onKeyDown={(e) => e.key === "Enter" && onSendMessage()}
-        placeholder="Nhập tin nhắn..."
+        placeholder="Type a message..."
         className="flex-1 bg-[#f5f5f5] focus:bg-white px-3.5 py-2 border border-[#e0e0e0] rounded-full outline-none text-[#111] text-sm transition"
       />
       <Button
         onClick={onSendMessage}
-        title="Gửi"
+        title="Send"
         className="flex justify-center items-center bg-[#7F77DD] hover:bg-[#534AB7] rounded-full w-8.5 h-8.5 text-white text-base transition-colors"
       >
         <Send size={15} />

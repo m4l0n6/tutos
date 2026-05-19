@@ -42,7 +42,7 @@ export function ChatHeader({ activeConv }: ChatHeaderProps) {
         </div>
       </div>
       <div className="flex gap-1">
-        <button
+        {/* <button
           className="flex justify-center items-center hover:bg-gray-100 rounded-lg w-7.5 h-7.5 text-4xl transition"
           title="Video call"
         >
@@ -56,10 +56,10 @@ export function ChatHeader({ activeConv }: ChatHeaderProps) {
         </button>
         <button
           className="flex justify-center items-center hover:bg-gray-100 rounded-lg w-7.5 h-7.5 text-4xl transition"
-          title="Thông tin"
+          title="Information"
         >
           <Info size={16} />
-        </button>
+        </button> */}
       </div>
     </div>
   )

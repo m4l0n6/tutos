@@ -43,13 +43,13 @@ const FilterPill: React.FC<FilterPillProps> = ({
       <Button variant="outline" className="h-8">
         {label}
         {count > 0 && (
-          <span className="ml-2 inline-flex size-5 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
+          <span className="inline-flex justify-center items-center bg-primary ml-2 rounded-full size-5 text-primary-foreground text-xs">
             {count}
           </span>
         )}
       </Button>
     </PopoverTrigger>
-    <PopoverContent className="w-64 p-4">{children}</PopoverContent>
+    <PopoverContent className="p-4 w-64">{children}</PopoverContent>
   </Popover>
 )
 
@@ -81,13 +81,13 @@ const FilterPopoverContent = <T,>({
   isError,
 }: FilterPopoverContentProps<T>) => (
   <div className="space-y-4">
-    <div className="max-h-60 space-y-2 overflow-y-auto">
+    <div className="space-y-2 max-h-60 overflow-y-auto">
       {isLoading && (
-        <p className="text-sm text-muted-foreground">Đang tải...</p>
+        <p className="text-muted-foreground text-sm">Loading...</p>
       )}
-      {isError && <p className="text-sm text-destructive">Lỗi tải dữ liệu.</p>}
+      {isError && <p className="text-destructive text-sm">Error loading data.</p>}
       {!isLoading && !isError && (!items || items.length === 0) && (
-        <p className="text-sm text-muted-foreground">Không có dữ liệu.</p>
+        <p className="text-muted-foreground text-sm">No data available.</p>
       )}
       {items?.map((item) => (
         <div key={idAccessor(item)} className="flex items-center gap-2">
@@ -96,7 +96,7 @@ const FilterPopoverContent = <T,>({
             checked={selectedItems.includes(idAccessor(item))}
             onCheckedChange={() => onSelectionChange(idAccessor(item))}
           />
-          <label htmlFor={idAccessor(item)} className="cursor-pointer text-sm">
+          <label htmlFor={idAccessor(item)} className="text-sm cursor-pointer">
             {labelAccessor(item)}
           </label>
         </div>
@@ -104,10 +104,10 @@ const FilterPopoverContent = <T,>({
     </div>
     <div className="flex justify-end gap-2">
       <Button variant="ghost" size="sm" onClick={onCancel}>
-        Hủy
+        Cancel
       </Button>
       <Button size="sm" onClick={onConfirm}>
-        Xác nhận
+        Confirm
       </Button>
     </div>
   </div>
@@ -212,10 +212,10 @@ export const ClassFilters: React.FC<ClassFiltersProps> = ({
   }
 
   return (
-    <div className="mb-4 flex flex-wrap items-center gap-2">
+    <div className="flex flex-wrap items-center gap-2 mb-4">
       {/* Category */}
       <FilterPill
-        label="Danh mục"
+        label="Category"
         count={appliedCategories.length}
         open={categoryOpen}
         onOpenChange={(o) =>
@@ -248,7 +248,7 @@ export const ClassFilters: React.FC<ClassFiltersProps> = ({
 
       {/* Subject */}
       <FilterPill
-        label="Môn học"
+        label="Subject"
         count={appliedSubjects.length}
         open={subjectOpen}
         onOpenChange={(o) =>
@@ -303,7 +303,7 @@ export const ClassFilters: React.FC<ClassFiltersProps> = ({
       </FilterPill>
 
       <FilterPill
-        label="Ngày học"
+        label="Class Day"
         count={appliedDays.length}
         open={dayOpen}
         onOpenChange={(o) =>

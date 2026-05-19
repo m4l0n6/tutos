@@ -9,13 +9,17 @@ import { AuthProvider } from "@/context/AuthContext"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { queryClient } from "@/lib/query-client"
 
+import { SocketProvider } from "@/hooks/websocket/SocketContext"
+
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <NuqsAdapter>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider>
           <TooltipProvider>
-            <AuthProvider>{children}</AuthProvider>
+            <SocketProvider>
+              <AuthProvider>{children}</AuthProvider>
+            </SocketProvider>
           </TooltipProvider>
         </ThemeProvider>
         <ReactQueryDevtools initialIsOpen={false} />

@@ -19,7 +19,7 @@ export function WeeklySchedule({ currentDay, schedule }: WeeklyScheduleProps) {
   return (
     <section className="p-6 rounded-2xl glass-card">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="font-h2 text-on-surface">Lịch học tuần này</h2>
+        <h2 className="font-h2 text-on-surface">This Week's Schedule</h2>
         <span className="text-primary material-symbols-outlined">calendar_month</span>
       </div>
 
@@ -75,7 +75,7 @@ export function WeeklySchedule({ currentDay, schedule }: WeeklyScheduleProps) {
               {item.subject}
             </h4>
             <p className="text-label-sm text-on-surface-variant italic">
-              Gia sư: {item.tutor}
+              Tutor: {item.tutor}
             </p>
           </div>
         ))}
@@ -85,7 +85,7 @@ export function WeeklySchedule({ currentDay, schedule }: WeeklyScheduleProps) {
         variant="outline"
         className="hover:bg-primary/5 mt-8 py-3 border-primary/20 rounded-xl w-full text-primary"
       >
-        Toàn bộ lịch biểu
+        Full Schedule
       </Button>
     </section>
   );

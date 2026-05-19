@@ -14,7 +14,7 @@ export function TypingIndicator() {
             />
           ))}
         </span>
-        đang nhập...
+        typing...
       </div>
     </>
   )

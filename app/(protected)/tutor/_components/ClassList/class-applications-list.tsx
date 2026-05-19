@@ -43,13 +43,13 @@ export const ClassApplicationsList = ({
   return (
     <div>
       {/* Dòng 1: Title + Nút làm mới */}
-      <div className="flex items-center justify-between">
-        <h2 className="text-xl leading-none font-bold text-primary">{title}</h2>
+      <div className="flex justify-between items-center">
+        <h2 className="font-bold text-primary text-xl leading-none">{title}</h2>
         {onRefresh && (
           <button
             onClick={onRefresh}
             disabled={isLoading}
-            className="inline-flex items-center gap-2 rounded px-3 py-1 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground disabled:opacity-50"
+            className="inline-flex items-center gap-2 hover:bg-muted disabled:opacity-50 px-3 py-1 rounded font-medium text-muted-foreground hover:text-foreground text-sm"
             title="Làm mới"
           >
             <RotateCcw
@@ -61,7 +61,7 @@ export const ClassApplicationsList = ({
       </div>
 
       {/* Dòng 2: Status filter pills */}
-      <div className="mt-3 mb-4 flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2 mt-3 mb-4">
         {APPLICATION_STATUS_FILTER_OPTIONS.map((opt) => {
           const count =
             opt.value === "ALL"
@@ -98,22 +98,22 @@ export const ClassApplicationsList = ({
       </div>
 
       {isLoading ? (
-        <div className="rounded-lg border border-dashed border-muted-foreground/50 p-8 text-center">
-          <p className="text-muted-foreground">Đang tải yêu cầu...</p>
+        <div className="p-8 border border-muted-foreground/50 border-dashed rounded-lg text-center">
+          <p className="text-muted-foreground">Loading requests...</p>
         </div>
       ) : isError ? (
-        <div className="rounded-lg border border-dashed border-muted-foreground/50 p-8 text-center">
+        <div className="p-8 border border-muted-foreground/50 border-dashed rounded-lg text-center">
           <p className="text-destructive">
-            Không thể tải danh sách yêu cầu. Vui lòng thử lại.
+            Cannot load requests list. Please try again.
           </p>
         </div>
       ) : !hasData ? (
-        <div className="rounded-lg border border-dashed border-muted-foreground/50 p-8 text-center">
-          <p className="text-muted-foreground">Chưa có yêu cầu</p>
+        <div className="p-8 border border-muted-foreground/50 border-dashed rounded-lg text-center">
+          <p className="text-muted-foreground">No requests yet</p>
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-5">
+          <div className="gap-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5">
             {visibleData.map((app) => (
               <ClassCard
                 key={app.id}
@@ -124,12 +124,12 @@ export const ClassApplicationsList = ({
             ))}
           </div>
           {remaining > 0 && (
-            <div className="mt-6 flex justify-center">
+            <div className="flex justify-center mt-6">
               <button
-                className="rounded bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+                className="bg-primary hover:bg-primary/90 px-4 py-2 rounded font-medium text-primary-foreground text-sm"
                 onClick={showMore}
               >
-                Xem thêm {remaining >= 10 ? 10 : remaining}
+                View More {remaining >= 10 ? 10 : remaining}
               </button>
             </div>
           )}

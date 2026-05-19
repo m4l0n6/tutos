@@ -71,7 +71,7 @@ export default function RequestCard({
             <div className="flex justify-between items-start gap-2">
               <div className="min-w-0">
                 <h3 className="pr-2 font-semibold text-slate-800 text-base truncate leading-tight">
-                  Yêu cầu tìm gia sư
+                  Find Tutor Request
                 </h3>
               </div>
               <Status variant={statusCfg.variant}>
@@ -81,6 +81,10 @@ export default function RequestCard({
             </div>
             {/* Subject + Level tags */}
             <div className="flex flex-wrap items-center gap-2 mt-2">
+              <Badge>
+                <BookOpen className="w-3 h-3" />
+                {subject.category.name}
+              </Badge>
               <Badge variant="outline">
                 <BookOpen className="w-3 h-3" />
                 {subject.name}
@@ -129,7 +133,7 @@ export default function RequestCard({
           {/* Budget */}
           <div className="flex items-center gap-2 mt-3 text-sm">
             <DollarSign className="w-4 h-4" />
-            <span>Ngân sách:</span>
+            <span>Budget:</span>
             <span className="font-semibold">
               {formatCurrency(minBudget)} - {formatCurrency(maxBudget)}
             </span>
@@ -139,9 +143,7 @@ export default function RequestCard({
 
           {/* Actions */}
           <div className="flex justify-items gap-2 w-full">
-            <div className="flex items-center gap-2">
-              
-            </div>
+            <div className="flex items-center gap-2"></div>
 
             <div className="flex flex-1 justify-end">
               <Button
@@ -149,7 +151,7 @@ export default function RequestCard({
                 onClick={() => onViewDetails?.(request)}
                 variant="outline"
               >
-                Xem chi tiết
+                View Details
                 <ChevronRight className="w-4 h-4" />
               </Button>
             </div>
