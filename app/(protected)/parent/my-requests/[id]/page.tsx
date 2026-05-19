@@ -64,10 +64,10 @@ const RequestDetailsPage = () => {
     const handleCancel = () => {
       cancelRequest(id, {
         onSuccess: () => {
-            toast.success("Hủy yêu cầu thành công")
+            toast.success("Canceled request successfully")
             router.push("/parent/my-requests")
         },
-        onError: () => toast.error("Hủy yêu cầu thất bại, vui lòng thử lại"),
+        onError: () => toast.error("Failed to cancel request, please try again"),
       })
     }
 
@@ -100,22 +100,22 @@ const RequestDetailsPage = () => {
 
         {/* Not found */}
         {!isLoading && !request && (
-          <p className="text-muted-foreground">Không tìm thấy yêu cầu.</p>
+          <p className="text-muted-foreground">Request not found.</p>
         )}
 
         {/* Content */}
         {request && (
           <div className="space-y-6">
-            {/* ── Thông tin yêu cầu ── */}
+            {/* ── Request Information ── */}
             <Card>
               <CardHeader>
                 <div className="flex flex-wrap justify-between items-start gap-3">
                   <div>
                     <CardTitle className="text-xl">
-                      Yêu cầu tìm gia sư
+                      Find Tutor Request
                     </CardTitle>
                     <p className="mt-1 text-muted-foreground text-sm">
-                      Ngày tạo:{" "}
+                      Created Date:{" "}
                       {new Date(request.createdAt).toLocaleDateString("vi-VN")}
                     </p>
                   </div>
@@ -147,20 +147,20 @@ const RequestDetailsPage = () => {
                 <div className="gap-4 grid grid-cols-1 sm:grid-cols-2">
                   <InfoRow
                     icon={<Calendar className="w-4 h-4" />}
-                    label="Lịch học"
+                    label="Schedule"
                   >
                     {formatDays(request.daysOfWeek)} ({request.startTime} –{" "}
                     {request.endTime})
                   </InfoRow>
                   <InfoRow
                     icon={<MapPin className="w-4 h-4" />}
-                    label="Địa điểm"
+                    label="Location"
                   >
                     {request.location}
                   </InfoRow>
                   <InfoRow
                     icon={<DollarSign className="w-4 h-4" />}
-                    label="Ngân sách"
+                    label="Budget"
                   >
                     <span className="font-semibold">
                       {formatCurrency(request.minBudget)} –{" "}
@@ -170,7 +170,7 @@ const RequestDetailsPage = () => {
                   {request.timeNote && (
                     <InfoRow
                       icon={<Calendar className="w-4 h-4" />}
-                      label="Ghi chú về thời gian"
+                      label="Schedule Notes"
                     >
                       {request.timeNote}
                     </InfoRow>
@@ -181,7 +181,7 @@ const RequestDetailsPage = () => {
                   <>
                     <Separator />
                     <div className="space-y-1">
-                      <p className="font-medium text-lg">Mô tả yêu cầu</p>
+                      <p className="font-medium text-lg">Description</p>
                       <p className="text-muted-foreground text-sm leading-relaxed">
                         {request.description}
                       </p>
@@ -195,16 +195,16 @@ const RequestDetailsPage = () => {
                     <div className="flex justify-end gap-2 pt-2">
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
-                          <Button variant="destructive">Hủy yêu cầu</Button>
+                          <Button variant="destructive">Cancel Request</Button>
                         </AlertDialogTrigger>
                         <AlertDialogContent>
                           <AlertDialogHeader>
                             <AlertDialogTitle>
-                              Xác nhận hủy yêu cầu
+                              Confirm Cancel Request
                             </AlertDialogTitle>
                             <AlertDialogDescription>
-                              Bạn có chắc chắn muốn hủy yêu cầu này không? Hành
-                              động này không thể hoàn tác.
+                              Are you sure you want to cancel this request? This action cannot be undone.
+                              action cannot be undone.
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>
@@ -214,7 +214,7 @@ const RequestDetailsPage = () => {
                               disabled={isPending}
                               className="bg-destructive hover:bg-destructive/90 text-destructive-foreground"
                             >
-                              {isPending ? "Đang hủy..." : "Xác nhận hủy"}
+                              {isPending ? "Canceling..." : "Confirm Cancel"}
                             </AlertDialogAction>
                           </AlertDialogFooter>
                         </AlertDialogContent>

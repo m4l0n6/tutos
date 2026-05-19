@@ -74,6 +74,8 @@ export type MClass = {
   applications: MClassApplication[]
   isTrialConfirmedByParent: boolean
   isTrialConfirmedByTutor: boolean
+
+  totalTutorApplication: number
 }
 
 export type MClassApplication = {

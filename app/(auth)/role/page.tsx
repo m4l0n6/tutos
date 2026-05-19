@@ -23,13 +23,13 @@ const roles: RoleOption[] = [
     id: "PARENT",
     title: "Phụ huynh",
     description:
-      "Tôi muốn tìm gia sư phù hợp và theo dõi quá trình học tập của con",
+      "I want to find suitable tutors and monitor my child's learning progress",
   },
   {
     id: "TUTOR",
-    title: "Gia sư",
+    title: "Tutor",
     description:
-      "Tôi muốn kết nối với học sinh và quản lý lịch dạy học của mình",
+      "I want to connect with students and manage my teaching schedule",
   },
 ]
 
@@ -86,7 +86,7 @@ export default function RoleSelector({ onConfirm }: RoleSelectorProps) {
             Bạn là ai?
           </h2>
           <p className="text-gray-500 text-sm">
-            Chọn vai trò phù hợp để bắt đầu trải nghiệm
+            Select the appropriate role to start using our platform
           </p>
         </div>
 
@@ -98,7 +98,7 @@ export default function RoleSelector({ onConfirm }: RoleSelectorProps) {
               <div
                 key={role.id}
                 onClick={() => setSelected(role.id)}
-                // relative bắt buộc để badge absolute không thoát ra ngoài card
+                // relative is required so the absolute badge doesn't escape the card
                 className={`relative flex cursor-pointer flex-col items-center gap-3 rounded-lg border bg-white p-8 text-center transition-all duration-200 ${
                   isSelected
                     ? "-translate-y-0.5 border-2 border-primary"
@@ -145,7 +145,7 @@ export default function RoleSelector({ onConfirm }: RoleSelectorProps) {
               : "cursor-not-allowed border border-gray-300 text-gray-400 opacity-40"
           }`}
         >
-          Tiếp tục →
+          Continue →
         </button>
       </div>
     </div>

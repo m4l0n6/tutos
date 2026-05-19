@@ -10,6 +10,7 @@ import {
   ChevronRight,
   GraduationCap,
   Wifi,
+  User,
 } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
@@ -66,14 +67,14 @@ export default function TutorClassCard({
     location.toLowerCase().includes("zoom")
 
   return (
-    <Card className="group w-full overflow-hidden rounded-2xl shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
+    <Card className="group shadow-sm hover:shadow-md rounded-2xl w-full overflow-hidden transition-all hover:-translate-y-1 duration-300">
       <CardContent>
         <div className="p-4">
           {/* Header Row */}
-          <div className="min-w-0 flex-1">
-            <div className="flex items-start justify-between gap-2">
+          <div className="flex-1 min-w-0">
+            <div className="flex justify-between items-start gap-2">
               <div className="min-w-0">
-                <h3 className="truncate pr-2 text-base leading-tight font-semibold text-slate-800">
+                <h3 className="pr-2 font-semibold text-slate-800 text-base truncate leading-tight">
                   {name}
                 </h3>
               </div>
@@ -83,17 +84,17 @@ export default function TutorClassCard({
               </Status>
             </div>
             {/* Subject + Level tags */}
-            <div className="mt-2 flex flex-wrap items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2 mt-2">
               <Badge>
-                <BookOpen className="h-3 w-3" />
+                <BookOpen className="w-3 h-3" />
                 {category.name}
               </Badge>
               <Badge variant="outline">
-                <BookOpen className="h-3 w-3" />
+                <BookOpen className="w-3 h-3" />
                 {subject.name}
               </Badge>
               <Badge variant="outline">
-                <GraduationCap className="h-3 w-3" />
+                <GraduationCap className="w-3 h-3" />
                 {level.name}
               </Badge>
             </div>
@@ -102,10 +103,10 @@ export default function TutorClassCard({
           <Separator className="my-4" />
 
           {/* Schedule + Location */}
-          <div className="flex flex-wrap gap-4 text-sm">
-            <div className="flex min-w-0 items-center gap-2">
-              <div className="bg-primary-50 flex shrink-0 items-center justify-center rounded-lg">
-                <Calendar className="h-4 w-4" />
+          <div className="gap-4 grid grid-cols-1 sm:grid-cols-2 w-full">
+            <div className="flex items-center gap-2 min-w-0">
+              <div className="flex justify-center items-center bg-primary-50 rounded-lg shrink-0">
+                <Calendar className="w-4 h-4" />
               </div>
               <span className="font-medium">
                 {formatDays(daysOfWeek)}{" "}
@@ -115,36 +116,47 @@ export default function TutorClassCard({
               </span>
             </div>
 
-            <div className="flex min-w-0 items-center gap-2">
-              <div className="bg-primary-50 flex shrink-0 items-center justify-center rounded-lg">
+            <div className="flex items-center gap-2 min-w-0">
+              <div className="flex justify-center items-center bg-primary-50 rounded-lg shrink-0">
                 {isOnline ? (
-                  <Wifi className="h-4 w-4" />
+                  <Wifi className="w-4 h-4" />
                 ) : (
-                  <MapPin className="h-4 w-4" />
+                  <MapPin className="w-4 h-4" />
                 )}
               </div>
               <span className="truncate">{location}</span>
             </div>
           </div>
 
-          {/* Acceptance Fee */}
-          <div className="mt-3 flex items-center gap-2 text-sm">
-            <DollarSign className="h-4 w-4" />
-            <span>Phí tiếp nhận:</span>
-            <span className="font-semibold">
-              {formatCurrency(acceptanceFee)}
-            </span>
+          <div className="gap-4 grid grid-cols-1 sm:grid-cols-2 w-full">
+            <div className="flex items-center gap-2 mt-3 text-sm">
+              <DollarSign className="w-4 h-4" />
+              <span>Acceptance Fee:</span>
+              <span className="font-semibold">
+                {formatCurrency(acceptanceFee)}
+              </span>
+            </div>
+
+            <div className="flex items-center gap-2 mt-3 text-sm">
+              <User className="w-4 h-4" />
+              <span>Total tutors:</span>
+              <span className="font-semibold">
+                {classData.totalTutorApplication}
+              </span>
+            </div>
           </div>
 
           <Separator className="my-4" />
 
           {/* Actions */}
-          <div className="justify-items flex w-full gap-2">
+          <div className="flex justify-items gap-2 w-full">
             <div className="flex items-center gap-2">
-              <Button size="sm" onClick={() => onMessage?.(classData)}>
-                <MessageCircle className="h-4 w-4" />
-                Nhắn tin cho trung tâm
-              </Button>
+              {classData.status === "TRIAL" && (
+                <Button size="sm" onClick={() => onMessage?.(classData)}>
+                  <MessageCircle className="w-4 h-4" />
+                  Message to Tutor
+                </Button>
+              )}
 
               {classData.status === "COMPLETED" && (
                 <Button
@@ -152,8 +164,8 @@ export default function TutorClassCard({
                   variant="outline"
                   onClick={() => onReview?.(classData)}
                 >
-                  <Star className="h-4 w-4" />
-                  Đánh giá gia sư
+                  <Star className="w-4 h-4" />
+                  Review Tutor
                 </Button>
               )}
             </div>
@@ -164,8 +176,8 @@ export default function TutorClassCard({
                 onClick={() => onViewHistory?.(classData)}
                 variant="outline"
               >
-                Xem chi tiết
-                <ChevronRight className="h-4 w-4" />
+                View detail
+                <ChevronRight className="w-4 h-4" />
               </Button>
             </div>
           </div>

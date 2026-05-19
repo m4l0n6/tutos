@@ -3,7 +3,7 @@ import AuthSuccess from "./AuthSuccess"
 
 export default function AuthSuccessPage() {
   return (
-    <Suspense fallback={<p>Đang xử lý đăng nhập...</p>}>
+    <Suspense fallback={<p>Processing login...</p>}>
       <AuthSuccess />
     </Suspense>
   )

@@ -25,12 +25,12 @@ export default function ClassCard({
     .join(", ")
 
   return (
-    <div className="group relative flex flex-col gap-3 overflow-hidden rounded-2xl border border-border bg-card p-4 transition-all hover:border-primary/25 hover:shadow-sm">
-      <div className="flex items-center justify-between">
+    <div className="group relative flex flex-col gap-3 bg-card hover:shadow-sm p-4 border border-border hover:border-primary/25 rounded-2xl overflow-hidden transition-all">
+      <div className="flex justify-between items-center">
         <div
           className={`flex h-9 w-9 items-center justify-center rounded-xl ${colorClass}`}
         >
-          <Icon className="h-4 w-4" />
+          <Icon className="w-4 h-4" />
         </div>
         <span
           className={`rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase ${getStatusClass(cls.status)}`}
@@ -42,7 +42,7 @@ export default function ClassCard({
       <div>
         <h3
           title={cls.name}
-          className="truncate text-[15px] leading-snug font-bold text-foreground"
+          className="font-bold text-[15px] text-foreground truncate leading-snug"
         >
           {cls.name}
         </h3>
@@ -52,21 +52,21 @@ export default function ClassCard({
       </div>
 
       {nextSession && (
-        <div className="flex items-center gap-1.5 rounded-md bg-primary/10 px-2.5 py-1.5 text-[11px] font-medium text-primary">
-          <Clock className="h-3.5 w-3.5 shrink-0" />
+        <div className="flex items-center gap-1.5 bg-primary/10 px-2.5 py-1.5 rounded-md font-medium text-[11px] text-primary">
+          <Clock className="w-3.5 h-3.5 shrink-0" />
           <span>
-            <span className="mr-1 font-semibold">Buổi học kế tiếp:</span>
+            <span className="mr-1 font-semibold">Next Session:</span>
             {nextSession}
           </span>
         </div>
       )}
 
-      <div className="border-t border-border/60" />
+      <div className="border-border/60 border-t" />
 
       <div className="flex flex-col gap-1.5 text-[11px] text-muted-foreground">
         {daysDisplay && (
           <div className="flex items-start gap-1.5">
-            <Clock className="mt-px h-3 w-3 shrink-0" />
+            <Clock className="mt-px w-3 h-3 shrink-0" />
             <span className="leading-snug">
               {daysDisplay} · {cls.startTime} – {cls.endTime}
             </span>
@@ -74,12 +74,12 @@ export default function ClassCard({
         )}
         {cls.location && (
           <div className="flex items-start gap-1.5">
-            <MapPin className="mt-px h-3 w-3 shrink-0" />
+            <MapPin className="mt-px w-3 h-3 shrink-0" />
             <span className="line-clamp-1 leading-snug">{cls.location}</span>
           </div>
         )}
         <div className="flex items-start gap-1.5">
-          <BookOpen className="mt-px h-3 w-3 shrink-0" />
+          <BookOpen className="mt-px w-3 h-3 shrink-0" />
           <span className="leading-snug">
             {cls.subject?.name}
             {cls.level?.name ? ` · ${cls.level.name}` : ""}
@@ -87,10 +87,10 @@ export default function ClassCard({
         </div>
       </div>
       {/* Hover overlay: blurred background + action button */}
-      <div className="backdrop-blur-0 pointer-events-none absolute inset-0 flex items-center justify-center bg-white/0 opacity-0 transition-all duration-150 group-hover:bg-white/5 group-hover:opacity-100 group-hover:backdrop-blur-[1px]">
+      <div className="absolute inset-0 flex justify-center items-center bg-white/0 group-hover:bg-white/5 opacity-0 group-hover:opacity-100 backdrop-blur-0 group-hover:backdrop-blur-[1px] transition-all duration-150 pointer-events-none">
         <Link
           href={`/tutor/my-classes/${cls.id}`}
-          className="pointer-events-auto inline-flex translate-y-4 items-center gap-2 rounded-md bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground opacity-0 shadow-sm transition-[transform,opacity] duration-300 ease-out group-hover:translate-y-0 group-hover:opacity-100"
+          className="inline-flex items-center gap-2 bg-primary opacity-0 group-hover:opacity-100 shadow-sm px-3 py-2 rounded-md font-semibold text-primary-foreground text-sm transition-[transform,opacity] translate-y-4 group-hover:translate-y-0 duration-300 ease-out pointer-events-auto"
         >
           Xem chi tiết
         </Link>

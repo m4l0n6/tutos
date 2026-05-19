@@ -55,7 +55,7 @@ const ParentMyClassPage = () => {
         {/* Empty state */}
         {!isLoading && filteredClasses?.length === 0 && (
           <p className="py-16 text-muted-foreground text-center">
-            Bạn chưa có lớp học nào.
+            You dont have any classes yet.
           </p>
         )}
       </main>

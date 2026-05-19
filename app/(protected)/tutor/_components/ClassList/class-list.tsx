@@ -42,13 +42,13 @@ export const ClassList = ({
   return (
     <div>
       {/* Dòng 1: Title + Nút làm mới */}
-      <div className="flex items-center justify-between">
-        <h2 className="text-xl leading-none font-bold text-primary">{title}</h2>
+      <div className="flex justify-between items-center">
+        <h2 className="font-bold text-primary text-xl leading-none">{title}</h2>
         {onRefresh && (
           <button
             onClick={onRefresh}
             disabled={isLoading}
-            className="inline-flex items-center gap-2 rounded px-3 py-1 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground disabled:opacity-50"
+            className="inline-flex items-center gap-2 hover:bg-muted disabled:opacity-50 px-3 py-1 rounded font-medium text-muted-foreground hover:text-foreground text-sm"
             title="Làm mới"
           >
             <RotateCcw
@@ -65,33 +65,33 @@ export const ClassList = ({
       </div>
 
       {isLoading ? (
-        <div className="rounded-lg border border-dashed border-muted-foreground/50 p-8 text-center">
-          <p className="text-muted-foreground">Đang tải lớp học...</p>
+        <div className="p-8 border border-muted-foreground/50 border-dashed rounded-lg text-center">
+          <p className="text-muted-foreground">Loading classes...</p>
         </div>
       ) : isError ? (
-        <div className="rounded-lg border border-dashed border-muted-foreground/50 p-8 text-center">
+        <div className="p-8 border border-muted-foreground/50 border-dashed rounded-lg text-center">
           <p className="text-destructive">
-            Không thể tải danh sách lớp. Vui lòng thử lại.
+            Cannot load classes. Please try again.
           </p>
         </div>
       ) : !hasData ? (
-        <div className="rounded-lg border border-dashed border-muted-foreground/50 p-8 text-center">
-          <p className="text-muted-foreground">Chưa có lớp học</p>
+        <div className="p-8 border border-muted-foreground/50 border-dashed rounded-lg text-center">
+          <p className="text-muted-foreground">No classes</p>
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-5">
+          <div className="gap-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5">
             {visibleData.map((item, idx) => (
               <ClassCard key={item.id || idx} classData={item} />
             ))}
           </div>
           {remaining > 0 && (
-            <div className="mt-6 flex justify-center">
+            <div className="flex justify-center mt-6">
               <button
-                className="rounded bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+                className="bg-primary hover:bg-primary/90 px-4 py-2 rounded font-medium text-primary-foreground text-sm"
                 onClick={showMore}
               >
-                Xem thêm {remaining >= 15 ? 15 : remaining}
+                View More {remaining >= 15 ? 15 : remaining}
               </button>
             </div>
           )}

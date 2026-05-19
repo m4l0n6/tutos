@@ -31,38 +31,38 @@ export const ClassCard = ({
   const statusToShow = statusOverride ?? classData.status
 
   return (
-    <Card className="border-on-surface/12 bg-surface flex flex-col overflow-hidden border p-4">
+    <Card className="flex flex-col bg-surface p-4 border border-on-surface/12 overflow-hidden">
       {/* Header */}
       <div>
-        <h3 className="text-on-surface truncate text-base leading-snug font-bold">
+        <h3 className="font-bold text-on-surface text-base truncate leading-snug">
           {classData.name}
         </h3>
-        <p className="truncate text-xs text-muted-foreground">
+        <p className="text-muted-foreground text-xs truncate">
           {classData.level?.name} · {classData.location}
         </p>
-        <p className="truncate text-xs text-muted-foreground">
+        <p className="text-muted-foreground text-xs truncate">
           {classData.category?.name}
         </p>
       </div>
 
       {/* Time */}
-      <div className="text-on-surface-variant/60 flex flex-col text-xs">
+      <div className="flex flex-col text-on-surface-variant/60 text-xs">
         <div className="flex items-center gap-1">
-          <Clock className="h-3 w-3 shrink-0" />
+          <Clock className="w-3 h-3 shrink-0" />
           <span>
             {classData.startTime} - {classData.endTime}
           </span>
         </div>
         <div className="flex items-center gap-1">
-          <Calendar className="h-3 w-3 shrink-0" />
+          <Calendar className="w-3 h-3 shrink-0" />
           <span>{daysDisplay}</span>
         </div>
       </div>
 
       {/* Footer */}
-      <div className="mt-auto flex items-center justify-between gap-2">
-        <div className="flex items-center gap-1 text-xs text-muted-foreground">
-          <span>Phí: ₫{classData.acceptanceFee?.toLocaleString?.()}</span>
+      <div className="flex justify-between items-center gap-2 mt-auto">
+        <div className="flex items-center gap-1 text-muted-foreground text-xs">
+          <span>Fee: ₫{classData.acceptanceFee?.toLocaleString?.()}</span>
         </div>
         <Badge
           variant="outline"
@@ -75,7 +75,7 @@ export const ClassCard = ({
       {showApply && (
         <button
           type="button"
-          className="w-full rounded bg-primary px-3 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+          className="bg-primary hover:bg-primary/90 px-3 py-2 rounded w-full font-medium text-primary-foreground text-sm"
           onClick={() => setIsApplyOpen(true)}
         >
           Ứng tuyển

@@ -22,21 +22,21 @@ function MyClassCard({ cls }: { cls: MClass }) {
   return (
     <button
       onClick={() => router.push("/tutor/my-classes")}
-      className="group flex w-full flex-col gap-3 rounded-xl border border-border bg-card p-4 text-left transition-all hover:border-primary/30 hover:shadow-sm active:scale-[0.98]"
+      className="group flex flex-col gap-3 bg-card hover:shadow-sm p-4 border border-border hover:border-primary/30 rounded-xl w-full text-left active:scale-[0.98] transition-all"
     >
       {/* Row 1: Icon + name + status badge */}
       <div className="flex items-start gap-3">
         <div
           className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${colorClass}`}
         >
-          <Icon className="h-5 w-5" />
+          <Icon className="w-5 h-5" />
         </div>
 
-        <div className="min-w-0 flex-1">
-          <p className="truncate text-[13px] leading-snug font-semibold text-foreground">
+        <div className="flex-1 min-w-0">
+          <p className="font-semibold text-[13px] text-foreground truncate leading-snug">
             {cls.name}
           </p>
-          <p className="text-on-surface-variant/60 truncate text-[11px]">
+          <p className="text-[11px] text-on-surface-variant/60 truncate">
             Phụ huynh: {cls.parentName}
           </p>
         </div>
@@ -50,40 +50,40 @@ function MyClassCard({ cls }: { cls: MClass }) {
       </div>
 
       {/* Divider */}
-      <div className="border-t border-border/60" />
+      <div className="border-border/60 border-t" />
 
       {/* Row 2: Meta info grid */}
-      <div className="text-on-surface-variant/60 grid grid-cols-1 gap-1.5 text-[11px]">
+      <div className="gap-1.5 grid grid-cols-1 text-[11px] text-on-surface-variant/60">
         {/* Thời gian */}
         <div className="flex items-start gap-1.5">
-          <Clock className="mt-px h-3 w-3 shrink-0" />
+          <Clock className="mt-px w-3 h-3 shrink-0" />
           <span className="leading-snug">
             {cls.startTime} – {cls.endTime}
             {daysDisplay ? ` · ${daysDisplay}` : ""}
           </span>
         </div>
 
-        {/* Địa điểm */}
+        {/* Location */}
         {cls.location && (
-          <div className="text-on-surface-variant/60 flex items-start gap-1.5">
-            <MapPin className="mt-px h-3 w-3 shrink-0" />
+          <div className="flex items-start gap-1.5 text-on-surface-variant/60">
+            <MapPin className="mt-px w-3 h-3 shrink-0" />
             <span className="line-clamp-1 leading-snug">{cls.location}</span>
           </div>
         )}
 
-        {/* Môn + cấp độ */}
-        <div className="text-on-surface-variant/60 flex items-start gap-1.5">
-          <BookOpen className="mt-px h-3 w-3 shrink-0" />
+        {/* Subject + Level */}
+        <div className="flex items-start gap-1.5 text-on-surface-variant/60">
+          <BookOpen className="mt-px w-3 h-3 shrink-0" />
           <span className="leading-snug">
             {cls.subject?.name}
             {cls.level?.name ? ` · ${cls.level.name}` : ""}
           </span>
         </div>
 
-        {/* Danh mục */}
+        {/* Category */}
         {cls.category?.name && (
-          <div className="text-on-surface-variant/60 flex items-start gap-1.5">
-            <Tag className="mt-px h-3 w-3 shrink-0" />
+          <div className="flex items-start gap-1.5 text-on-surface-variant/60">
+            <Tag className="mt-px w-3 h-3 shrink-0" />
             <span className="leading-snug">{cls.category.name}</span>
           </div>
         )}
@@ -111,13 +111,13 @@ export function MyClassList() {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <div className="flex items-center justify-between">
-        <h2 className="text-xl leading-none font-bold text-primary">
-          Lớp học của tôi
+      <div className="flex justify-between items-center">
+        <h2 className="font-bold text-primary text-xl leading-none">
+          My Classes
         </h2>
         <button
           onClick={() => router.push("/tutor/my-classes")}
-          className="text-sm font-medium text-primary hover:underline md:hidden"
+          className="md:hidden font-medium text-primary text-sm hover:underline"
         >
           Xem tất cả
         </button>
@@ -125,22 +125,22 @@ export function MyClassList() {
 
       {/* Body */}
       {isLoading ? (
-        <div className="rounded-xl border border-dashed border-muted-foreground/40 p-8 text-center">
-          <p className="text-sm text-muted-foreground">Đang tải lớp học...</p>
+        <div className="p-8 border border-muted-foreground/40 border-dashed rounded-xl text-center">
+          <p className="text-muted-foreground text-sm">Loading classes...</p>
         </div>
       ) : isError ? (
-        <div className="rounded-xl border border-dashed border-destructive/40 p-8 text-center">
-          <p className="text-sm text-destructive">
-            Không thể tải danh sách. Vui lòng thử lại.
+        <div className="p-8 border border-destructive/40 border-dashed rounded-xl text-center">
+          <p className="text-destructive text-sm">
+            Cannot load list. Please try again.
           </p>
         </div>
       ) : classList.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-muted-foreground/40 p-8 text-center">
-          <p className="text-sm text-muted-foreground">Chưa có lớp học nào.</p>
+        <div className="p-8 border border-muted-foreground/40 border-dashed rounded-xl text-center">
+          <p className="text-muted-foreground text-sm">No classes yet.</p>
         </div>
       ) : (
         <div className="relative">
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="gap-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
             {previewClasses.map((cls) => (
               <MyClassCard key={cls.id} cls={cls} />
             ))}
@@ -152,13 +152,13 @@ export function MyClassList() {
                 hovered ? "opacity-100" : "opacity-0"
               }`}
             >
-              <div className="absolute inset-x-0 bottom-0 h-24 rounded-b-xl bg-gradient-to-t from-background/90 to-transparent" />
+              <div className="bottom-0 absolute inset-x-0 bg-gradient-to-t from-background/90 to-transparent rounded-b-xl h-24" />
               <button
                 onClick={() => router.push("/tutor/my-classes")}
-                className="relative z-10 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-background/95 px-5 py-2 text-sm font-medium text-primary shadow-sm backdrop-blur-sm transition-all hover:border-primary hover:shadow-md"
+                className="inline-flex z-10 relative items-center gap-2 bg-background/95 shadow-sm hover:shadow-md backdrop-blur-sm px-5 py-2 border border-primary/30 hover:border-primary rounded-full font-medium text-primary text-sm transition-all"
               >
-                <ArrowRight className="h-4 w-4" />
-                Xem tất cả {classList.length} lớp
+                <ArrowRight className="w-4 h-4" />
+                View All {classList.length} Classes
               </button>
             </div>
           )}

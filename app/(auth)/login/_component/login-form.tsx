@@ -1,6 +1,6 @@
 "use client";
 
-import type React from "react";
+import React from "react";
 import { Button } from "@/components/ui/button";
 import {
   Field,
@@ -19,9 +19,11 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { loginSchema, LoginFormValues } from "@/lib/validations/auth"
 import { PasswordInput } from "@/components/password-input"
+import Link from "next/link";
 
 export function LoginForm() {
   const router = useRouter()
+
 	const LoginGoogleHandle = () => {
 		window.location.href = "https://ketnoigiasu.bvdk333.work/api/auth/google"
 	}
@@ -73,12 +75,12 @@ export function LoginForm() {
         <Field>
           <div className="flex items-center gap-2">
             <FieldLabel htmlFor="password">Password</FieldLabel>
-            <a
-              href="#"
+            <Link
+              href="/forgot-password"
               className="ml-auto text-sm hover:underline underline-offset-2"
             >
               Forgot your password?
-            </a>
+            </Link>
           </div>
           <PasswordInput
             id="password"
@@ -124,9 +126,9 @@ export function LoginForm() {
       </Field>
       <FieldDescription className="text-sm text-center">
         Don&apos;t have an account?{" "}
-        <a href="/signup" className="hover:underline">
+        <Link href="/signup" className="hover:underline">
           Sign up
-        </a>
+        </Link>
       </FieldDescription>
     </FieldGroup>
   )

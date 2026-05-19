@@ -17,6 +17,7 @@ import {
   LogOutIcon,
   Moon,
 } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 import type { MUser } from "@/types/auth"
 
@@ -26,6 +27,16 @@ interface NavUserProps {
 }
 
 export function NavUser({ user, logout }: NavUserProps) {
+  const router = useRouter()
+  const handleGotoAccount = () => {
+    if(!user) return
+    if(user.role === "TUTOR") {
+      router.push("/tutor/profile")
+    }
+    else {
+      router.push("/parent/me")
+    }
+  }
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -54,7 +65,7 @@ export function NavUser({ user, logout }: NavUserProps) {
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={handleGotoAccount}>
             <UserIcon />
             Account
           </DropdownMenuItem>
@@ -68,12 +79,14 @@ export function NavUser({ user, logout }: NavUserProps) {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <CreditCardIcon />
-            Plan & Billing
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
+        {user?.role === "TUTOR" && (
+          <DropdownMenuGroup>
+            <DropdownMenuItem>
+              <CreditCardIcon />
+              Plan & Billing
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+        )}
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem
