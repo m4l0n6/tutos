@@ -147,16 +147,23 @@ export function SocketProvider({ children }: { children: React.ReactNode }) {
   // ── Actions ───────────────────────────────────
 
   const sendMessage = useCallback(
-    (conversationId: string, content: string, attachments?: Attachment[]) => {
+    (
+      conversationId: string,
+      content: string,
+      attachments?: Attachment[],
+      onQueued?: (response: { status: "queued"; tempId: string }) => void
+    ) => {
       if (!chatRef.current?.connected) {
         console.warn("[SocketProvider] sendMessage: chat socket not connected")
         return
       }
-      chatRef.current.emit("sendMessage", {
-        conversationId,
-        content,
-        attachments,
-      })
+      chatRef.current.emit(
+        "sendMessage",
+        { conversationId, content, attachments },
+        (response: { status: "queued"; tempId: string }) => {
+          onQueued?.(response)
+        }
+      )
     },
     []
   )
