@@ -74,8 +74,23 @@ export type MClass = {
   applications: MClassApplication[]
   isTrialConfirmedByParent: boolean
   isTrialConfirmedByTutor: boolean
-
+  payment: MPayment[]
   totalTutorApplication: number
+}
+
+export type MPayment = {
+  id: string
+  classId: string
+  amount: number
+  paidAt: string | null
+  proofUrl: string | null
+  reason: string | null
+  relatedPaymentId: MPayment | null
+  status: string
+  transactionRef: string | null
+  type: string
+  updatedAt?: string
+  userId: string
 }
 
 export type MClassApplication = {

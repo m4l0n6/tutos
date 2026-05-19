@@ -38,6 +38,8 @@ const TutorPage = () => {
     refetch: refetchApplications,
   } = useGetClassApplication()
 
+  console.log(user)
+
   const appliedClassIds = (classApplications || [])
     .map(
       (a: { classId?: string; class?: { id?: string } }) =>
@@ -102,17 +104,17 @@ const TutorPage = () => {
   }, [classList, filters])
 
   return (
-    <div className="flex flex-col bg-background min-h-screen">
-      <main className="flex-1 space-y-8 mx-auto px-8 py-8 w-full max-w-10xl">
+    <div className="flex min-h-screen flex-col bg-background">
+      <main className="max-w-10xl mx-auto w-full flex-1 space-y-8 px-8 py-8">
         {/* Header Section */}
-        <header className="flex md:flex-row flex-col justify-between md:items-end gap-4">
+        <header className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
           <div>
-            <h1 className="font-bold text-primary text-2xl">
+            <h1 className="text-2xl font-bold text-primary">
               Hello, {user?.fullName}
             </h1>
             <p className="text-body-lg text-on-surface-variant">
-              Today is {dayOfWeek}, {dateString}. Wish you a wonderful day.
-              làm việc hiệu quả!
+              Today is {dayOfWeek}, {dateString}. Wish you a wonderful day. làm
+              việc hiệu quả!
             </p>
           </div>
         </header>
@@ -121,7 +123,7 @@ const TutorPage = () => {
         <TutorStats />
 
         {/* Main Dashboard Layout */}
-        <div className="gap-8 grid grid-cols-1">
+        <div className="grid grid-cols-1 gap-8">
           <div className="space-y-8">
             {/* My Classes */}
             <MyClassList />
