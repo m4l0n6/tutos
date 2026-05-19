@@ -1,12 +1,9 @@
-import { Button } from "@/components/ui/button"
-import { Bell } from "lucide-react"
+import NotificationPopover from "@/components/common/notification/index"
+import { useGetMyNotifications } from "@/hooks/queries/useNotificationQuery"
 
 const Notification = () => {
-    return (
-      <Button variant="ghost" size="icon" className="p-2">
-        <Bell className="size-4" />
-      </Button>
-    )
+  const { data = [] } = useGetMyNotifications()
+  return <NotificationPopover data={data} />
 }
 
 export default Notification
